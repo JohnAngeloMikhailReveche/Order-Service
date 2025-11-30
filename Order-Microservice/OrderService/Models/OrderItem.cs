@@ -2,17 +2,20 @@
 {
     public class OrderItem
     {
-        public int OrderItemId { get; set; }
-        public int OrdersId { get; set; }
-        public int MenuItemId { get; set; }
-        public int Item_Variant_Id { get; set; }
-        public string Item_Name { get; set; }
-        public string Item_Description { get; set; }
-        public string ImgUrl { get; set; }
-        public string VariantName { get; set; }
-        public decimal Variant_Price { get; set; }
-        public int Quantity { get; set; }
-        public string Special_Instructions { get; set; }
-        public decimal Line_Subtotal { get; set; }
+        public int order_item_id { get; set; }
+        public int orders_id { get; set; }
+        public int menu_item_id { get; set; }
+        public int item_variant_id { get; set; }
+        public string item_name { get; set; }
+        public string item_description { get; set; }
+        public string img_url { get; set; }
+        public string variant_name { get; set; }
+        public decimal variant_price { get; set; }
+        public int quantity { get; set; }
+        public string special_instructions { get; set; }
+        public decimal line_subtotal { get; set; }
+
+        // Navigation Property
+        public Orders Order { get; set; }
     }
 }

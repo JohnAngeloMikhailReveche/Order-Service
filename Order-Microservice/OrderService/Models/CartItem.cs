@@ -2,13 +2,16 @@
 {
     public class CartItem
     {
-        public int CartItemId { get; set; }
-        public int CartId { get; set; }
-        public int MenuItemId { get; set; }
-        public int VariantId { get; set; }
-        public int Quantity { get; set; }
-        public decimal Computed_Subtotal { get; set; }
-        public string Special_Instruction { get; set; }
-        public DateTime Added_At { get; set; }
+        public int cart_item_id { get; set; }
+        public int cart_id { get; set; }
+        public int menu_item_id { get; set; }
+        public int variant_id { get; set; }
+        public int quantity { get; set; }
+        public decimal computed_subtotal { get; set; }
+        public string special_instructions { get; set; }
+        public DateTime added_at { get; set; }
+
+        // Navigation Property
+        public Cart Cart { get; set; }
     }
 }
