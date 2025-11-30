@@ -2,16 +2,19 @@
 {
     public class Orders
     {
-        public int OrdersId { get; set; }
-        public int UsersId { get; set; }
-        public int PaymentId { get; set; }
-        public byte  Status {  get; set; }
-        public decimal Subtotal { get; set; }
-        public decimal Total_Cost { get; set; }
-        public DateTime Placed_At { get; set; }
-        public DateTime Fulfilled_At { get; set; }
-        public bool Cancellation_Request { get; set; }
-        public string Cancellation_Reason { get; set; }
-        public string Payment_Method { get; set; }
+        public int orders_id { get; set; }
+        public int users_id { get; set; }
+        public int payment_id { get; set; }
+        public byte status {  get; set; }
+        public decimal subtotal { get; set; }
+        public decimal total_cost { get; set; }
+        public DateTime placed_at { get; set; }
+        public DateTime fulfilled_at { get; set; }
+        public bool cancellation_requested { get; set; }
+        public string cancellation_reason { get; set; }
+        public string payment_method { get; set; }
+
+        // Navigation Property
+        public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

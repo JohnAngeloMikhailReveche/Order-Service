@@ -2,9 +2,12 @@
 {
     public class Cart
     {
-        public int CartId { get; set; }
-        public int UsersId { get; set; }
-        public decimal Subtotal { get; set; }
-        public DateTime Updated_At { get; set; }
+        public int cart_id { get; set; }
+        public int users_id { get; set; }
+        public decimal subtotal { get; set; }
+        public DateTime updated_at { get; set; }
+
+        // Navigation Property
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }

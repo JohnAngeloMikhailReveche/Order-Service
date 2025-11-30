@@ -3912,11 +3912,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projects\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+      "projectUniqueName": "F:\\Projects\\Clone\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
       "projectName": "OrderService",
-      "projectPath": "F:\\Projects\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+      "projectPath": "F:\\Projects\\Clone\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
       "packagesPath": "C:\\Users\\Khayl\\.nuget\\packages\\",
-      "outputPath": "F:\\Projects\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
+      "outputPath": "F:\\Projects\\Clone\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
