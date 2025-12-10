@@ -24,155 +24,191 @@ namespace OrderService.Migrations
 
             modelBuilder.Entity("OrderService.Models.Cart", b =>
                 {
-                    b.Property<int>("CartId")
+                    b.Property<int>("cart_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("cart_id"));
 
-                    b.Property<decimal>("Subtotal")
+                    b.Property<decimal>("subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime>("updated_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UsersId")
+                    b.Property<int>("users_id")
                         .HasColumnType("int");
 
-                    b.HasKey("CartId");
+                    b.HasKey("cart_id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("OrderService.Models.CartItem", b =>
                 {
-                    b.Property<int>("CartItemId")
+                    b.Property<int>("cart_item_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("cart_item_id"));
 
-                    b.Property<DateTime>("Added_At")
+                    b.Property<DateTime>("added_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CartId")
+                    b.Property<int>("cart_id")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Computed_Subtotal")
+                    b.Property<decimal>("computed_subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MenuItemId")
+                    b.Property<int>("menu_item_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Special_Instruction")
+                    b.Property<string>("special_instructions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VariantId")
+                    b.Property<int>("variant_id")
                         .HasColumnType("int");
 
-                    b.HasKey("CartItemId");
+                    b.HasKey("cart_item_id");
 
-                    b.ToTable("CartItems");
+                    b.HasIndex("cart_id");
+
+                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("OrderService.Models.OrderItem", b =>
                 {
-                    b.Property<int>("OrderItemId")
+                    b.Property<int>("order_item_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("order_item_id"));
 
-                    b.Property<string>("ImgUrl")
+                    b.Property<string>("img_url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Item_Description")
+                    b.Property<string>("item_description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Item_Name")
+                    b.Property<string>("item_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Item_Variant_Id")
+                    b.Property<int>("item_variant_id")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Line_Subtotal")
+                    b.Property<decimal>("line_subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MenuItemId")
+                    b.Property<int>("menu_item_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrdersId")
+                    b.Property<int>("orders_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Special_Instructions")
+                    b.Property<string>("special_instructions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VariantName")
+                    b.Property<string>("variant_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Variant_Price")
+                    b.Property<decimal>("variant_price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderItemId");
+                    b.HasKey("order_item_id");
 
-                    b.ToTable("OrderItems");
+                    b.HasIndex("orders_id");
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("OrderService.Models.Orders", b =>
                 {
-                    b.Property<int>("OrdersId")
+                    b.Property<int>("orders_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrdersId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("orders_id"));
 
-                    b.Property<string>("Cancellation_Reason")
+                    b.Property<string>("cancellation_reason")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Cancellation_Request")
+                    b.Property<bool>("cancellation_requested")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("Fulfilled_At")
+                    b.Property<DateTime>("fulfilled_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentId")
+                    b.Property<int>("payment_id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Payment_Method")
+                    b.Property<string>("payment_method")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Placed_At")
+                    b.Property<DateTime>("placed_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Status")
+                    b.Property<byte>("status")
                         .HasColumnType("tinyint");
 
-                    b.Property<decimal>("Subtotal")
+                    b.Property<decimal>("subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Total_Cost")
+                    b.Property<decimal>("total_cost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UsersId")
+                    b.Property<int>("users_id")
                         .HasColumnType("int");
 
-                    b.HasKey("OrdersId");
+                    b.HasKey("orders_id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("OrderService.Models.CartItem", b =>
+                {
+                    b.HasOne("OrderService.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("cart_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("OrderService.Models.OrderItem", b =>
+                {
+                    b.HasOne("OrderService.Models.Orders", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("orders_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("OrderService.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("OrderService.Models.Orders", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
