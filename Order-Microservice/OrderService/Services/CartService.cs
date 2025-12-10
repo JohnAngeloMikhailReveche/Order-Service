@@ -22,7 +22,6 @@ namespace OrderService.Services
                 int menuId,
                 int userId,
                 int variantId,
-                decimal price,
                 int quantity,
                 string specialInstructions
             )
@@ -83,6 +82,7 @@ namespace OrderService.Services
                 .FirstOrDefaultAsync(c => c.users_id == userId);
         }
 
+        // Developer's Note: Revise this so that only the userId with the chosen cartItemId and a quantity should be removed, not the whole.
         public async Task<Cart> RemoveItem(int cartItemId)
         {
             var item = await _db.CartItem.FindAsync(cartItemId);
