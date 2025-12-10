@@ -62,6 +62,17 @@ namespace OrderService.Controllers
             return Ok(cart);
         }
 
+        // Remove Cart Item
+        [HttpDelete("cart/item/{cartItemId}")]
+        public async Task<IActionResult> RemoveItemFromCart(int cartItemId)
+        {
+            var cart = await _cartService.RemoveItem(cartItemId);
+            if (cart == null)
+                return NotFound(new { message = "Item or cart is not found." });
+
+            return Ok(cart);
+        }
+
 
 
         // GET /api/carts
@@ -131,6 +142,7 @@ namespace OrderService.Controllers
             if (item == null) return NotFound();
             return Ok(item);
         }
+
 
 
     }

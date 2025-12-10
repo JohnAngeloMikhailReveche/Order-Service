@@ -83,22 +83,27 @@ namespace OrderService.Services
                 .FirstOrDefaultAsync(c => c.users_id == userId);
         }
 
-        public async Task RemoveItem(int cartItemId)
+        public async Task<Cart> RemoveItem(int cartItemId)
         {
             var item = await _db.CartItem.FindAsync(cartItemId);
-            if (item == null) return;
+            if (item == null) return null;
 
-            var cart = await _db.Cart.Include(c => c.CartItems)
+            var cart = await _db.Cart
+                .Include(c => c.CartItems)
                 .FirstAsync(c => c.cart_id == item.cart_id);
 
+            if (cart == null) 
+                return null;
+
+            // Removing item
             _db.CartItem.Remove(item);
+            await _db.SaveChangesAsync();
 
             // If cart becomes empty then keep cart but subtotal is 0.
-            await _db.SaveChangesAsync();
-
             cart.subtotal = cart.CartItems.Sum(i => i.computed_subtotal);
-
             await _db.SaveChangesAsync();
+
+            return cart;
         }
 
     }
