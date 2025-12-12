@@ -1,12 +1,375 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "F:\\Projects\\Order-Service\\Order-Microservice\\",
-  "Documents": [],
+  "WorkspaceRootPath": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\controllers\\ordersservicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\ordersservicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\models\\menudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\menudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\models\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\model\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\model\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\migrations\\20251210045814_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\migrations\\20251210045814_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\migrations\\20251130081426_createorderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\migrations\\20251130081426_createorderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\migrations\\20251130080420_createorderstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\migrations\\20251130080420_createorderstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\migrations\\20251130074053_createcarttable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\migrations\\20251130074053_createcarttable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\migrations\\20251130075041_createcartitemtable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\migrations\\20251130075041_createcartitemtable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\menuservice.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\menuservice.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\menuservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\for testing\\order-service\\order-microservice\\orderservice\\orderservice.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\orderservice.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CartService.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
+              "RelativeDocumentMoniker": "OrderService\\Services\\CartService.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
+              "RelativeToolTip": "OrderService\\Services\\CartService.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAEwFoAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T05:25:13.911Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrdersServiceController.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrdersServiceController.cs",
+              "RelativeDocumentMoniker": "OrderService\\Controllers\\OrdersServiceController.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrdersServiceController.cs",
+              "RelativeToolTip": "OrderService\\Controllers\\OrdersServiceController.cs",
+              "ViewState": "AgIAAHkAAAAAAAAAAAAUwJAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T09:02:42.99Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Program.cs",
+              "RelativeDocumentMoniker": "OrderService\\Program.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Program.cs",
+              "RelativeToolTip": "OrderService\\Program.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAACMAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:36:58.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\appsettings.json",
+              "RelativeDocumentMoniker": "OrderService\\appsettings.json",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\appsettings.json",
+              "RelativeToolTip": "OrderService\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-30T07:38:25.767Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Menu.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Model\\Menu.cs",
+              "RelativeDocumentMoniker": "MenuService\\Model\\Menu.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Model\\Menu.cs",
+              "RelativeToolTip": "MenuService\\Model\\Menu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T04:50:32.667Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MenuDTO.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\MenuDTO.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\MenuDTO.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\MenuDTO.cs",
+              "RelativeToolTip": "OrderService\\Models\\MenuDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T05:08:43.452Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Cart.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\Cart.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\Cart.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\Cart.cs",
+              "RelativeToolTip": "OrderService\\Models\\Cart.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:48:19.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\CartItem.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\CartItem.cs",
+              "RelativeToolTip": "OrderService\\Models\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:57:39.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20251210045814_initial.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Migrations\\20251210045814_initial.cs",
+              "RelativeDocumentMoniker": "MenuService\\Migrations\\20251210045814_initial.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Migrations\\20251210045814_initial.cs",
+              "RelativeToolTip": "MenuService\\Migrations\\20251210045814_initial.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T04:58:14.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MenuController.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Controllers\\MenuController.cs",
+              "RelativeDocumentMoniker": "MenuService\\Controllers\\MenuController.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Controllers\\MenuController.cs",
+              "RelativeToolTip": "MenuService\\Controllers\\MenuController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T05:03:47.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Orders.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\Orders.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\Orders.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\Orders.cs",
+              "RelativeToolTip": "OrderService\\Models\\Orders.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T08:08:27.183Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "OrderDbContext.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeDocumentMoniker": "OrderService\\Data\\OrderDbContext.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeToolTip": "OrderService\\Data\\OrderDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:35:46.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "20251130080420_CreateOrdersTable.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130080420_CreateOrdersTable.cs",
+              "RelativeDocumentMoniker": "OrderService\\Migrations\\20251130080420_CreateOrdersTable.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130080420_CreateOrdersTable.cs",
+              "RelativeToolTip": "OrderService\\Migrations\\20251130080420_CreateOrdersTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T08:04:20.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "20251130074053_CreateCartTable.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130074053_CreateCartTable.cs",
+              "RelativeDocumentMoniker": "OrderService\\Migrations\\20251130074053_CreateCartTable.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130074053_CreateCartTable.cs",
+              "RelativeToolTip": "OrderService\\Migrations\\20251130074053_CreateCartTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:40:53.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "20251130081426_CreateOrderItem.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130081426_CreateOrderItem.cs",
+              "RelativeDocumentMoniker": "OrderService\\Migrations\\20251130081426_CreateOrderItem.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130081426_CreateOrderItem.cs",
+              "RelativeToolTip": "OrderService\\Migrations\\20251130081426_CreateOrderItem.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T08:14:26.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\appsettings.json",
+              "RelativeDocumentMoniker": "MenuService\\appsettings.json",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\appsettings.json",
+              "RelativeToolTip": "MenuService\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-10T04:54:39.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "20251130075041_CreateCartItemTable.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130075041_CreateCartItemTable.cs",
+              "RelativeDocumentMoniker": "OrderService\\Migrations\\20251130075041_CreateCartItemTable.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Migrations\\20251130075041_CreateCartItemTable.cs",
+              "RelativeToolTip": "OrderService\\Migrations\\20251130075041_CreateCartItemTable.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAIwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T07:50:41.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "MenuService",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\MenuService.csproj",
+              "RelativeDocumentMoniker": "MenuService\\MenuService.csproj",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\MenuService.csproj",
+              "RelativeToolTip": "MenuService\\MenuService.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-10T04:57:20.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Program.cs",
+              "RelativeDocumentMoniker": "MenuService\\Program.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\MenuService\\Program.cs",
+              "RelativeToolTip": "MenuService\\Program.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAACIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T04:44:16.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderItem.cs",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T09:32:29.581Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "OrderService",
+              "DocumentMoniker": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+              "RelativeDocumentMoniker": "OrderService\\OrderService.csproj",
+              "ToolTip": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+              "RelativeToolTip": "OrderService\\OrderService.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-30T07:00:49.931Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
