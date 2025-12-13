@@ -2,6 +2,8 @@ import React from 'react';
 import { Navbar, Container, Nav, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import './App.css';
 import classic_matchabara_cold_brew_Pic from './classic matchabara cold brew.png';
+import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
+import kapebara_cart_Pic from './kapebara cart.jpg';
 
 function App() {
   const [quantity, setQuantity] = React.useState(1);
@@ -15,13 +17,19 @@ function App() {
       {/* Default Bootstrap Navigation Bar */}
       <Navbar expand="lg" className="navbar">
         <Container>
-          <Navbar.Brand href="#home" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Kapebara</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
+          <div className="d-flex align-items-center">
+          <Navbar.Brand href="#home">
+            <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top"/>
+          </Navbar.Brand>
+          </div>
+          <Navbar.Toggle aria-controls="center-nav" />
+          <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
+            <Nav className="ms-auto gap-4 align-items-center">
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#menu">Menu</Nav.Link>
-              <Nav.Link href="#about">About</Nav.Link>
+              <Nav.Link href="#my-orders">My Orders</Nav.Link>
+              <Nav.Link href="#my-profile">My Profile</Nav.Link>
+              <Nav.Link href="#cart"><img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }}/></Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -46,7 +54,9 @@ function App() {
                   <div style={{ width: '100%', textAlign: 'left', marginBottom: '15px' }}>
                     <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '20px', fontWeight: 600 }}>Classic Matchabara Cold Brew</Card.Title>
                     <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '40px', fontWeight: 700 }}>₱{price}</Card.Title>
-                    <Card.Text style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400, color: '#757575', lineHeight: 1.6 }}>A rich matcha latte for calm and cozy days.</Card.Text>
+                    <Card.Text style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400, color: '#757575', lineHeight: 1.6 }}>
+                      A rich matcha latte for calm and cozy days.
+                    </Card.Text>
                   </div>
 
                   {/* Labels */}
@@ -61,9 +71,13 @@ function App() {
                     {/* Quantity Stepper */}
                     <Col xs={6} className="d-flex justify-content-start">
                       <div style={{ display: 'flex', alignItems: 'center', width: '92%', justifyContent: 'space-between', padding: '5px 10px' }}>
-                        <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }} onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</Button>
+                        <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }}
+                          onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                        >-</Button>
                         <span style={{ textAlign: 'center', flex: 1 }}>{quantity}</span>
-                        <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }} onClick={() => setQuantity(q => q + 1)}>+</Button>
+                        <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }}
+                          onClick={() => setQuantity(q => q + 1)}
+                        >+</Button>
                       </div>
                     </Col>
 
@@ -93,12 +107,19 @@ function App() {
                   </Row>
 
                   {/* Add to Bag */}
-                  <Button className="add-to-bag-btn" style={{ width: '90%', fontFamily: 'DM Sans, sans-serif', fontSize: "15px", fontWeight: 700 }}>Add to Bag</Button>
+                  <Button
+                    className="add-to-bag-btn" style={{ width: '90%', fontFamily: 'DM Sans, sans-serif', fontSize: "15px", fontWeight: 700 }}>Add to Bag</Button>
 
                   {/* Notes */}
                   <Form.Group controlId="formNotes" style={{ width: '90%', marginTop: '10px' }}>
                     <Form.Label style={{ fontWeight: 500 }}>Notes</Form.Label>
-                    <Form.Control className="notes-textarea" as="textarea" rows={3} placeholder="Add any special instructions..." style={{ width: '100%', fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400 }} />
+                    <Form.Control
+                      className="notes-textarea"
+                      as="textarea"
+                      rows={3}
+                      placeholder="Add any special instructions..."
+                      style={{ width: '100%', fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400 }}
+                    />
                   </Form.Group>
 
                 </Card.Body>
@@ -112,3 +133,6 @@ function App() {
 }
 
 export default App;
+
+
+
