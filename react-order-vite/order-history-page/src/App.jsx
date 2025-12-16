@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Container, Nav, Card, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
 import "./App.css";
 import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
@@ -7,51 +7,56 @@ import classic_coffeebara_cold_brew_Pic from "./classic coffeebara cold brew.png
 import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import kapebara_cart_Pic from "./kapebara cart.jpg";
 
-/* Mock Data */
-const ordersData = [
-  {
-    id: 1,
-    name: "Classic Matchabara Cold Brew",
-    status: "Ongoing",
-    items: 1,
-    date: "04 Dec 2025, 10:00 AM",
-    price: 120,
-    image: classic_matchabara_cold_brew_Pic,
-  },
-  {
-    id: 2,
-    name: "Classic Macchiabara Cold Brew",
-    status: "Completed",
-    items: 1,
-    date: "02 Dec 2025, 03:15 PM",
-    price: 130,
-    image: classic_macchiabara_cold_brew_Pic,
-  },
-  {
-    id: 3,
-    name: "Classic Coffeebara Cold Brew",
-    status: "Canceled",
-    items: 1,
-    date: "01 Dec 2025, 08:20 AM",
-    price: 100,
-    image: classic_coffeebara_cold_brew_Pic,
-  },
-];
-
 function App() {
+  const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
   const [sortBy, setSortBy] = useState("recent");
+
+  useEffect(() => {
+    const fetchedOrders = [
+      {
+        id: 1,
+        name: "Classic Matchabara Cold Brew",
+        status: "Ongoing",
+        items: 1,
+        date: "2025-12-04T10:00:00",
+        price: 120,
+        image: classic_matchabara_cold_brew_Pic
+      },
+      {
+        id: 2,
+        name: "Classic Macchiabara Cold Brew",
+        status: "Ongoing",
+        items: 1,
+        date: "2025-12-04T10:00:00",
+        price: 130,
+        image: classic_macchiabara_cold_brew_Pic
+      },
+      {
+        id: 3,
+        name: "Classic Coffeebara Cold Brew",
+        status: "Ongoing",
+        items: 1,
+        date: "2025-12-04T10:00:00",
+        price: 100,
+        image: classic_coffeebara_cold_brew_Pic
+      },
+    ];
+
+    setOrders(fetchedOrders);
+  }, []);
 
   const tabs = ["All", "Ongoing", "Completed", "Canceled"];
 
   const filteredOrders = (
     activeTab === "All"
-      ? ordersData
-      : ordersData.filter((o) => o.status === activeTab)
+      ? orders
+      : orders.filter((o) => o.status === activeTab)
   ).sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return sortBy === "recent" ? dateB - dateA : dateA - dateB;
+   
   });
 
   return (
@@ -98,7 +103,6 @@ function App() {
               ))}
             </ButtonGroup>
           </div>
-           
           {/* Sort by, left side) */}
           <div className="sort-row mb-3">
             <span className="sort-label">Sort by</span>
