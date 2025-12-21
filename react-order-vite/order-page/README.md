@@ -1,16 +1,53 @@
-# React + Vite
+// HOW TO RUN ORDER-HISTORY-PAGE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#1: cd order-service
+#2: cd react-order-vite
+#3: cd order-page
+#4: npm install
+#5: npm run dev
+#6: npm install react-bootstrap bootstrap
+#7: npm run dev
 
-Currently, two official plugins are available:
+Note: kapag hindi nag reflect yung page sa step 5, proceed sa step 6. if nag run naman na, no need na for steps 6 and 7
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+// SAMPLE API INTEGRATION LOGIC ULI HAHAHAHAHA (HALOS SAME LANG TO ACTUALLY SA ORDER HISTORY PAGE)
 
-## React Compiler
+useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/products/1");
+      const data = await response.json();
+      setProduct(data);
+    } catch (error) {
+      console.error("Failed to fetch product:", error);
+    }
+  };
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  fetchProduct();
+}, []);
 
-## Expanding the ESLint configuration
+// SAMPLE RESPONSE NG BACKEND
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+{
+  "id": 1,
+  "name": "Classic Matchabara Cold Brew",
+  "image": "classic_matchabara_cold_brew.png",
+  "prices": {
+    "M": 120,
+    "L": 140
+  }
+}
+
+// SAMPLE ADD TO CART PAYLOAD
+
+{
+  "productId": 1,
+  "name": "Classic Matchabara Cold Brew",
+  "size": "M",
+  "quantity": 2,
+  "price": 120,
+  "total": 240,
+  "notes": "Less ice please"
+}
+
+Note: pasabi nalang if may need i-modify
