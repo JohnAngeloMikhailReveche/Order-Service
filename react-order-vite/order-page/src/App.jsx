@@ -6,11 +6,37 @@ import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
 import kapebara_cart_Pic from './kapebara cart.jpg';
 
 function App() {
-  const [quantity, setQuantity] = React.useState(1);
-  const [size, setSize] = React.useState('M');
+  {/* Mock Data */}
+    const product = {
+    id: 1,
+    name: "Classic Matchabara Cold Brew",
+    image: classic_matchabara_cold_brew_Pic,
+    prices: {
+      M: 120,
+      L: 140
+    }
+  };
 
-  const sizePrice = { M: 120, L: 140 };
-  const price = sizePrice[size] || 0;
+  const [quantity, setQuantity] = React.useState(1);
+  const [size, setSize] = React.useState("M");
+  const [notes, setNotes] = React.useState("");
+
+  const price = product.prices[size] || 0;
+
+  const handleAddToBag = () => {
+  const cartItem = {
+    productId: product.id,
+    name: product.name,
+    size,
+    quantity,
+    price,
+    total: price * quantity,
+    notes
+    };
+
+  console.log("Added to bag:", cartItem);
+
+  };
 
   return (
     <>
@@ -35,28 +61,29 @@ function App() {
         </Container>
       </Navbar>
 
-      {/* Centered Card */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 56px)', padding: '20px' }}>
-        <Card className="card-glossy" style={{ maxWidth: '800px', width: '100%', display: 'flex', padding: '20px', height: '600px' }}>
+      {/* Main Card */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "40px 20px" }}>
+        <Card className="card" style={{ maxWidth: "800px", width: "100%", padding: "24px", height: "600px" }}>
           <Row className="g-0" style={{ width: '100%', height: '100%' }}>
+            <h1 className="fw-bold mb-1">Customize Your Order</h1>
+          <p className="text-muted mb-4">Review and adjust item details before adding it to your bag.</p>
 
             {/* Image */}
-            <Col md={6}>
-              <Card.Img src={classic_matchabara_cold_brew_Pic} className="img-fluid rounded-start" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+            <Col md={6} className="d-flex align-items-center justify-content-center">
+              <Card.Img src={product.image} className="img-fluid rounded-start" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
             </Col>
 
-            {/* Card Body */}
+            {/* Card Contents */}
             <Col md={6} className="d-flex">
               <div style={{ margin: 'auto', width: '100%' }}>
+
+                <Card className="card-glossy" style={{ maxWidth: "500px", width: "100%", padding: "20px", height: "440px" }}>
                 <Card.Body style={{ width: '100%' }}>
 
                   {/* Product Info */}
                   <div style={{ width: '100%', textAlign: 'left', marginBottom: '15px' }}>
-                    <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '20px', fontWeight: 600 }}>Classic Matchabara Cold Brew</Card.Title>
+                    <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '20px', fontWeight: 600 }}>{product.name}</Card.Title>
                     <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '40px', fontWeight: 700 }}>₱{price}</Card.Title>
-                    <Card.Text style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400, color: '#757575', lineHeight: 1.6 }}>
-                      A rich matcha latte for calm and cozy days.
-                    </Card.Text>
                   </div>
 
                   {/* Labels */}
@@ -106,23 +133,26 @@ function App() {
                     </Col>
                   </Row>
 
-                  {/* Add to Bag */}
-                  <Button
-                    className="add-to-bag-btn" style={{ width: '90%', fontFamily: 'DM Sans, sans-serif', fontSize: "15px", fontWeight: 700 }}>Add to Bag</Button>
-
                   {/* Notes */}
-                  <Form.Group controlId="formNotes" style={{ width: '90%', marginTop: '10px' }}>
+                  <Form.Group controlId="formNotes" style={{ width: '100%', marginTop: '10px' }}>
                     <Form.Label style={{ fontWeight: 500 }}>Notes</Form.Label>
                     <Form.Control
                       className="notes-textarea"
                       as="textarea"
                       rows={3}
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
                       placeholder="Add any special instructions..."
                       style={{ width: '100%', fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '15px', fontWeight: 400 }}
                     />
                   </Form.Group>
 
+                  {/* Add to Bag */}
+                  <Button
+                    className="add-to-bag-btn" style={{ width: '100%', marginTop: '25px', fontFamily: 'DM Sans, sans-serif', fontSize: "15px", fontWeight: 700 }} onclick={handleAddToBag}>Add to Bag</Button>
+
                 </Card.Body>
+              </Card>
               </div>
             </Col>
           </Row>
@@ -133,6 +163,3 @@ function App() {
 }
 
 export default App;
-
-
-
