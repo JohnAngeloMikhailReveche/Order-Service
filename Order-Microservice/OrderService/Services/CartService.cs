@@ -63,12 +63,13 @@ namespace OrderService.Services
                     variant_price = menuItem.variant_price,
                     quantity = menuItem.quantity,
                     computed_subtotal = menuItem.variant_price * menuItem.quantity,
-                    special_instructions = menuItem.specialInstructions
+                    special_instructions = menuItem.specialInstructions,
+                    added_at = DateTime.Now
                 });
             }
 
             // Recompute cart subtotal
-            cart.subtotal = cart.CartItems.Sum(i => i.computed_subtotal);
+            cart.subtotal = cart.CartItems.Sum(i => i.variant_price * i.quantity);
 
             await _db.SaveChangesAsync();
             return cart;
