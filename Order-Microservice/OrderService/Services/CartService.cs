@@ -82,7 +82,6 @@ namespace OrderService.Services
                 .FirstOrDefaultAsync(c => c.users_id == userId);
         }
 
-        // Developer's Note: Revise this so that only the userId with the chosen cartItemId and a quantity should be removed, not the whole.
         public async Task<Cart> RemoveItem(int userID, int cartItemID, int quantityToRemove)
         {
             // Get the cart item which belongs to the user through userID.
