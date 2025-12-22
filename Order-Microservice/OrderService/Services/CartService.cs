@@ -20,15 +20,9 @@ namespace OrderService.Services
 
         public async Task<Cart> AddItem (
                 int menuId,
-                int userId,
-                int variantId,
-                int quantity,
-                string specialInstructions
+                int userId
             )
         {
-            // Quantity must be > 0
-            if (quantity <= 0)
-                throw new Exception("Quantity must be greater than 0.");
 
             // Get /menu/item/{id}
             var menuItem = await _menuClient.GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
@@ -50,21 +44,26 @@ namespace OrderService.Services
             // If item exists in cart then increment quantity
             var existingItem = cart.CartItems.FirstOrDefault(i =>
                 i.menu_item_id == menuId
-                && i.variant_id == variantId
+                && i.variant_id == menuItem.variantId
             );
 
             if (existingItem != null)
             {
-                existingItem.quantity += quantity;
+                existingItem.quantity += menuItem.quantity;
             } else
             {
                 cart.CartItems.Add(new CartItem
                 {
                     menu_item_id = menuId,
-                    variant_id = variantId,
-                    quantity = quantity,
-                    special_instructions = specialInstructions,
-                    computed_subtotal = menuItem.price * quantity,
+                    variant_id = menuItem.variantId,
+                    item_name = menuItem.item_name,
+                    item_description = menuItem.item_description,
+                    img_url = menuItem.img_url,
+                    variant_name = menuItem.variant_name,
+                    variant_price = menuItem.variant_price,
+                    quantity = menuItem.quantity,
+                    computed_subtotal = menuItem.variant_price * menuItem.quantity,
+                    special_instructions = menuItem.specialInstructions
                 });
             }
 
