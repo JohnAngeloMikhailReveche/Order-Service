@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {}
+    "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {
+    "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "projectUniqueName": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
         "projectName": "OrderService",
-        "projectPath": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "projectPath": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
         "packagesPath": "C:\\Users\\Khayl\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\For Testing\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
+        "outputPath": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
