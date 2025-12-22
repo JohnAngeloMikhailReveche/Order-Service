@@ -1,11 +1,12 @@
 ﻿import React, { useState } from 'react';
-import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop } from 'react-bootstrap-icons';
+import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop, TelephoneFill } from 'react-bootstrap-icons';
 import logo from './preparing.png';
 import drinkImg from './classic matchabara cold brew.png';
+import riderImage from './motorbike.png'; 
 
 const OrderStatus = () => {
-    // 0: Received, 1: Preparing, 2: Rider, 3: Transit, 4: Delivered
-    const currentStep = 1;
+    const currentStep = 3; 
+    const isCancelDisabled = currentStep >= 2; 
 
     const steps = [
         { label: "Order Received", icon: <Check /> },
@@ -20,23 +21,112 @@ const OrderStatus = () => {
         { name: "Vanibara Frappe", size: "Large", price: 140.00, qty: 1 }
     ];
 
-    return (
-        <div className="grab-container">
+    const riderInfo = {
+        name: "Joshia Garcia", 
+        vehicle: "Honda Click (ABC 123)",
+        contact: "+63 917 555 1234"
+    };
 
-            {/* 1. TOP SECTION: STATUS & WIDE TIMELINE */}
+    const RiderDetailsCard = ({ rider }) => (
+        <div className="rider-card-wrapper" style={{ 
+            border: 'none', 
+            borderRadius: '10px', 
+            padding: '20px', 
+            marginTop: '30px', 
+            marginBottom: '20px', 
+            boxShadow: '0 2px 10px rgba(0,0,0,0.08)', 
+            backgroundColor: '#fff' 
+        }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <img 
+                        src={riderImage} 
+                        alt="Rider" 
+                        width="45" 
+                        height="45" 
+                        style={{ borderRadius: '50%', border: '2px solid #617A55', objectFit: 'cover' }} 
+                    />
+                    <div>
+                        <h6 style={{ margin: 0, fontWeight: '700', fontSize: '16px' }}>{rider.name}</h6>
+                        <small style={{ color: '#888' }}>Vehicle used: {rider.vehicle}</small>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <div style={{ 
+                        border: '1px solid #333', 
+                        borderRadius: '50%', 
+                        padding: '8px', 
+                        cursor: 'pointer', 
+                        color: '#333' 
+                    }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.035 6.845L8 9.585l-7.965 4.646A1 1 0 0 0 2 13h12a1 1 0 0 0 .965-.772zM1 11.105l4.708-2.89L1 5.383v5.722z"/></svg>
+                    </div>
+                    <div style={{ 
+                        border: '1px solid #333', 
+                        borderRadius: '50%', 
+                        padding: '8px', 
+                        cursor: 'pointer', 
+                        background: '#333', 
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <TelephoneFill size={18} />
+                    </div>
+                </div>
+            </div>
+
+            <hr style={{ borderColor: '#eee' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '15px' }}>
+                <div style={{ border: '1px solid #ddd', borderRadius: '50%', padding: '8px', background: '#f0f0f0', color: '#3B302A' }}>
+                    <GeoAltFill size={20} />
+                </div>
+                <div>
+                    <small style={{ color: '#888' }}>
+                        Delivering to <strong style={{color: '#333'}}>Customer Name</strong>
+                    </small>
+                    <p style={{ margin: 0, fontWeight: '600' }}>{rider.contact}</p> 
+                </div>
+            </div>
+        </div>
+    );
+
+    return (
+        /* MODIFIED: In-update ang padding para magkaroon ng 2 inches sa sides 
+           at nilagyan ng background color para lumitaw ang mga white containers.
+        */
+        <div className="grab-container" style={{ 
+            padding: '40px 2in', 
+            backgroundColor: '#f9f9f9', 
+            minHeight: '100vh' 
+        }}>
             <div className="status-header-card">
                 <div className="header-content">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                         <img src={logo} alt="Logo" width="60" />
                         <div style={{ textAlign: 'left' }}>
-                            <h1 className="status-title">Your order is being prepared!</h1>
-                            {/* TINANGGAL NA NATIN YUNG EST. DELIVERY DITO */}
+                            <h1 className="status-title">
+                                {currentStep === 1 && "Your order is being prepared!"}
+                                {currentStep === 3 && "Your rider is on the way!"}
+                                {currentStep < 3 && currentStep !== 1 && "Looking for a rider"}
+                                {currentStep === 4 && "Delivered!"}
+                            </h1>
                         </div>
                     </div>
-                    <button className="cancel-btn">Cancel Order</button>
+                    <button 
+                        className="cancel-btn"
+                        disabled={isCancelDisabled}
+                        style={{
+                            backgroundColor: isCancelDisabled ? '#ccc' : '#dc3545',
+                            cursor: isCancelDisabled ? 'not-allowed' : 'pointer'
+                        }}
+                    >
+                        Cancel Order
+                    </button>
                 </div>
 
-                {/* Horizontal Timeline */}
                 <div className="timeline-wrapper">
                     <div className="timeline-line"></div>
                     <div className="timeline-progress" style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}></div>
@@ -56,17 +146,15 @@ const OrderStatus = () => {
                 </div>
             </div>
 
-            {/* 2. BOTTOM SECTION: DETAILS & SUMMARY GRID */}
-            <div className="details-grid">
+            {currentStep >= 3 && <RiderDetailsCard rider={riderInfo} />}
 
-                {/* LEFT SIDE: ORDER INFO */}
-                <div className="info-card">
+            <div className="details-grid">
+                <div className="info-card" style={{ border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', borderRadius: '10px', padding: '20px', backgroundColor: '#fff' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                         <span className="section-label">Order Details</span>
                         <span style={{ color: '#888' }}>Order ID: #123456 - Nov. 20, 2025</span>
                     </div>
 
-                    {/* From & To Row */}
                     <div className="address-grid">
                         <div className="address-box" style={{ display: 'flex', gap: '15px' }}>
                             <Shop size={24} color="#3B302A" style={{ marginTop: '5px' }} />
@@ -86,7 +174,6 @@ const OrderStatus = () => {
                         </div>
                     </div>
 
-                    {/* Order List Loop */}
                     <span className="small-label" style={{ marginBottom: '15px', display: 'block' }}>Orders</span>
 
                     {items.map((item, index) => (
@@ -107,15 +194,13 @@ const OrderStatus = () => {
                         </div>
                     ))}
 
-                    {/* Note */}
                     <div className="note-box">
                         <span style={{ fontWeight: '700', fontSize: '14px', display: 'block', marginBottom: '5px' }}>Order Note:</span>
                         <p style={{ margin: 0, fontStyle: 'italic', color: '#555' }}>"Please less ice on the Matcha. Thank you!"</p>
                     </div>
                 </div>
 
-                {/* RIGHT SIDE: SUMMARY & PAYMENT */}
-                <div className="info-card" style={{ height: 'fit-content' }}>
+                <div className="info-card" style={{ height: 'fit-content', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', borderRadius: '10px', padding: '20px', backgroundColor: '#fff' }}>
                     <span className="section-label">Payment Summary</span>
 
                     <div style={{ marginTop: '20px' }}>
@@ -139,7 +224,6 @@ const OrderStatus = () => {
                         <span style={{ fontWeight: '600', color: '#004085' }}>**** 9283</span>
                     </div>
                 </div>
-
             </div>
         </div>
     );
