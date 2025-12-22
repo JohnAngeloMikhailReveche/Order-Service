@@ -83,24 +83,40 @@ namespace OrderService.Services
         }
 
         // Developer's Note: Revise this so that only the userId with the chosen cartItemId and a quantity should be removed, not the whole.
-        public async Task<Cart> RemoveItem(int cartItemId)
+        public async Task<Cart> RemoveItem(int userID, int cartItemID, int quantityToRemove)
         {
-            var item = await _db.CartItem.FindAsync(cartItemId);
-            if (item == null) return null;
+            // Get the cart item which belongs to the user through userID.
+            var item = await _db.CartItem
+                .Include(ci => ci.Cart)
+                .FirstOrDefaultAsync( ci =>
+                    ci.cart_item_id == cartItemID
+                    &&
+                    ci.Cart.users_id == userID
+                );
 
+            if (item == null) { return null; }
+
+            // Reduce quantity
+            item.quantity -= quantityToRemove;
+
+            // Check if the item is 0 and if it is then we remove it to the cart.
+            if (item.quantity <= 0)
+            {
+                _db.CartItem.Remove(item);
+            }
+
+            // Save it to the database
+            await _db.SaveChangesAsync();
+
+            // Reload the cart based on the updated items above.
             var cart = await _db.Cart
                 .Include(c => c.CartItems)
                 .FirstAsync(c => c.cart_id == item.cart_id);
 
-            if (cart == null) 
-                return null;
+            // Recalculate the cart subtotal
+            cart.subtotal = cart.CartItems.Sum(i => i.variant_price * i.quantity);
 
-            // Removing item
-            _db.CartItem.Remove(item);
-            await _db.SaveChangesAsync();
-
-            // If cart becomes empty then keep cart but subtotal is 0.
-            cart.subtotal = cart.CartItems.Sum(i => i.computed_subtotal);
+            // Save changes to the database again.
             await _db.SaveChangesAsync();
 
             return cart;
