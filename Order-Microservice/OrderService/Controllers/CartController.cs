@@ -55,10 +55,15 @@ namespace OrderService.Controllers
         }
 
         // Remove Cart Item
-        [HttpDelete("item/{cartItemId}")]
-        public async Task<IActionResult> RemoveItemFromCart(int cartItemId)
+        [HttpDelete("item/{cartItemID}")]
+        public async Task<IActionResult> RemoveItemFromCart(
+            [FromRoute] int cartItemID,
+            [FromQuery] int userID, 
+            [FromQuery] int quantityToRemove
+            )
         {
-            var cart = await _cartService.RemoveItem(cartItemId);
+            var cart = await _cartService.RemoveItem(userID, cartItemID, quantityToRemove);
+
             if (cart == null)
                 return NotFound(new { message = "Item or cart is not found." });
 
