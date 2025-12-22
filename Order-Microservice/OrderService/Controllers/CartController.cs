@@ -26,17 +26,14 @@ namespace OrderService.Controllers
         }
 
         // Add Item to Cart Endpoint
-        [HttpPost("cart/add")]
-        public async Task<IActionResult> AddToCart(MenuDTO dto)
+        [HttpPost("item/add")]
+        public async Task<IActionResult> AddToCart(int menuItemID, int userID)
         {
             try
             {
                 var cart = await _cartService.AddItem(
-                    dto.id,
-                    dto.userId,
-                    dto.variantId,
-                    dto.quantity,
-                    dto.specialInstructions
+                    menuItemID,
+                    userID
                     );
 
                 return Ok(cart);
@@ -48,7 +45,7 @@ namespace OrderService.Controllers
         }
 
         // View the Cart
-        [HttpGet("cart/user/{userId}")]
+        [HttpGet("item/user/{userId}")]
         public async Task<IActionResult> ViewCart(int userId)
         {
             var cart = await _cartService.ViewCart(userId);
@@ -58,7 +55,7 @@ namespace OrderService.Controllers
         }
 
         // Remove Cart Item
-        [HttpDelete("cart/item/{cartItemId}")]
+        [HttpDelete("item/{cartItemId}")]
         public async Task<IActionResult> RemoveItemFromCart(int cartItemId)
         {
             var cart = await _cartService.RemoveItem(cartItemId);
