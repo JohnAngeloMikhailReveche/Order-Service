@@ -21,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|e:\\projects\\orderservice\\order-service\\order-microservice\\menuservice\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7DC84B7F-EB00-4DF3-A4CF-A7A6D1853F6C}|MenuService\\MenuService.csproj|solutionrelative:menuservice\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\orderservice\\order-service\\order-microservice\\orderservice\\models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\menuitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,21 +30,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MenuItemDTO.cs",
-              "DocumentMoniker": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Models\\MenuItemDTO.cs",
-              "RelativeDocumentMoniker": "OrderService\\Models\\MenuItemDTO.cs",
-              "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Models\\MenuItemDTO.cs",
-              "RelativeToolTip": "OrderService\\Models\\MenuItemDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-22T07:31:59.999Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -70,7 +53,7 @@
               "RelativeDocumentMoniker": "OrderService\\Controllers\\CartController.cs",
               "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\CartController.cs",
               "RelativeToolTip": "OrderService\\Controllers\\CartController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAA1wB0AAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAQwB0AAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-22T06:55:59.436Z",
               "EditorCaption": ""
@@ -115,7 +98,7 @@
               "RelativeDocumentMoniker": "OrderService\\Services\\CartService.cs",
               "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
               "RelativeToolTip": "OrderService\\Services\\CartService.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAowEUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAowFIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-22T06:56:01.206Z",
               "EditorCaption": ""
