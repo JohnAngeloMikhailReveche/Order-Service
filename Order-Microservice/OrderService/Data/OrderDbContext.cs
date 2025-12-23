@@ -13,6 +13,7 @@ namespace OrderService.Data
         public DbSet<CartItem> CartItem { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<OrderFeedback> OrderFeedback { get; set; }
 
         // Configuration of primary keys and other model settings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,8 +29,11 @@ namespace OrderService.Data
 
             modelBuilder.Entity<OrderItem>()
                         .HasKey(c => c.order_item_id);
+           
+            modelBuilder.Entity<OrderFeedback>()
+                        .HasKey(c => c.order_feedback_id);
 
-            // To enforce Foreign Key for Cart Items
+            // Enforcing Foreign Key
             modelBuilder.Entity<CartItem>()
                 .HasOne(ci => ci.Cart)
                 .WithMany(c => c.CartItems)
@@ -37,9 +41,15 @@ namespace OrderService.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OrderItem>()
-                .HasOne(ci => ci.Order)
-                .WithMany(c => c.OrderItems)
-                .HasForeignKey(ci => ci.orders_id)
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.orders_id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderFeedback>()
+                .HasOne(of => of.Order)
+                .WithMany(o => o.OrderFeedbacks)
+                .HasForeignKey(of => of.orders_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);

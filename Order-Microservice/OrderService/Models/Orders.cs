@@ -16,5 +16,6 @@
 
         // Navigation Property
         public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderFeedback> OrderFeedbacks { get; set; }
     }
 }
