@@ -29,7 +29,7 @@ namespace OrderService.Services
 
             if ( order == null ) 
             { 
-                throw new Exception("Order does not exist."); 
+                throw new Exception("Order or User does not exist."); 
             }
 
             // Check the order status
