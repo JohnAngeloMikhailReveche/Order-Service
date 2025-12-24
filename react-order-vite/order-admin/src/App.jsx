@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./App.css";
 
-
 <header>
   <div className="header-container">
     <span className="header-subtext">Your dashboard for everything.</span>

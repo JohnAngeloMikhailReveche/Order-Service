@@ -220,5 +220,69 @@ header {
 }
 
 
+/* =========================
+   MOBILE OPTIMIZATIONS
+   ========================= */
+@media (max-width: 576px) {
+
+  @media (max-width: 576px) {
+
+  /* Order text sizing */
+  .order-number {
+    font-size: 1rem;
+  }
+
+  .order-items {
+    font-size: 0.9rem;
+  }
+
+  .order-address {
+    font-size: 0.85rem;
+  }
+
+  /* Columns stack better */
+  .order-row .row {
+    align-items: flex-start;
+  }
+
+  .order-row .col-9 {
+    width: 100%;
+  }
+
+  .order-row .col-3 {
+    width: 100%;
+    text-align: left;
+    margin-top: 8px;
+  }
+
+  .order-status {
+    font-size: 0.85rem;
+  }
+}
+
+  /* TABS → horizontal scroll */
+  .order-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 0 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* hide scrollbar (mobile) */
+  .order-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* smaller pill buttons */
+  .order-tabs .nav-link {
+    padding: 6px 14px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
 
 
