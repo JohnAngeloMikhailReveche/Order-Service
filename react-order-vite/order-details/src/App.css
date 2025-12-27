@@ -1,0 +1,329 @@
+.order-details-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3B302A;
+  margin: 0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3B302A;
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Order Item Card */
+.order-item-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  width: 65%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.product-image {
+  flex-shrink: 0;
+}
+
+.drink-image {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.item-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.item-quantity-price {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.quantity {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.notes-section {
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.notes-section h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.notes-text {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.favorite-icon {
+  margin-top: 10px;
+}
+
+.star-icon {
+  color: #ddd;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.star-icon:hover {
+  color: #ffcc00;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.left-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-status {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-label {
+  font-weight: bold;
+  color: #4CAF50;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.payment-method {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.order-id {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.id-number {
+  font-family: monospace;
+  font-weight: bold;
+  color: #333;
+}
+
+.right-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.order-total {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.buy-again-btn {
+  background-color:#3B302A;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.buy-again-btn:hover {
+  background-color: #333;
+}
+
+/* Shipping Information Card */
+.shipping-info-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  width: 35%;
+  min-width: 300px;
+  position: sticky;
+  top: 20px;
+}
+
+.shipping-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.shipping-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.customer-info {
+  margin-bottom: 25px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.icon {
+  margin-right: 10px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.info-row span {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.timeline {
+  margin-bottom: 20px;
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+.timeline-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.timeline-value {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.delivery-status {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #4CAF50;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .order-item-card,
+  .shipping-info-card {
+    width: 100%;
+  }
+  
+  .product-header {
+    flex-direction: column;
+  }
+  
+  .order-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .left-footer,
+  .right-footer {
+    width: 100%;
+  }
+  
+  .right-footer {
+    align-items: flex-start;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-item-card {
+    padding: 15px;
+  }
+  
+  .shipping-info-card {
+    padding: 15px;
+  }
+  
+  .item-name {
+    font-size: 1.1rem;
+  }
+  
+  .drink-image {
+    width: 120px;
+  }
+}
