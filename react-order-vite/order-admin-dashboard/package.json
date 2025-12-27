@@ -1,5 +1,5 @@
 {
-  "name": "order-page",
+  "name": "order-admin-dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,17 +11,14 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "canvas-confetti": "^1.9.4",
-    "react": "^18.3.1",
+    "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
-    "react-bootstrap-icons": "^1.11.6",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.10.1"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/react": "^18.3.27",
-    "@types/react-dom": "^18.3.7",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
