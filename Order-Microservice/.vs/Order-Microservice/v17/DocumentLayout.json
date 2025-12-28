@@ -1,18 +1,46 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\",
+  "WorkspaceRootPath": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\orderservice\\order-service\\order-microservice\\orderservice\\controllers\\orderfeedbackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\orderfeedbackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\orderservice\\order-service\\order-microservice\\orderservice\\services\\orderfeedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\orderfeedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|e:\\projects\\orderservice\\order-service\\order-microservice\\orderservice\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orderstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orderfeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderfeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,67 +50,148 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "OrderFeedbackService.cs",
-              "DocumentMoniker": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Services\\OrderFeedbackService.cs",
-              "RelativeDocumentMoniker": "OrderService\\Services\\OrderFeedbackService.cs",
-              "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Services\\OrderFeedbackService.cs",
-              "RelativeToolTip": "OrderService\\Services\\OrderFeedbackService.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAowBcAAAANAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "OrderDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeDocumentMoniker": "OrderService\\Data\\OrderDbContext.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeToolTip": "OrderService\\Data\\OrderDbContext.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAmwDIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-23T04:55:19.786Z",
+              "WhenOpened": "2025-12-28T08:58:23.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrderStatusDTO.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatusDTO.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderStatusDTO.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatusDTO.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderStatusDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-23T12:22:56.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "OrderService\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "OrderService\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAkwB0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-23T13:10:22.615Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "OrderFeedbackController.cs",
-              "DocumentMoniker": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrderFeedbackController.cs",
-              "RelativeDocumentMoniker": "OrderService\\Controllers\\OrderFeedbackController.cs",
-              "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrderFeedbackController.cs",
-              "RelativeToolTip": "OrderService\\Controllers\\OrderFeedbackController.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAswD4AAAAJAAAAAAAAAA==",
+              "Title": "OrderStatus.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatus.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderStatus.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatus.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-23T05:15:38.292Z",
+              "WhenOpened": "2025-12-23T12:21:36.828Z",
               "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "96f1face-37cc-49c2-a994-8b7e914f2e6a",
-        "Display": 1,
-        "X": 929,
-        "Y": 647,
-        "Width": 1578,
-        "Height": 698,
-        "WindowState": 0
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Program.cs",
+              "RelativeDocumentMoniker": "OrderService\\Program.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Program.cs",
+              "RelativeToolTip": "OrderService\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T09:00:06.976Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "OrderService\\Controllers\\CartController.cs",
-              "ToolTip": "E:\\Projects\\OrderService\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\CartController.cs",
-              "RelativeToolTip": "OrderService\\Controllers\\CartController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAowBQAAAAIAAAAAAAAAA==",
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Services\\OrderService.cs",
+              "RelativeDocumentMoniker": "OrderService\\Services\\OrderService.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Services\\OrderService.cs",
+              "RelativeToolTip": "OrderService\\Services\\OrderService.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAkwFoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-23T05:15:43.881Z",
+              "WhenOpened": "2025-12-23T12:24:20.666Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Orders.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\Orders.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\Orders.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\Orders.cs",
+              "RelativeToolTip": "OrderService\\Models\\Orders.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAkwBkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-23T12:58:26.075Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderItem.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderItem.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAA7wAYAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T08:58:48.674Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CartService.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
+              "RelativeDocumentMoniker": "OrderService\\Services\\CartService.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
+              "RelativeToolTip": "OrderService\\Services\\CartService.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAD4vygAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T09:30:58.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "OrderFeedback.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderFeedback.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderFeedback.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderFeedback.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderFeedback.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T08:58:47.234Z"
             }
           ]
         }
