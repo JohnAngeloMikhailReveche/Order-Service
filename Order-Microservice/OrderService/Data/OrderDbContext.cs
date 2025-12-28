@@ -7,39 +7,32 @@ namespace OrderService.Data
     {
         public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
 
-
-        // Add Models below
+        // bringing the cart squad back to the party! 🛒✨
         public DbSet<Cart> Cart { get; set; }
         public DbSet<CartItem> CartItem { get; set; }
+
+        // the order squad 📦
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<OrderFeedback> OrderFeedback { get; set; }
 
-        // Configuration of primary keys and other model settings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cart>()
-                        .HasKey(c => c.cart_id);
+            // primary keys for everything
+            modelBuilder.Entity<Cart>().HasKey(c => c.cart_id);
+            modelBuilder.Entity<CartItem>().HasKey(c => c.cart_item_id);
+            modelBuilder.Entity<Orders>().HasKey(o => o.orders_id);
+            modelBuilder.Entity<OrderItem>().HasKey(oi => oi.order_item_id);
+            modelBuilder.Entity<OrderFeedback>().HasKey(of => of.order_feedback_id);
 
-            modelBuilder.Entity<CartItem>()
-                        .HasKey(c => c.cart_item_id);
-
-            modelBuilder.Entity<Orders>()
-                        .HasKey(c => c.orders_id);
-
-            modelBuilder.Entity<OrderItem>()
-                        .HasKey(c => c.order_item_id);
-           
-            modelBuilder.Entity<OrderFeedback>()
-                        .HasKey(c => c.order_feedback_id);
-
-            // Enforcing Foreign Key
+            // cart relationships 🛍️
             modelBuilder.Entity<CartItem>()
                 .HasOne(ci => ci.Cart)
                 .WithMany(c => c.CartItems)
                 .HasForeignKey(ci => ci.cart_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // the order relationship fix that killed the ghost! 👻🚫
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
@@ -54,8 +47,5 @@ namespace OrderService.Data
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
-
-    
 }
