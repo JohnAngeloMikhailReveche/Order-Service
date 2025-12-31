@@ -15,7 +15,7 @@ namespace OrderService.Models
         public DateTime? fulfilled_at { get; set; }
 
         public string? payment_method { get; set; }
-        public bool cancellation_requested { get; set; }
+        public bool cancellation_requested { get; set; } = false;
         public string? cancellation_reason { get; set; }
         public int payment_id { get; set; }
         public virtual ICollection<OrderItem>? OrderItems { get; set; }

@@ -42,6 +42,27 @@ namespace OrderService.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
+            // Ensure the Order entity maps the new fields correctly
+            modelBuilder.Entity<Orders>(entity =>
+            {
+                entity.HasKey(e => e.orders_id);
+
+                // Rule 4.1: Mapping the new cancellation fields
+                entity.Property(e => e.cancellation_requested)
+                      .HasDefaultValue(false);
+
+                entity.Property(e => e.cancellation_reason)
+                      .HasMaxLength(500)
+                      .IsRequired(false);
+
+                // Ensure status is handled correctly
+                entity.Property(e => e.status)
+                      .IsRequired();
+            });
+
+            // Mapping for OrderItems
+            modelBuilder.Entity<OrderItem>()
+                .HasKey(ei => ei.order_item_id);
         }
     }
 }
