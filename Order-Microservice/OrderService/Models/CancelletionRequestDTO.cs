@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Kapebara.OrderService.DTOs
+namespace OrderService.DTOs
 {
     public class CancellationRequestDto
     {
@@ -18,6 +18,6 @@ namespace Kapebara.OrderService.DTOs
         public int OrderId { get; set; }
 
         [Required]
-        public bool Approve { get; set; } // true = Cancelled, false = Reject Request
+        public bool Approve { get; set; } 
     }
 }
