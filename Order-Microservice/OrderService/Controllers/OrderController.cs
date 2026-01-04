@@ -20,6 +20,8 @@ namespace OrderService.Controllers
             _context = context;
         }
 
+        // customer methods
+
         [HttpPost("request-cancellation")]
         public async Task<IActionResult> RequestCancellation([FromBody] CancellationRequestDto request)
         {
@@ -38,21 +40,76 @@ namespace OrderService.Controllers
             if (request == null) return BadRequest(new { message = "Body is empty" });
 
             string role = request.UserRole?.ToLower() ?? "customer";
-            if (role == "string") role = "customer"; 
-
-            bool isCustomer = role == "customer";
-
-            if (request.NewStatus == OrderStatus.Cancelled && isCustomer && string.IsNullOrWhiteSpace(request.Reason))
-            {
-                return BadRequest(new { message = "Customers MUST provide a reason to request cancellation!" });
-            }
-
+            if (role == "string") role = "customer";
             request.UserRole = role;
 
             var result = await _statusService.UpdateStatusAsync(request);
             if (result.Contains("success") || result.Contains("submitted")) return Ok(new { message = result });
             return BadRequest(new { message = result });
         }
+
+        // SORTING & FILTERING 
+
+        [HttpGet("history/{userId}")]
+        public async Task<IActionResult> GetOrderHistory(
+            int userId,
+            [FromQuery] string filter = "all", // options: all, ongoing, completed, cancelled
+            [FromQuery] string sortOrder = "newest") // options: newest, oldest
+        {
+            // 1. start with the user's base receipts 
+            var query = _context.Orders
+                .Where(o => o.users_id == userId)
+                .AsQueryable();
+
+            // 2. apply the filters 
+            switch (filter.ToLower())
+            {
+                case "ongoing":
+                    // statuses 1 to 4 are still in progress
+                    query = query.Where(o => o.status >= 1 && o.status <= 4);
+                    break;
+                case "completed":
+                    // status 5 = completed/delivered
+                    query = query.Where(o => o.status == 5);
+                    break;
+                case "cancelled":
+                    // status 7 = cancelled
+                    query = query.Where(o => o.status == 7);
+                    break;
+                    // 'all' doesn't need a filter, it just stays as the full query
+            }
+
+            // 3. handle the date sorting (newest vs oldest)
+            if (sortOrder.ToLower() == "oldest")
+            {
+                query = query.OrderBy(o => o.placed_at);
+            }
+            else // default: newest first
+            {
+                query = query.OrderByDescending(o => o.placed_at);
+            }
+
+            var ordersList = await query.ToListAsync();
+
+            // 4. mapping to a clean json result for the frontend
+            var result = ordersList.Select(o => new {
+                o.orders_id,
+                o.total_cost,
+                o.placed_at,
+                o.fulfilled_at,
+                StatusValue = o.status,
+                StatusName = ((OrderStatus)o.status).ToString(),
+                o.payment_method,
+                o.cancellation_requested,
+                o.cancellation_reason
+            });
+
+            if (!result.Any()) return Ok(new { message = $"no {filter} orders found! time for a shopping spree? 🛍️✨" });
+
+            return Ok(result);
+        }
+
+        // admin methods
 
         [HttpGet("admin/pending-cancellations")]
         public async Task<IActionResult> GetPendingCancellations()
@@ -75,8 +132,8 @@ namespace OrderService.Controllers
         [HttpPost("admin/review-cancellation")]
         public async Task<IActionResult> ReviewCancellation([FromBody] AdminCancellationReviewDto review)
         {
-            var order = await _context.Orders.FindAsync(review.OrderId);
-            if (order == null) return NotFound(new { message = "Order not found!" });
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == review.OrderId);
+            if (order == null) return NotFound(new { message = "Order not found" });
 
             if (review.Approve)
             {
@@ -84,8 +141,7 @@ namespace OrderService.Controllers
                 {
                     OrderId = review.OrderId,
                     NewStatus = OrderStatus.Cancelled,
-                    UserRole = "admin",
-                    Reason = $"Approved Request: {order.cancellation_reason}"
+                    UserRole = "admin"
                 };
                 await _statusService.UpdateStatusAsync(dto);
                 return Ok(new { message = "Cancellation approved! Refund in progress." });

@@ -13,24 +13,29 @@ namespace OrderService.Services
             _context = context;
         }
 
+        // 🔘 CUSTOMER SIDE
         public async Task<string> RequestCancellationAsync(int orderId, string reason)
         {
             if (string.IsNullOrWhiteSpace(reason))
-                return "um, you can't leave us on read! a reason is REQUIRED to request a cancellation. 📝☕";
+                return "um, you can't leave us on read! a reason is REQUIRED to request a cancellation.";
 
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == orderId);
-            if (order == null) return "order not found 💀";
+            if (order == null) return "order not found ";
+
+            if (order.cancellation_requested)
+                return "chill bestie! you already requested a cancellation for this order. the admin is working on it! ";
 
             if (order.status > (byte)OrderStatus.Preparing)
-                return $"too late bestie! order is already {(OrderStatus)order.status}. you can't cancel now! 🛵";
+                return $"too late bestie! order is already {(OrderStatus)order.status}. you can't cancel now!";
 
             order.cancellation_requested = true;
             order.cancellation_reason = reason;
 
             await _context.SaveChangesAsync();
-            return "cancellation request submitted! wait for the admin to vibe check it. ⏳✨";
+            return "cancellation request submitted! wait for the admin to vibe check it.";
         }
 
+        // 💎 ADMIN/RIDER SIDE
         public async Task<string> UpdateStatusAsync(OrderStatusDto dto)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == dto.OrderId);
@@ -43,27 +48,26 @@ namespace OrderService.Services
             {
                 case OrderStatus.Preparing:
                 case OrderStatus.ReadyForPickup:
-                    if (role != "admin") return "security!! only admins can prep! 📢";
+                    if (role != "admin") return "security!! only admins can prep! ";
                     break;
                 case OrderStatus.InTransit:
                 case OrderStatus.Delivered:
                 case OrderStatus.Failed:
-                    if (role != "rider") return "halt!! only riders can deliver! 🛵";
+                    if (role != "rider") return "halt!! only riders can deliver!";
                     break;
                 case OrderStatus.Cancelled:
-                    if (role != "admin") return "only admins can officially confirm a cancellation. 🛑";
+                    if (role != "admin") return "only admins can officially confirm a cancellation.";
+
+                    // logic update: check if the customer actually requested this 
+                    if (!order.cancellation_requested)
+                    {
+                        // if requested = 0, it means the kitchen is ending it
+                        order.cancellation_reason = "The kitchen cancelled your order.";
+                    }
+                    // if it was already requested, we keep the reason the customer gave us
 
                     order.cancellation_requested = false;
-
-                    // UPDATED: setting refund_status to 1 (Pending) since it's an int now! 💸🔢
-                    order.refund_status = 1;
-
-                    if (string.IsNullOrWhiteSpace(order.cancellation_reason))
-                    {
-                        order.cancellation_reason = !string.IsNullOrWhiteSpace(dto.Reason)
-                            ? $"admin: {dto.Reason}"
-                            : "cancelled by shop management. 🛑";
-                    }
+                    order.refund_status = 1; // Pending 
                     break;
             }
 
