@@ -139,16 +139,10 @@ namespace OrderService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("order_item_id"));
 
-                    b.Property<string>("img_url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("item_description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("item_name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("item_variant_id")
@@ -166,12 +160,7 @@ namespace OrderService.Migrations
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("special_instructions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("variant_name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("variant_price")
@@ -193,27 +182,29 @@ namespace OrderService.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("orders_id"));
 
                     b.Property<string>("cancellation_reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("cancellation_requested")
-                        .HasColumnType("int");
+                    b.Property<bool>("cancellation_requested")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("fulfilled_at")
+                    b.Property<DateTime?>("fulfilled_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("payment_id")
+                    b.Property<int?>("payment_id")
                         .HasColumnType("int");
 
                     b.Property<string>("payment_method")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("placed_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("refund_status")
-                        .HasColumnType("int");
+                    b.Property<string>("refund_status")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("refund_status");
 
                     b.Property<byte>("status")
                         .HasColumnType("tinyint");

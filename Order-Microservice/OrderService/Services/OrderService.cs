@@ -13,78 +13,74 @@ namespace OrderService.Services
             _context = context;
         }
 
+        // 🔘 CUSTOMER SIDE
+        public async Task<string> RequestCancellationAsync(int orderId, string reason)
+        {
+            if (string.IsNullOrWhiteSpace(reason))
+                return "um, you can't leave us on read! a reason is REQUIRED to request a cancellation.";
+
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == orderId);
+            if (order == null) return "order not found ";
+
+            if (order.cancellation_requested)
+                return "chill bestie! you already requested a cancellation for this order. the admin is working on it! ";
+
+            if (order.status > (byte)OrderStatus.Preparing)
+                return $"too late bestie! order is already {(OrderStatus)order.status}. you can't cancel now!";
+
+            order.cancellation_requested = true;
+            order.cancellation_reason = reason;
+
+            await _context.SaveChangesAsync();
+            return "cancellation request submitted! wait for the admin to vibe check it.";
+        }
+
+        // 💎 ADMIN/RIDER SIDE
         public async Task<string> UpdateStatusAsync(OrderStatusDto dto)
         {
-            // step 1: find the order
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(o => o.orders_id == dto.OrderId);
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == dto.OrderId);
+            if (order == null) return $"order {dto.OrderId} not found.";
 
-            if (order == null) return $"Order {dto.OrderId} not found.";
-
-            // No reverse validation
-            if ((int)dto.NewStatus < (int)order.status)
-            {
-                return $"Order is already at {(OrderStatus)order.status}, " +
-                       $"You can't move it back to {dto.NewStatus}.";
-            }
-
-            // step 2: role check & security logic
             string role = dto.UserRole?.ToLower() ?? "customer";
+            if (role == "string") role = "customer";
 
-            // case: status transitions based on roles
             switch (dto.NewStatus)
             {
-                // only admins can start the prep or set it to ready
                 case OrderStatus.Preparing:
                 case OrderStatus.ReadyForPickup:
-                    if (role != "admin") return $"Only admins can prep or set to ready!";
+                    if (role != "admin") return "security!! only admins can prep! ";
                     break;
-
-                // riders are the only ones who can start the journey and finish it
                 case OrderStatus.InTransit:
                 case OrderStatus.Delivered:
                 case OrderStatus.Failed:
-                    if (role != "rider") return $"Only riders can manage transit and delivery!";
+                    if (role != "rider") return "halt!! only riders can deliver!";
                     break;
-
-                // admins can cancel
                 case OrderStatus.Cancelled:
-                    if (role != "admin") return $"Only admins can officially cancel orders.";
+                    if (role != "admin") return "only admins can officially confirm a cancellation.";
+
+                    // logic update: check if the customer actually requested this 
+                    if (!order.cancellation_requested)
+                    {
+                        // if requested = 0, it means the kitchen is ending it
+                        order.cancellation_reason = "The kitchen cancelled your order.";
+                    }
+                    // if it was already requested, we keep the reason the customer gave us
+
+                    order.cancellation_requested = false;
+                    order.refund_status = 1; // Pending 
                     break;
             }
 
-            // step 3: state machine logic
-            if (order.status == (byte)OrderStatus.Delivered && dto.NewStatus == OrderStatus.Cancelled)
-            {
-                return "Order already delivered.";
-            }
+            if ((int)dto.NewStatus < (int)order.status)
+                return $"u can't go backwards! already at {(OrderStatus)order.status}.";
 
-            // step 4: handle cancellation requests
-            if (dto.NewStatus == OrderStatus.Cancelled)
-            {
-                if (order.status == (byte)OrderStatus.Preparing && role != "admin")
-                {
-                    return "The kitchen is already cooking! Ask an admin to cancel manually.";
-                }
-            }
-
-            // step 5: update the fields
             order.status = (byte)dto.NewStatus;
 
             if (dto.NewStatus == OrderStatus.Delivered || dto.NewStatus == OrderStatus.Cancelled || dto.NewStatus == OrderStatus.Failed)
-            {
                 order.fulfilled_at = DateTime.UtcNow;
-            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                return $"success! order {dto.OrderId} moved to {dto.NewStatus} by {role} ✨";
-            }
-            catch (Exception ex)
-            {
-                return $"db error: {ex.InnerException?.Message ?? ex.Message}";
-            }
+            await _context.SaveChangesAsync();
+            return $"success! order {dto.OrderId} moved to {dto.NewStatus} ✨";
         }
     }
 }
