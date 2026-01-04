@@ -202,8 +202,8 @@ namespace OrderService.Migrations
                     b.Property<DateTime>("placed_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("refund_status")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int?>("refund_status")
+                        .HasColumnType("int")
                         .HasColumnName("refund_status");
 
                     b.Property<byte>("status")
