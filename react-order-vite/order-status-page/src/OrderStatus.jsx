@@ -3,7 +3,7 @@ import { Modal, Button as BootstrapButton, Container, Row, Col } from 'react-boo
 import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop } from 'react-bootstrap-icons';
 import confetti from 'canvas-confetti';
 
-// Assets (Siguraduhing tama ang file paths mo)
+// Assets
 import drinkImg from './classic matchabara cold brew.png';
 import riderImage from './motorbike.png'; 
 import capybarabarista from './capybarabarista.png';
@@ -31,7 +31,7 @@ const OrderStatus = () => {
         return capybarabarista;
     };
 
-    // Confetti Effect kapag Delivered
+    // Confetti Effect Delivered
     useEffect(() => {
         if (currentStep === 4 && orderStatus !== 'cancelled') {
             const duration = 3 * 1000;
@@ -66,6 +66,10 @@ const OrderStatus = () => {
         { name: "Classic Matchabara Cold Brew", size: "Medium", price: 120.00, qty: 1 },
         { name: "Vanibara Frappe", size: "Large", price: 140.00, qty: 1 }
     ];
+
+    const openModal = (info) => {
+        console.log("Opening details for:", info);
+    };
 
     // CSS for Cancel Modal
     const modalStyles = {
@@ -119,7 +123,6 @@ const OrderStatus = () => {
                         </BootstrapButton>
                     </div>
 
-                    {/* TIMELINE - GINAWANG MAS VISIBLE ANG INACTIVE STEPS */}
                     <div style={{ position: 'relative', margin: '30px 0 10px 0' }}>
                         <div style={{ position: 'absolute', top: '18px', left: '5%', right: '5%', height: '3px', backgroundColor: '#e0e0e0', zIndex: 0 }}></div>
                         <div style={{ position: 'absolute', top: '18px', left: '5%', width: `${(currentStep / 4) * 90}%`, height: '3px', backgroundColor: BARA_BROWN, zIndex: 1, transition: '0.5s ease' }}></div>
@@ -137,7 +140,6 @@ const OrderStatus = () => {
                                             boxShadow: isActive ? '0 0 8px rgba(0,0,0,0.1)' : 'none',
                                             fontSize: '14px'
                                         }}>{step.icon}</div>
-                                        {/* Status label - visible and responsive font size */}
                                         <div className="mt-2 fw-bold" style={{ 
                                             fontSize: 'clamp(8px, 2vw, 10px)', 
                                             color: isActive ? BARA_BROWN : '#888',
@@ -152,27 +154,39 @@ const OrderStatus = () => {
                     </div>
                 </div>
 
-                {/* 2. RIDER INFO CARD */}
-                <div style={{ border: 'none', borderRadius: '10px', padding: '15px', marginBottom: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', backgroundColor: '#fff' }}>
-                    <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+                {/* 2. RIDER INFO CARD - Edited: Only shows if step is RIDER (2) or above */}
+                {currentStep >= 2 && (
+                    <div style={{ border: 'none', borderRadius: '10px', padding: '15px', marginBottom: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', backgroundColor: '#fff' }}>
+                        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+                            <div className="d-flex align-items-center gap-3">
+                                <img src={riderImage} width="45" height="45" style={{ borderRadius: '10px', border: `2px solid ${BARA_GREEN}` }} />
+                                <div>
+                                    <h6 style={{ margin: 0, fontWeight: '700' }}>Joshia Garcia</h6>
+                                    <small style={{ color: '#888' }}>Vehicle: Honda Click (ABC 123)</small>
+                                </div>
+                            </div>
+                            <Col xs="auto">
+                                <BootstrapButton 
+                                    size="sm" 
+                                    variant="link" 
+                                    className="view-link p-0" 
+                                    style={{ color: BARA_BROWN, textDecoration: 'none', fontWeight: '700', fontSize: '13px' }} 
+                                    onClick={() => openModal({name: "Joshia Garcia"})}
+                                >
+                                    View Rider Info
+                                </BootstrapButton>
+                            </Col>
+                        </div>
+                        <hr className="my-2" />
                         <div className="d-flex align-items-center gap-3">
-                            <img src={riderImage} width="45" height="45" style={{ borderRadius: '10px', border: `2px solid ${BARA_GREEN}` }} />
+                            <div style={{ border: '1px solid #ddd', borderRadius: '50%', padding: '6px', background: '#f0f0f0' }}><GeoAltFill size={18} /></div>
                             <div>
-                                <h6 style={{ margin: 0, fontWeight: '700' }}>Joshia Garcia</h6>
-                                <small style={{ color: '#888' }}>Vehicle: Honda Click (ABC 123)</small>
+                                <small style={{ color: '#888' }}>Delivering to <strong style={{color: '#333'}}>Customer Name</strong></small>
+                                <p style={{ margin: 0, fontWeight: '600', fontSize: '14px' }}>+63 917 555 1234</p> 
                             </div>
                         </div>
-                        <BootstrapButton variant="outline-dark" size="sm" style={{ borderRadius: '20px', fontWeight: '600', width: 'fit-content' }}>View Rider Info</BootstrapButton>
                     </div>
-                    <hr className="my-2" />
-                    <div className="d-flex align-items-center gap-3">
-                        <div style={{ border: '1px solid #ddd', borderRadius: '50%', padding: '6px', background: '#f0f0f0' }}><GeoAltFill size={18} /></div>
-                        <div>
-                            <small style={{ color: '#888' }}>Delivering to <strong style={{color: '#333'}}>Customer Name</strong></small>
-                            <p style={{ margin: 0, fontWeight: '600', fontSize: '14px' }}>+63 917 555 1234</p> 
-                        </div>
-                    </div>
-                </div>
+                )}
 
                 {/* 3. DETAILS GRID */}
                 <Row className="g-3">
@@ -224,16 +238,23 @@ const OrderStatus = () => {
                         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                             <span style={{ fontWeight: '700', fontSize: '16px', display: 'block', marginBottom: '20px' }}>Payment Summary</span>
                             <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><span>₱260.00</span></div>
-                            <div className="d-flex justify-content-between mb-2 text-muted"><span>Delivery Fee</span><span>₱0.00</span></div>
-                            <div className="d-flex justify-content-between mb-4 text-muted"><span>VAT</span><span>₱0.00</span></div>
+                            <div className="d-flex justify-content-between mb-4 text-muted"><span>Delivery Fee</span><span>₱0.00</span></div>
+                            
                             <div className="d-flex justify-content-between mb-4" style={{ fontWeight: '800', fontSize: '18px', color: BARA_BROWN }}>
                                 <span>GRAND TOTAL</span><span>₱260.00</span>
                             </div>
-                            <small style={{ color: '#888', fontWeight: '700', fontSize: '11px', display: 'block', marginBottom: '10px' }}>PAYMENT METHOD</small>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#F1F8FF', padding: '12px', borderRadius: '8px', border: '1px solid #D0E3F5' }}>
-                                <div style={{ background: '#007BFF', color: 'white', padding: '3px 7px', borderRadius: '4px', fontWeight: '800', fontSize: '10px' }}>GCash</div>
-                                <span style={{ fontWeight: '600', color: '#004085', fontSize: '13px' }}>**** 9283</span>
-                                <Check className="ms-auto text-primary" />
+
+                            {/* Refined Payment Method Section */}
+                            <div className="d-flex justify-content-between align-items-center mt-4">
+                                <small style={{ color: '#888', fontWeight: '700', fontSize: '11px', textTransform: 'uppercase' }}>
+                                    Payment Method
+                                </small>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#F1F8FF', padding: '5px 10px', borderRadius: '8px', border: '1px solid #D0E3F5' }}>
+                                    <div style={{ background: '#007BFF', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '9px' }}>
+                                        GCash
+                                    </div>
+                                    <Check size={14} className="text-primary" />
+                                </div>
                             </div>
                         </div>
                     </Col>
