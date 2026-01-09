@@ -12,10 +12,10 @@
 /* MODAL CARD */
 .order-status-modal {
   background: #FFFFFF;
-  width: 550px;
+  width: 500px;
   max-width: 95%;
   border-radius: 20px;
-  padding: 55px;
+  padding: 40px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   position: relative;
 }
@@ -112,7 +112,6 @@
   color: #1C1C1C;
 }
 
-/* REMOVE NUMBER INPUT ARROWS */
 .info-input[type="number"]::-webkit-inner-spin-button,
 .info-input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -145,19 +144,30 @@
 /* STATUS SELECT */
 .status-select {
   width: 100%;
-  padding: 12px 24px 12px 14px;
-  border-radius: 12px;
+  padding: 12px 14px;
+  padding-right: 40px;
   border: 1px solid #DDD;
   background: #FFFFFF;
   font-size: 14px;
   font-family: "Plus Jakarta Sans", sans-serif;
   color: #1C1C1C;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231C1C1C' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
 }
 
 .status-select:focus {
   outline: none;
-  background: #FFFFFF;
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231C1C1C' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
   box-shadow: 0 0 0 1.5px #3B302A;
 }
 
@@ -165,6 +175,7 @@
 .status-select option {
   background: #FFFFFF;
   color: #1C1C1C;
+  padding: 8px;
 }
 
 /* INFO BOX */
@@ -237,4 +248,85 @@
 
 .secondary-btn:hover {
   opacity: 0.9;
+}
+
+/* KEEP ORDER BUTTON */
+.keep-order-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 30px;
+  border: none;
+  background: #F5F5F5;
+  color: #1C1C1C;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.keep-order-btn:hover {
+  opacity: 0.8;
+}
+
+/* CANCEL ORDER BUTTON */
+.cancel-order-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 30px;
+  border: none;
+  background: #c52727;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.cancel-order-btn:hover {
+  opacity: 0.9;
+}
+
+/* NOT YET BUTTON */
+.not-yet-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 30px;
+  border: none;
+  background: #c52727;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.not-yet-btn:hover {
+  opacity: 0.9;
+}
+
+.not-yet-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.yes-i-am-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 30px;
+  border: none;
+  background: #F5F5F5;
+  color: #1C1C1C;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.yes-i-am-btn:hover {
+  opacity: 0.8;
+}
+
+.yes-i-am-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
