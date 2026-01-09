@@ -19,8 +19,13 @@ const OrderStatus = () => {
     const [orderStatus, setOrderStatus] = useState('active');
     const [selectedReason, setSelectedReason] = useState(""); 
 
-    const BARA_BROWN = '#3B302A';
-    const BARA_GREEN = '#617A55';
+    // BRANDING KIT CONSTANTS
+    const BARA_BROWN = '#3B302A'; // Primary brand identity 
+    const BARA_GREEN = '#617A55'; // Element color [cite: 268]
+    const BARA_BG = '#FCFDFB';    // Neutral background [cite: 150, 151, 152]
+    const PRIMARY_TEXT = '#1C1C1C'; // Near-black for readability [cite: 155, 156, 157]
+    const SECONDARY_TEXT = '#757575'; // For descriptions [cite: 166, 167]
+
     const isCancelDisabled = currentStep >= 2 || orderStatus === 'cancelled'; 
 
     const getStatusLogo = () => {
@@ -45,7 +50,7 @@ const OrderStatus = () => {
         }
     }, [currentStep, orderStatus]);
 
-    // Automatic Status Timer (Demo only)
+    // Automatic Status Timer
     useEffect(() => {
         if (orderStatus === 'cancelled') return;
         const timer = setInterval(() => {
@@ -63,18 +68,38 @@ const OrderStatus = () => {
     ];
 
     const items = [
-        { name: "Classic Matchabara Cold Brew", size: "Medium", price: 120.00, qty: 1 },
-        { name: "Vanibara Frappe", size: "Large", price: 140.00, qty: 1 }
+        { 
+            name: "Classic Matchabara Cold Brew", 
+            size: "Medium", 
+            price: 120.00, 
+            qty: 1,
+            note: "Please less ice on the Matcha. Thank you!" 
+        },
+        { 
+            name: "Vanibara Frappe", 
+            size: "Large", 
+            price: 140.00, 
+            qty: 1,
+            note: "No whip cream and extra drizzle please." 
+        }
     ];
 
     const openModal = (info) => {
         console.log("Opening details for:", info);
     };
 
-    // CSS for Cancel Modal
     const modalStyles = {
         overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1050 },
-        modal: { background: '#fff', width: '450px', maxWidth: '95%', borderRadius: '16px', padding: '25px', maxHeight: '90vh', overflowY: 'auto' },
+        modal: { 
+            background: '#fff', 
+            width: '450px', 
+            maxWidth: '95%', 
+            borderRadius: '16px', 
+            padding: '25px', 
+            maxHeight: '90vh', 
+            overflowY: 'auto',
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
+        },
         radioBox: (selected) => ({
             display: 'flex', gap: '10px', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '8px', cursor: 'pointer',
             backgroundColor: selected ? '#fdecec' : 'transparent', borderColor: selected ? '#c43737' : '#ddd', transition: 'all 0.2s'
@@ -84,23 +109,23 @@ const OrderStatus = () => {
 
     if (orderStatus === 'cancelled') {
         return (
-            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', padding: '20px' }}>
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: BARA_BG, padding: '20px' }}>
                 <div className="text-center p-5" style={{ maxWidth: '500px', backgroundColor: '#fff', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <img src={capybarasad} alt="Cancelled" width="150" className="mb-4" />
-                    <h2 className="fw-bold" style={{ color: BARA_BROWN }}>Order Cancelled</h2>
-                    <p className="text-muted">Your order has been cancelled successfully.</p>
-                    <BootstrapButton style={{ backgroundColor: BARA_BROWN, border: 'none', borderRadius: '25px', padding: '10px 30px', fontWeight: '700' }} onClick={() => window.location.href = '/'}>Go Back to Menu</BootstrapButton>
+                    <h2 className="fw-bold" style={{ color: BARA_BROWN, fontFamily: "'DM Sans', sans-serif" }}>Order Cancelled</h2>
+                    <p style={{ color: SECONDARY_TEXT }}>Your order has been cancelled successfully.</p>
+                    <BootstrapButton style={{ backgroundColor: BARA_BROWN, border: 'none', borderRadius: '25px', padding: '10px 30px', fontWeight: '700', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => window.location.href = '/'}>Go Back to Menu</BootstrapButton>
                 </div>
             </div>
         );
     }
 
     return (
-        <div style={{ padding: '20px 0', backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
+        <div style={{ padding: '20px 0', backgroundColor: BARA_BG, minHeight: '100vh', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             <Container style={{ maxWidth: '1100px' }}>
                 
                 <div className="d-flex justify-content-end mb-3">
-                    <BootstrapButton variant="link" style={{ color: BARA_GREEN, fontWeight: '700', textDecoration: 'none' }} onClick={() => window.location.reload()}>Refresh Status</BootstrapButton>
+                    <BootstrapButton variant="link" style={{ color: BARA_GREEN, fontWeight: '700', textDecoration: 'none', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => window.location.reload()}>Refresh Status</BootstrapButton>
                 </div>
 
                 {/* 1. PROGRESS CARD */}
@@ -108,7 +133,7 @@ const OrderStatus = () => {
                     <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3 text-center text-md-start">
                         <div className="d-flex align-items-center gap-3 flex-column flex-md-row">
                             <img src={getStatusLogo()} alt="Logo" width="60" />
-                            <h1 style={{ color: BARA_BROWN, fontWeight: '800', margin: 0, fontSize: 'clamp(1.2rem, 5vw, 1.7rem)' }}>
+                            <h1 style={{ color: BARA_BROWN, fontWeight: '800', margin: 0, fontSize: 'clamp(1.2rem, 5vw, 1.7rem)', fontFamily: "'DM Sans', sans-serif" }}>
                                 {currentStep === 1 && "Your order is being prepared!"}
                                 {currentStep === 4 && "Delivered!"}
                                 {currentStep > 1 && currentStep < 4 && "Order is on the way!"}
@@ -117,7 +142,12 @@ const OrderStatus = () => {
                         <BootstrapButton 
                             onClick={() => setShowCancelModal(true)}
                             disabled={isCancelDisabled}
-                            style={{ backgroundColor: isCancelDisabled ? '#ccc' : '#FF4D4F', border: 'none', borderRadius: '10px', padding: '10px 25px', fontWeight: '700' }}
+                            style={{ 
+                                backgroundColor: isCancelDisabled ? '#ccc' : '#FF4D4F', 
+                                border: 'none', borderRadius: '10px', padding: '10px 25px', 
+                                fontWeight: '700', fontFamily: "'DM Sans', sans-serif",
+                                boxShadow: 'none'
+                            }}
                         >
                             Cancel Order
                         </BootstrapButton>
@@ -137,12 +167,11 @@ const OrderStatus = () => {
                                             color: isActive ? '#fff' : BARA_BROWN, 
                                             display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto', 
                                             border: isActive ? '3px solid #fff' : `2px solid ${BARA_BROWN}`,
-                                            boxShadow: isActive ? '0 0 8px rgba(0,0,0,0.1)' : 'none',
                                             fontSize: '14px'
                                         }}>{step.icon}</div>
                                         <div className="mt-2 fw-bold" style={{ 
                                             fontSize: 'clamp(8px, 2vw, 10px)', 
-                                            color: isActive ? BARA_BROWN : '#888',
+                                            color: isActive ? BARA_BROWN : SECONDARY_TEXT,
                                             whiteSpace: 'nowrap'
                                         }}>
                                             {step.label}
@@ -154,23 +183,30 @@ const OrderStatus = () => {
                     </div>
                 </div>
 
-                {/* 2. RIDER INFO CARD - Edited: Only shows if step is RIDER (2) or above */}
+                {/* 2. RIDER INFO CARD */}
                 {currentStep >= 2 && (
                     <div style={{ border: 'none', borderRadius: '10px', padding: '15px', marginBottom: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', backgroundColor: '#fff' }}>
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
                             <div className="d-flex align-items-center gap-3">
-                                <img src={riderImage} width="45" height="45" style={{ borderRadius: '10px', border: `2px solid ${BARA_GREEN}` }} />
+                                {/* Frame is now Bara Brown  */}
+                                <img src={riderImage} width="45" height="45" style={{ borderRadius: '10px', border: `2px solid ${BARA_BROWN}` }} />
                                 <div>
-                                    <h6 style={{ margin: 0, fontWeight: '700' }}>Joshia Garcia</h6>
-                                    <small style={{ color: '#888' }}>Vehicle: Honda Click (ABC 123)</small>
+                                    <h6 style={{ margin: 0, fontWeight: '700', color: PRIMARY_TEXT }}>Joshia Garcia</h6>
+                                    <small style={{ color: SECONDARY_TEXT }}>Vehicle: Honda Click (ABC 123)</small>
                                 </div>
                             </div>
                             <Col xs="auto">
                                 <BootstrapButton 
                                     size="sm" 
                                     variant="link" 
-                                    className="view-link p-0" 
-                                    style={{ color: BARA_BROWN, textDecoration: 'none', fontWeight: '700', fontSize: '13px' }} 
+                                    style={{ 
+                                        color: BARA_BROWN, 
+                                        textDecoration: 'none', 
+                                        fontWeight: '700', 
+                                        fontSize: '13px', 
+                                        fontFamily: "'DM Sans', sans-serif",
+                                        boxShadow: 'none'
+                                    }} 
                                     onClick={() => openModal({name: "Joshia Garcia"})}
                                 >
                                     View Rider Info
@@ -179,9 +215,10 @@ const OrderStatus = () => {
                         </div>
                         <hr className="my-2" />
                         <div className="d-flex align-items-center gap-3">
-                            <div style={{ border: '1px solid #ddd', borderRadius: '50%', padding: '6px', background: '#f0f0f0' }}><GeoAltFill size={18} /></div>
+                            {/* Icon is now Bara Brown  */}
+                            <div style={{ border: '1px solid #ddd', borderRadius: '50%', padding: '6px', background: '#f0f0f0' }}><GeoAltFill size={18} color={BARA_BROWN} /></div>
                             <div>
-                                <small style={{ color: '#888' }}>Delivering to <strong style={{color: '#333'}}>Customer Name</strong></small>
+                                <small style={{ color: SECONDARY_TEXT }}>Delivering to <strong style={{color: PRIMARY_TEXT}}>Customer Name</strong></small>
                                 <p style={{ margin: 0, fontWeight: '600', fontSize: '14px' }}>+63 917 555 1234</p> 
                             </div>
                         </div>
@@ -193,66 +230,79 @@ const OrderStatus = () => {
                     <Col lg={7}>
                         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                             <div className="d-flex justify-content-between mb-4 flex-wrap gap-2">
-                                <span style={{ fontWeight: '700', fontSize: '16px' }}>Order Details</span>
-                                <span style={{ color: '#888', fontSize: '13px' }}>Order ID: #123456 - Nov. 20, 2025</span>
+                                <span style={{ fontWeight: '700', fontSize: '16px', fontFamily: "'DM Sans', sans-serif", color: PRIMARY_TEXT }}>Order Details</span>
+                                <span style={{ color: SECONDARY_TEXT, fontSize: '13px' }}>Order ID: #123456 - Nov. 20, 2025</span>
                             </div>
                             <Row className="mb-4 g-3">
                                 <Col xs={6} className="d-flex gap-2">
                                     <Shop size={20} color={BARA_BROWN} />
                                     <div>
-                                        <small style={{ color: '#888', fontWeight: '700', fontSize: '9px' }}>FROM</small>
-                                        <h6 style={{ margin: 0, fontSize: '13px' }}>Don Fabian Branch</h6>
-                                        <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Near PUPQC</p>
+                                        <small style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '9px', textTransform: 'uppercase' }}>FROM</small>
+                                        <h6 style={{ margin: 0, fontSize: '13px', color: PRIMARY_TEXT }}>Don Fabian Branch</h6>
+                                        <p style={{ fontSize: '11px', color: SECONDARY_TEXT, margin: 0 }}>Near PUPQC</p>
                                     </div>
                                 </Col>
                                 <Col xs={6} className="d-flex gap-2">
-                                    <GeoAltFill size={20} color={BARA_GREEN} />
+                                    {/* Icon is now Bara Brown  */}
+                                    <GeoAltFill size={20} color={BARA_BROWN} />
                                     <div>
-                                        <small style={{ color: '#888', fontWeight: '700', fontSize: '9px' }}>DELIVER TO</small>
-                                        <h6 style={{ margin: 0, fontSize: '13px' }}>Home</h6>
-                                        <p style={{ fontSize: '11px', color: '#888', margin: 0 }}>Area pakitongkitong, QC</p>
+                                        <small style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '9px', textTransform: 'uppercase' }}>DELIVER TO</small>
+                                        <h6 style={{ margin: 0, fontSize: '13px', color: PRIMARY_TEXT }}>Home</h6>
+                                        <p style={{ fontSize: '11px', color: SECONDARY_TEXT, margin: 0 }}>Area pakitongkitong, QC</p>
                                     </div>
                                 </Col>
                             </Row>
-                            <span style={{ color: '#888', fontWeight: '700', fontSize: '11px', display: 'block', marginBottom: '15px' }}>ORDERS</span>
+
+                            <span style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '11px', display: 'block', marginBottom: '15px', textTransform: 'uppercase' }}>ORDERS</span>
+                            
                             {items.map((item, index) => (
-                                <div key={index} className="d-flex justify-content-between align-items-center mb-3">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <img src={drinkImg} width="40" height="40" style={{ borderRadius: '8px' }} />
-                                        <div>
-                                            <h6 style={{ margin: 0, fontSize: '14px' }}><span style={{ color: BARA_GREEN, fontWeight: '800' }}>{item.qty}x</span> {item.name}</h6>
-                                            <small style={{ color: '#888', fontSize: '12px' }}>{item.size}</small>
+                                <div key={index} className="mb-4">
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <div className="d-flex align-items-center gap-3">
+                                            <img src={drinkImg} width="40" height="40" style={{ borderRadius: '8px' }} />
+                                            <div>
+                                                <h6 style={{ margin: 0, fontSize: '14px', color: PRIMARY_TEXT }}>
+                                                    <span style={{ color: BARA_GREEN, fontWeight: '800' }}>{item.qty}x</span> {item.name}
+                                                </h6>
+                                                <small style={{ color: SECONDARY_TEXT, fontSize: '12px' }}>{item.size}</small>
+                                            </div>
                                         </div>
+                                        <span style={{ fontWeight: '700', fontSize: '14px', color: PRIMARY_TEXT }}>₱{item.price.toFixed(2)}</span>
                                     </div>
-                                    <span style={{ fontWeight: '700', fontSize: '14px' }}>₱{item.price.toFixed(2)}</span>
+
+                                    {item.note && (
+                                        <div style={{ 
+                                            background: 'rgba(59, 48, 42, 0.08)', 
+                                            borderLeft: `3px solid ${BARA_BROWN}`, 
+                                            padding: '6px 12px', 
+                                            borderRadius: '6px', 
+                                            marginLeft: '53px', 
+                                            marginTop: '4px' 
+                                        }}>
+                                            <p style={{ margin: 0, color: BARA_BROWN, fontSize: '12px', lineHeight: '1.4' }}>
+                                                <strong style={{ fontWeight: '700' }}>Note: </strong>{item.note}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
-                            <div style={{ background: '#fcf8f6', borderLeft: `4px solid ${BARA_BROWN}`, padding: '12px', borderRadius: '8px', marginTop: '20px' }}>
-                                <span style={{ fontWeight: '700', fontSize: '13px', display: 'block' }}>Order Note:</span>
-                                <p style={{ margin: 0, fontStyle: 'italic', color: '#555', fontSize: '13px' }}>"Please less ice on the Matcha. Thank you!"</p>
-                            </div>
                         </div>
                     </Col>
 
                     <Col lg={5}>
                         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
-                            <span style={{ fontWeight: '700', fontSize: '16px', display: 'block', marginBottom: '20px' }}>Payment Summary</span>
-                            <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><span>₱260.00</span></div>
+                            <span style={{ fontWeight: '700', fontSize: '16px', display: 'block', marginBottom: '20px', fontFamily: "'DM Sans', sans-serif", color: PRIMARY_TEXT }}>Payment Summary</span>
+                            <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><span style={{fontWeight: '600'}}>₱260.00</span></div>
                             <div className="d-flex justify-content-between mb-4 text-muted"><span>Delivery Fee</span><span>₱0.00</span></div>
                             
                             <div className="d-flex justify-content-between mb-4" style={{ fontWeight: '800', fontSize: '18px', color: BARA_BROWN }}>
                                 <span>GRAND TOTAL</span><span>₱260.00</span>
                             </div>
 
-                            {/* Refined Payment Method Section */}
                             <div className="d-flex justify-content-between align-items-center mt-4">
-                                <small style={{ color: '#888', fontWeight: '700', fontSize: '11px', textTransform: 'uppercase' }}>
-                                    Payment Method
-                                </small>
+                                <small style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '11px', textTransform: 'uppercase' }}>Payment Method</small>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#F1F8FF', padding: '5px 10px', borderRadius: '8px', border: '1px solid #D0E3F5' }}>
-                                    <div style={{ background: '#007BFF', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '9px' }}>
-                                        GCash
-                                    </div>
+                                    <div style={{ background: '#007BFF', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '9px' }}>GCash</div>
                                     <Check size={14} className="text-primary" />
                                 </div>
                             </div>
@@ -265,8 +315,8 @@ const OrderStatus = () => {
             {showCancelModal && (
                 <div style={modalStyles.overlay}>
                     <div style={modalStyles.modal}>
-                        <h2 className="fw-bold mb-1" style={{ fontSize: '20px' }}>Cancel Order</h2>
-                        <p style={{ fontSize: '13px', color: '#8d837c' }}>Please select a reason to cancel your order instantly.</p>
+                        <h2 className="fw-bold mb-1" style={{ fontSize: '20px', fontFamily: "'DM Sans', sans-serif", color: BARA_BROWN }}>Cancel Order</h2>
+                        <p style={{ fontSize: '13px', color: SECONDARY_TEXT }}>Please select a reason to cancel your order instantly.</p>
                         <p style={{ fontSize: '12px', color: '#c43737', marginBottom: '15px' }}><em>Cancellation requests are subject to approval.</em></p>
                         
                         <p className="fw-bold mb-2" style={{ fontSize: '13px' }}>Reason for Cancellation *</p>
@@ -287,8 +337,8 @@ const OrderStatus = () => {
                         </div>
                         
                         <div className="d-flex gap-2 mt-4">
-                            <BootstrapButton variant="light" className="flex-grow-1 fw-bold" style={{ fontSize: '14px' }} onClick={() => setShowCancelModal(false)}>Keep Order</BootstrapButton>
-                            <BootstrapButton variant="danger" className="flex-grow-1 fw-bold" style={{ backgroundColor: '#e54848', fontSize: '14px' }} onClick={() => {setOrderStatus('cancelled'); setShowCancelModal(false);}}>Cancel Order</BootstrapButton>
+                            <BootstrapButton variant="light" className="flex-grow-1 fw-bold" style={{ fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => setShowCancelModal(false)}>Keep Order</BootstrapButton>
+                            <BootstrapButton variant="danger" className="flex-grow-1 fw-bold" style={{ backgroundColor: '#e54848', fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => {setOrderStatus('cancelled'); setShowCancelModal(false);}}>Cancel Order</BootstrapButton>
                         </div>
                     </div>
                 </div>
