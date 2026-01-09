@@ -85,7 +85,7 @@ function ApproveCancellationModal({
         {/* ACTION */}
         <div className="btn-row">
           <button 
-            className="secondary-btn" 
+            className="not-yet-btn" 
             onClick={handleNotYet}
             disabled={isLoading}
           >
@@ -93,7 +93,7 @@ function ApproveCancellationModal({
           </button>
 
           <button 
-            className="primary-btn" 
+            className="yes-i-am-btn" 
             onClick={handleConfirm}
             disabled={isLoading}
           >

@@ -1,29 +1,24 @@
-# Order Admin Cancel Popup
+# Order Admin Popup
 
-Admin modals for reviewing cancellation requests and updating order status.
-
-## How to Run
-
-```bash
-#1: cd order-service
-#2: cd react-order-vite
-#3: cd order-admin-cancel-popup
-#4: npm install
-#5: npm run dev
-```
+Admin modals for handling cancellation requests and updating order status. These components are ready to integrate with your backend.
 
 ## Components
 
-### 1. ReviewCancellationModal
-Displays order details and cancellation information for admin review.
+### ReviewCancellationModal
+
+Shows all the order details and cancellation info so admins can review before making a decision.
 
 **Props:**
-- `onApprove: () => void` - Callback when "Approve Request" is clicked
-- `onDecline: () => void` - Callback when "Decline Request" is clicked
-- `onClose: () => void` - Callback when modal is closed
-- `orderData?: object` - Order data object (optional, uses mock data if not provided)
+- `onApprove` - fires when "Cancel Order" button is clicked
+- `onDecline` - fires when "Keep Order" button is clicked  
+- `onClose` - closes the modal
+- `orderData` (optional) - pass order data here, otherwise uses mock data
 
-**Order Data Structure:**
+**Button Labels:**
+- "Keep Order" - gray button, keeps the order active
+- "Cancel Order" - red button, approves the cancellation
+
+**Order Data Format:**
 ```javascript
 {
   orderId: "123-456-789",
@@ -36,111 +31,101 @@ Displays order details and cancellation information for admin review.
 }
 ```
 
-### 2. UpdateOrderStatusModal
-Allows admin to update order status.
+### UpdateOrderStatusModal
+
+Lets admins change the order status. All the order info is read-only except for the status dropdown.
 
 **Props:**
-- `onClose: () => void` - Callback when modal is closed
-- `orderData?: object` - Order data object (optional)
-- `onUpdateStatus?: (orderId, status) => Promise<void>` - Callback for status update
-- `initialStatus?: string` - Initial order status
+- `onClose` - closes the modal
+- `orderData` (optional) - order data object
+- `onUpdateStatus` (optional) - custom callback for status updates
+- `initialStatus` (optional) - starting status value
 
-**Order Data Structure:**
-```javascript
-{
-  orderId: "123-456-789",
-  orderDate: "2025-10-13",
-  customerName: "Bruno Decano",
-  orderStatus: "Preparing" // Current status
-}
-```
+**Status Options:**
+- Preparing
+- Out for Delivery
+- Delivered
+- Cancelled
 
-### 3. ApproveCancellationModal
-Confirmation modal for approving cancellation.
+The dropdown has a custom arrow and proper styling so it doesn't get cut off.
 
-**Props:**
-- `onClose: () => void` - Callback when modal is closed
-- `onConfirm?: () => void` - Callback when "Yes, I am" is clicked
-- `onBack: () => void` - Callback when "Not yet" is clicked (returns to ReviewCancellationModal)
-- `orderId?: string` - Order ID for API call
-- `onApproveCancellation?: () => Promise<void>` - Custom API callback
+### ApproveCancellationModal
 
-### 4. DeclineCancellationModal
-Confirmation modal for declining cancellation.
+Confirmation popup that appears when admin clicks "Cancel Order". Asks "Are you sure you want to approve the cancellation?"
 
 **Props:**
-- `onClose: () => void` - Callback when modal is closed
-- `onConfirm?: () => void` - Callback when "Yes, I am" is clicked
-- `onBack: () => void` - Callback when "Not yet" is clicked (returns to ReviewCancellationModal)
-- `orderId?: string` - Order ID for API call
-- `onDeclineCancellation?: () => Promise<void>` - Custom API callback
+- `onClose` - closes everything
+- `onConfirm` (optional) - runs when confirmed
+- `onBack` - goes back to ReviewCancellationModal (when "Not yet" is clicked)
+- `orderId` (optional) - for API calls
+- `onApproveCancellation` (optional) - custom API handler
 
-## Backend Integration
+**Buttons:**
+- "Not yet" - red button, goes back to review modal
+- "Yes, I am" - gray button, confirms the cancellation
 
-### API Endpoints Expected
+### DeclineCancellationModal
 
-#### 1. Update Order Status
+Confirmation popup for when admin clicks "Keep Order". Asks "Are you sure you want to decline the cancellation?"
+
+**Props:**
+- `onClose` - closes everything
+- `onConfirm` (optional) - runs when confirmed
+- `onBack` - goes back to ReviewCancellationModal (when "Not yet" is clicked)
+- `orderId` (optional) - for API calls
+- `onDeclineCancellation` (optional) - custom API handler
+
+**Buttons:**
+- "Not yet" - red button, goes back to review modal
+- "Yes, I am" - gray button, confirms keeping the order
+
+## Backend API Endpoints
+
+The components expect these endpoints:
+
+**Update Order Status:**
 ```
 PUT /api/orders/{orderId}/status
 Content-Type: application/json
 
-Body: {
-  "status": "Preparing" | "Out for Delivery" | "Delivered" | "Cancelled"
-}
+Body: { "status": "Preparing" }
 ```
 
-#### 2. Approve Cancellation
+**Approve Cancellation:**
 ```
 POST /api/orders/{orderId}/cancel/approve
 ```
 
-#### 3. Decline Cancellation
+**Decline Cancellation:**
 ```
 POST /api/orders/{orderId}/cancel/decline
 ```
 
-### Sample Integration
+## Usage Example
 
 ```javascript
 import ReviewCancellationModal from './components/ReviewCancellationModal';
 import ApproveCancellationModal from './components/ApproveCancellationModal';
 import DeclineCancellationModal from './components/DeclineCancellationModal';
-import UpdateOrderStatusModal from './components/UpdateOrderStatusModal';
 
 function AdminDashboard() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
 
-  // Fetch order data
+  // Get order data from your API
   useEffect(() => {
-    const fetchOrder = async () => {
-      const response = await fetch(`http://localhost:8080/api/orders/${orderId}`);
-      const data = await response.json();
-      setSelectedOrder(data);
-    };
-    fetchOrder();
+    fetch(`http://localhost:8080/api/orders/${orderId}`)
+      .then(res => res.json())
+      .then(data => setSelectedOrder(data));
   }, [orderId]);
-
-  const handleApprove = async () => {
-    setActiveModal('approve');
-  };
-
-  const handleDecline = async () => {
-    setActiveModal('decline');
-  };
-
-  const handleConfirmApprove = async () => {
-    // API call is handled inside ApproveCancellationModal
-    // Or you can pass custom callback
-  };
 
   return (
     <>
       {activeModal === 'review' && (
         <ReviewCancellationModal
           orderData={selectedOrder}
-          onApprove={handleApprove}
-          onDecline={handleDecline}
+          onApprove={() => setActiveModal('approve')}
+          onDecline={() => setActiveModal('decline')}
           onClose={() => setActiveModal(null)}
         />
       )}
@@ -165,18 +150,6 @@ function AdminDashboard() {
 }
 ```
 
-## Features
+## Testing
 
-✅ **Props-based data**: All components accept `orderData` prop for backend integration
-✅ **API integration ready**: Built-in fetch calls with fallback to callbacks
-✅ **Loading states**: Shows loading indicators during API calls
-✅ **Error handling**: Displays error messages if API calls fail
-✅ **Backward compatible**: Works with mock data if props not provided (for testing)
-
-## Notes
-
-- All modals use mock data by default if `orderData` prop is not provided
-- API endpoints use `http://localhost:8080` by default (adjust in components if needed)
-- Error messages are displayed in red below the action buttons
-- Loading states disable buttons and show "Processing..." or "Updating..." text
-- The `App.jsx` file is a tester page - replace with your actual admin dashboard integration
+The `App.jsx` file is just for testing the modals. Replace it with your actual admin dashboard when integrating. All components work with mock data if you don't pass `orderData`, so you can test the UI without backend first.

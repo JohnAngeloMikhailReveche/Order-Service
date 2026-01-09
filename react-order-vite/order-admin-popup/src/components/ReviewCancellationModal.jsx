@@ -97,12 +97,12 @@ function ReviewCancellationModal({
 
         {/* ACTIONS */}
         <div className="btn-row">
-          <button className="secondary-btn" onClick={onDecline}>
-            Decline Request
+          <button className="keep-order-btn" onClick={onDecline}>
+            Keep Order
           </button>
 
-          <button className="primary-btn" onClick={onApprove}>
-            Approve Request
+          <button className="cancel-order-btn" onClick={onApprove}>
+            Cancel Order
           </button>
         </div>
 
