@@ -151,5 +151,51 @@ namespace OrderService.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Request declined! The kitchen is still cooking." });
         }
+
+        // --- SHARED HELPER LOGIC ---
+
+        private async Task<IActionResult> ApplyFiltersAndReturn(IQueryable<Orders> query, string filter, string sortOrder)
+        {
+            // 1. Apply Status Filters
+            switch (filter.ToLower())
+            {
+                case "ongoing":
+                    query = query.Where(o => o.status >= 1 && o.status <= 4);
+                    break;
+                case "completed":
+                    query = query.Where(o => o.status == 5);
+                    break;
+                case "cancelled":
+                    query = query.Where(o => o.status == 7);
+                    break;
+            }
+
+            // 2. Handle Date Sorting
+            if (sortOrder.ToLower() == "oldest")
+                query = query.OrderBy(o => o.placed_at);
+            else
+                query = query.OrderByDescending(o => o.placed_at);
+
+            var ordersList = await query.ToListAsync();
+
+            // 3. Map to Result
+            var resultList = ordersList.Select(o => new {
+                o.orders_id,
+                o.users_id, // Useful for admin to see who placed the order
+                o.total_cost,
+                o.placed_at,
+                o.fulfilled_at,
+                StatusValue = o.status,
+                StatusName = ((OrderStatus)o.status).ToString(),
+                o.payment_method,
+                o.cancellation_requested,
+                o.cancellation_reason
+            });
+
+            if (!resultList.Any())
+                return Ok(new { message = $"No {filter} orders found here! " });
+
+            return Ok(resultList);
+        }
     }
 }
