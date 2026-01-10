@@ -1,12 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 export default function App() {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Classic Coffeebara Cold Brew", size: "Medium", price: 100, quantity: 1, image: "/kape.png" },
-    { id: 2, name: "Matchabara Cold Brew", size: "Large", price: 100, quantity: 1, image: "/matcha.png" },
-    { id: 3, name: "Matchabara Frappe", size: "Medium", price: 100, quantity: 1, image: "/frap.png" },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  
+  const userID = 1; // Example user ID - This is based on our Database, the Order Service DB one where the userID also lives.
+
+  // This part is a bit confusing since in the fetch part.
+  /*
+    First is that HTTPS is used instead of HTTP. This is because the backend API is set to use HTTPS.
+    Second you have to make sure that you use the ${userID} for frontend control.
+    Third you must use `` back ticks instead of '' single quotes for the fetch URL to work with the ${userID} variable.
+  */
+  useEffect(() => {
+    fetch(`https://localhost:7237/api/Cart/item/user/${userID}`)
+    .then(response => response.json())
+    .then(cart => {
+      setCartItems(
+        cart.cartItems.map(item => ({
+          id: item.cart_item_id,
+          name: item.item_name,
+          size: item.variant_name,
+          price: item.variant_price,
+          quantity: item.quantity,
+          image: item.img_url
+        }))
+      );
+    })
+    .catch(err => console.error(err));
+  }, []);
 
   const updateQuantity = (id, change) => {
     setCartItems((prev) =>

@@ -100,6 +100,37 @@ namespace OrderService.Migrations
                     b.ToTable("CartItem");
                 });
 
+            modelBuilder.Entity("OrderService.Models.OrderFeedback", b =>
+                {
+                    b.Property<int>("order_feedback_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("order_feedback_id"));
+
+                    b.Property<string>("comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("is_read")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("orders_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("order_feedback_id");
+
+                    b.HasIndex("orders_id");
+
+                    b.ToTable("OrderFeedback");
+                });
+
             modelBuilder.Entity("OrderService.Models.OrderItem", b =>
                 {
                     b.Property<int>("order_item_id")
@@ -108,16 +139,10 @@ namespace OrderService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("order_item_id"));
 
-                    b.Property<string>("img_url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("item_description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("item_name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("item_variant_id")
@@ -135,12 +160,7 @@ namespace OrderService.Migrations
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("special_instructions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("variant_name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("variant_price")
@@ -162,24 +182,29 @@ namespace OrderService.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("orders_id"));
 
                     b.Property<string>("cancellation_reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("cancellation_requested")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("fulfilled_at")
+                    b.Property<DateTime?>("fulfilled_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("payment_id")
+                    b.Property<int?>("payment_id")
                         .HasColumnType("int");
 
                     b.Property<string>("payment_method")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("placed_at")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("refund_status")
+                        .HasColumnType("int")
+                        .HasColumnName("refund_status");
 
                     b.Property<byte>("status")
                         .HasColumnType("tinyint");
@@ -209,6 +234,17 @@ namespace OrderService.Migrations
                     b.Navigation("Cart");
                 });
 
+            modelBuilder.Entity("OrderService.Models.OrderFeedback", b =>
+                {
+                    b.HasOne("OrderService.Models.Orders", "Order")
+                        .WithMany("OrderFeedbacks")
+                        .HasForeignKey("orders_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("OrderService.Models.OrderItem", b =>
                 {
                     b.HasOne("OrderService.Models.Orders", "Order")
@@ -227,6 +263,8 @@ namespace OrderService.Migrations
 
             modelBuilder.Entity("OrderService.Models.Orders", b =>
                 {
+                    b.Navigation("OrderFeedbacks");
+
                     b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
