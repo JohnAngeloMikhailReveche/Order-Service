@@ -83,7 +83,7 @@ function App() {
                   {/* Product Info */}
                   <div style={{ width: '100%', textAlign: 'left', marginBottom: '15px' }}>
                     <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '20px', fontWeight: 600 }}>{product.name}</Card.Title>
-                    <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '40px', fontWeight: 700 }}>₱{price}</Card.Title>
+                    <Card.Title style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '40px', fontWeight: 700 }}>₱{price}.00</Card.Title>
                   </div>
 
                   {/* Labels */}
