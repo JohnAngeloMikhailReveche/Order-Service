@@ -10,6 +10,7 @@ namespace OrderService.Models
         public byte status { get; set; }
         public decimal subtotal { get; set; }
         public decimal total_cost { get; set; }
+        public int item_count { get; set; }
         public DateTime placed_at { get; set; }
         public DateTime? fulfilled_at { get; set; }
         public string? payment_method { get; set; }
