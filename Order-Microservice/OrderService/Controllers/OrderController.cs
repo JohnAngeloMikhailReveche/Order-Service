@@ -125,7 +125,7 @@ namespace OrderService.Controllers
                     o.placed_at
                 }).ToListAsync();
 
-            if (!pending.Any()) return Ok(new { message = "No pending drama! The vibes are immaculate." });
+            if (!pending.Any()) return Ok(new { message = "No pending drama! The vibes are immaculate. ✨" });
             return Ok(pending);
         }
 
