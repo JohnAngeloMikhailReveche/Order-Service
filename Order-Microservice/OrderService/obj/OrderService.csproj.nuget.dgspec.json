@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Romalyn Amante\\Desktop\\OrderService\\Order-Microservice\\OrderService\\OrderService.csproj": {}
+    "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\OrderService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Romalyn Amante\\Desktop\\OrderService\\Order-Microservice\\OrderService\\OrderService.csproj": {
+    "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\OrderService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Romalyn Amante\\Desktop\\OrderService\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "projectUniqueName": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\OrderService.csproj",
         "projectName": "OrderService",
-        "projectPath": "C:\\Users\\Romalyn Amante\\Desktop\\OrderService\\Order-Microservice\\OrderService\\OrderService.csproj",
-        "packagesPath": "C:\\Users\\Romalyn Amante\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Romalyn Amante\\Desktop\\OrderService\\Order-Microservice\\OrderService\\obj\\",
+        "projectPath": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "packagesPath": "C:\\Users\\kathl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Romalyn Amante\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kathl\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,6 +25,7 @@
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -47,7 +47,8 @@ function App() {
                     date: new Date(order.placed_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }),
                     price: order.total_cost,
                     image: classic_macchiabara_cold_brew_Pic,
-                    items: 1
+                    // YASSS QUEEN! fetching the real count from the backend now 📈
+                    items: order.item_count || 0
                 }));
 
                 setOrders(mappedOrders);
@@ -126,7 +127,6 @@ function App() {
                         </select>
                     </div>
 
-                    {/* Logic to handle Loading, Errors, and Empty states while keeping the design */}
                     {loading ? (
                         <div className="text-center py-5">
                             <Spinner animation="border" variant="secondary" />

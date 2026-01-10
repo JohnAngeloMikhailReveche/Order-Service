@@ -20,7 +20,7 @@ namespace OrderService.Controllers
             _context = context;
         }
 
-        // customer methods
+        // CUSTOMER METHODS
 
         [HttpPost("request-cancellation")]
         public async Task<IActionResult> RequestCancellation([FromBody] CancellationRequestDto request)
@@ -37,7 +37,7 @@ namespace OrderService.Controllers
         [HttpPatch("status")]
         public async Task<IActionResult> UpdateStatus([FromBody] OrderStatusDto request)
         {
-            if (request == null) return BadRequest(new { message = "Body is empty" });
+            if (request == null) return BadRequest(new { message = "body is empty, sis!" });
 
             string role = request.UserRole?.ToLower() ?? "customer";
             if (role == "string") role = "customer";
@@ -53,63 +53,17 @@ namespace OrderService.Controllers
         [HttpGet("history/{userId}")]
         public async Task<IActionResult> GetOrderHistory(
             int userId,
-            [FromQuery] string filter = "all", // options: all, ongoing, completed, cancelled
-            [FromQuery] string sortOrder = "newest") // options: newest, oldest
+            [FromQuery] string filter = "all",
+            [FromQuery] string sortOrder = "newest")
         {
-            // 1. start with the user's base receipts 
             var query = _context.Orders
                 .Where(o => o.users_id == userId)
                 .AsQueryable();
 
-            // 2. apply the filters 
-            switch (filter.ToLower())
-            {
-                case "ongoing":
-                    // statuses 1 to 4 are still in progress
-                    query = query.Where(o => o.status >= 1 && o.status <= 4);
-                    break;
-                case "completed":
-                    // status 5 = completed/delivered
-                    query = query.Where(o => o.status == 5);
-                    break;
-                case "cancelled":
-                    // status 7 = cancelled
-                    query = query.Where(o => o.status == 7);
-                    break;
-                    // 'all' doesn't need a filter, it just stays as the full query
-            }
-
-            // 3. handle the date sorting (newest vs oldest)
-            if (sortOrder.ToLower() == "oldest")
-            {
-                query = query.OrderBy(o => o.placed_at);
-            }
-            else // default: newest first
-            {
-                query = query.OrderByDescending(o => o.placed_at);
-            }
-
-            var ordersList = await query.ToListAsync();
-
-            // 4. mapping to a clean json result for the frontend
-            var result = ordersList.Select(o => new {
-                o.orders_id,
-                o.total_cost,
-                o.placed_at,
-                o.fulfilled_at,
-                StatusValue = o.status,
-                StatusName = ((OrderStatus)o.status).ToString(),
-                o.payment_method,
-                o.cancellation_requested,
-                o.cancellation_reason
-            });
-
-            if (!result.Any()) return Ok(new { message = $"no {filter} orders found! time for a shopping spree? 🛍️✨" });
-
-            return Ok(result);
+            return await ApplyFiltersAndReturn(query, filter, sortOrder);
         }
 
-        // admin methods
+        // ADMIN METHODS
 
         [HttpGet("admin/pending-cancellations")]
         public async Task<IActionResult> GetPendingCancellations()
@@ -122,10 +76,11 @@ namespace OrderService.Controllers
                     o.cancellation_reason,
                     Status = ((OrderStatus)o.status).ToString(),
                     o.total_cost,
+                    o.item_count, // added for admin visibility!
                     o.placed_at
                 }).ToListAsync();
 
-            if (!pending.Any()) return Ok(new { message = "No pending drama! The vibes are immaculate. ✨" });
+            if (!pending.Any()) return Ok(new { message = "no pending drama! the vibes are immaculate. ✨" });
             return Ok(pending);
         }
 
@@ -133,7 +88,7 @@ namespace OrderService.Controllers
         public async Task<IActionResult> ReviewCancellation([FromBody] AdminCancellationReviewDto review)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == review.OrderId);
-            if (order == null) return NotFound(new { message = "Order not found" });
+            if (order == null) return NotFound(new { message = "order not found" });
 
             if (review.Approve)
             {
@@ -144,19 +99,18 @@ namespace OrderService.Controllers
                     UserRole = "admin"
                 };
                 await _statusService.UpdateStatusAsync(dto);
-                return Ok(new { message = "Cancellation approved! Refund in progress." });
+                return Ok(new { message = "cancellation approved! refund in progress." });
             }
 
             order.cancellation_requested = false;
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Request declined! The kitchen is still cooking." });
+            return Ok(new { message = "request declined! the kitchen is still cooking." });
         }
 
-        // --- SHARED HELPER LOGIC ---
+        // --- 💎 SHARED HELPER LOGIC ---
 
         private async Task<IActionResult> ApplyFiltersAndReturn(IQueryable<Orders> query, string filter, string sortOrder)
         {
-            // 1. Apply Status Filters
             switch (filter.ToLower())
             {
                 case "ongoing":
@@ -170,7 +124,6 @@ namespace OrderService.Controllers
                     break;
             }
 
-            // 2. Handle Date Sorting
             if (sortOrder.ToLower() == "oldest")
                 query = query.OrderBy(o => o.placed_at);
             else
@@ -178,11 +131,11 @@ namespace OrderService.Controllers
 
             var ordersList = await query.ToListAsync();
 
-            // 3. Map to Result
             var resultList = ordersList.Select(o => new {
                 o.orders_id,
-                o.users_id, // Useful for admin to see who placed the order
+                o.users_id,
                 o.total_cost,
+                o.item_count, // passing the count from the cart service! 
                 o.placed_at,
                 o.fulfilled_at,
                 StatusValue = o.status,
@@ -193,7 +146,7 @@ namespace OrderService.Controllers
             });
 
             if (!resultList.Any())
-                return Ok(new { message = $"No {filter} orders found here! " });
+                return Ok(new { message = $"no {filter} orders found here! time to shop? 🛍️" });
 
             return Ok(resultList);
         }
