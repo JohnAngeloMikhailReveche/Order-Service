@@ -269,7 +269,7 @@ const navigate = useNavigate();
         <Nav.Link as={Link} to="/">Home</Nav.Link>
         <Nav.Link as={Link} to="/menu">Menu</Nav.Link>
         <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
-        <Nav.Link as={Link} to="/my-profile">My Profile</Nav.Link>
+        <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
         <Nav.Link
           as={Link} 
           to="#cart"
