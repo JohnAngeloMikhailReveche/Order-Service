@@ -13,22 +13,22 @@ export default function App() {
     Third you must use `` back ticks instead of '' single quotes for the fetch URL to work with the ${userID} variable.
   */
   useEffect(() => {
-    fetch(`https://localhost:7237/api/Cart/item/user/${userID}`)
-    .then(response => response.json())
-    .then(cart => {
-      setCartItems(
-        cart.cartItems.map(item => ({
-          id: item.cart_item_id,
-          name: item.item_name,
-          size: item.variant_name,
-          price: item.variant_price,
-          quantity: item.quantity,
-          image: item.img_url
-        }))
-      );
-    })
-    .catch(err => console.error(err));
-  }, []);
+    fetch(`https://localhost:7237/api/Cart/user/cart/items/${userID}`)
+      .then(response => response.json())
+      .then(items => {
+        setCartItems(
+          items.map(item => ({
+            id: item.cart_item_id,
+            name: item.item_name,
+            size: item.variant_name,
+            price: item.variant_price,
+            quantity: item.quantity,
+            image: item.img_url
+          }))
+        );
+      })
+      .catch(err => console.error(err));
+    }, [userID]);
 
   const updateQuantity = (id, change) => {
     setCartItems((prev) =>

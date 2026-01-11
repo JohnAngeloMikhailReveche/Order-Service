@@ -93,6 +93,7 @@ namespace OrderService.Services
                     cart_item_id = item.cart_item_id,
                     item_name = item.item_name,
                     variant_name = item.variant_name,
+                    variant_price = item.variant_price,
                     quantity = item.quantity,
                     img_url = item.img_url
                 })

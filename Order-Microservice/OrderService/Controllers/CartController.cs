@@ -55,7 +55,7 @@ namespace OrderService.Controllers
         }
 
         // View the Cart Items
-        [HttpGet("item/user/cart/items/{userId}")]
+        [HttpGet("user/cart/items/{userId}")]
         public async Task<IActionResult> ViewCartItems(int userId)
         {
             var cartItems = await _cartService.ViewCartItems(userId);
