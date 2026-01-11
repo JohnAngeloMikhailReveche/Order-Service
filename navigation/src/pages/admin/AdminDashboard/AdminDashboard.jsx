@@ -8,6 +8,7 @@ import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import UpdateOrderStatusModal from "../AdminModals/UpdateOrderStatusModal";
 
 function App() {
   const [orders, setOrders] = useState([]);
@@ -17,6 +18,7 @@ function App() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalMode, setModalMode] = useState("update");
   const [newStatus, setNewStatus] = useState("");
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   useEffect(() => {
     const fetchedOrders = [
@@ -72,20 +74,25 @@ function App() {
 
   const openModal = (order) => {
     setSelectedOrder(order);
-    setModalMode(order.status === "Canceled" ? "cancel" : "update");
+
+    if (order.status === "Canceled") {
+      setModalMode("cancel");
+      setModalShow(true);
+    } else {
+      setShowUpdateModal(true);
+    }
     setNewStatus(order.status);
-    setModalShow(true);
   };
 
-  const handleUpdateStatus = () => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === selectedOrder.id
-        ? { ...order, status: newStatus === "Completed" ? "Completed" : "Ongoing", progress: newStatus }
+  const handleUpdateOrderStatus = (orderId, status) => {
+    setOrders(prev =>
+      prev.map(order =>
+        order.id === orderId
+        ? { ...order, progress: status, status: newStatus === "Delivered" ? "Completed" : "Ongoing" }
         : order
       )
     );
-    setModalShow(false);
+    setShowUpdateModal(false);
   };
 
   const handleApproveCancel = () => {
@@ -222,51 +229,19 @@ function App() {
         </Card>
       </div>
 
-      {/* Modals */}
-      <Modal show={modalShow} onHide={() => setModalShow(false)} centered dialogClassName="admin-modal">
-        <Modal.Header closeButton className="admin-modal-header">
-          <Modal.Title>
-            {modalMode === "cancel"
-              ? "Cancellation Request"
-              : "Update Order Status"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="admin-modal-body">
-          {selectedOrder && (
-            <>
-              <p><strong>Order ID:</strong> {selectedOrder.id}</p>
-              <p><strong>Order Date:</strong> {new Date(selectedOrder.date).toLocaleString()}</p>
-              <p><strong>Order Items:</strong> {selectedOrder.items}</p>
-
-              {modalMode === "cancel" ? (
-                <>
-                  <strong>Reason:</strong>
-                  <p className="text-muted">{selectedOrder.cancelReason}</p>
-                  <strong>Notes:</strong>
-                  <p className="text-muted">{selectedOrder.cancelNotes}</p>
-                </>
-              ) : (
-                <Form.Select value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
-                  <option value="Preparing">Preparing</option>
-                  <option value="Looking for Rider">Looking for Rider</option>
-                  <option value="In Transit">In Transit</option>
-                  <option value="Completed">Delivered</option>
-                </Form.Select>
-              )}
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer className="admin-modal-footer">
-          {modalMode === "cancel" ? (
-            <>
-              <Button variant="danger" onClick={handleRejectCancel}>Reject</Button>
-              <Button variant="success" onClick={handleApproveCancel}>Approve</Button>
-            </>
-          ) : (
-            <Button variant="primary" onClick={handleUpdateStatus}>Update Status</Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+{/*MODALS*/}
+{showUpdateModal && selectedOrder && (
+  <UpdateOrderStatusModal
+    onClose={() => setShowUpdateModal(false)}
+    orderData={{
+      orderId: selectedOrder.id,
+      orderDate: new Date(selectedOrder.date).toLocaleDateString(),
+      customerName: "Customer Name",
+    }}
+    initialStatus={selectedOrder.progress}
+    onUpdateStatus={handleUpdateOrderStatus}
+  />
+)}
     </>
   );
 }
