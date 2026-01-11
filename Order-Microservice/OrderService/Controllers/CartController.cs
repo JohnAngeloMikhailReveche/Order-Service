@@ -45,11 +45,15 @@ namespace OrderService.Controllers
         }
 
         // View the Cart
-        [HttpGet("item/user/{userId}")]
+        [HttpGet("user/cart/{userId}")]
         public async Task<IActionResult> ViewCart(int userId)
         {
             var cart = await _cartService.ViewCart(userId);
-            if (cart == null) return NotFound(new { message = "Cart not found." });
+
+            if (cart == null)
+            {
+                return NotFound(new { message = "Cart not found." });
+            }
 
             return Ok(cart);
         }
@@ -80,6 +84,25 @@ namespace OrderService.Controllers
 
             if (cart == null)
                 return NotFound(new { message = "Item or cart is not found." });
+
+            return Ok(cart);
+        }
+
+
+        // Increase Cart Item Quantity
+        [HttpPatch("item/{cartItemID}/increase")]
+        public async Task<IActionResult> IncreaseItemQuantity(
+                [FromRoute] int cartItemID,
+                [FromQuery] int userID,
+                [FromQuery] int count = 1
+            )
+        {
+            var cart = await _cartService.IncreaseItem(userID, cartItemID, count);
+
+            if (cart == null)
+            {
+                return NotFound(new { message = "Item or the cart is not found." });
+            }
 
             return Ok(cart);
         }

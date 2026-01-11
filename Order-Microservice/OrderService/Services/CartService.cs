@@ -76,11 +76,33 @@ namespace OrderService.Services
             return cart;
         }
 
-        public async Task<Cart> ViewCart(int userId)
+        public async Task<CartDTO?> ViewCart(int userId)
         {
-            return await _db.Cart
+            var cart = await _db.Cart
                 .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.users_id == userId);
+
+            if (cart == null)
+            {
+                return null;
+            }
+
+            return new CartDTO
+            {
+                cart_id = cart.cart_id,
+                users_id = cart.users_id,
+                subtotal = cart.subtotal,
+                updated_at = cart.updated_at,
+                cartItems = cart.CartItems.Select(item => new CartItemDTO
+                {
+                    cart_item_id = item.cart_item_id,
+                    item_name = item.item_name,
+                    variant_name = item.variant_name,
+                    variant_price = item.variant_price,
+                    quantity = item.quantity,
+                    img_url = item.img_url
+                }).ToList()
+            };
         }
 
         public async Task<List<CartItemDTO>> ViewCartItems(int userId)
@@ -100,40 +122,77 @@ namespace OrderService.Services
                 .ToListAsync();
         }
 
-        public async Task<Cart> RemoveItem(int userID, int cartItemID, int quantityToRemove)
+        public async Task<Cart?> RemoveItem(int userID, int cartItemID, int quantityToRemove)
         {
-            // Get the cart item which belongs to the user through userID.
-            var item = await _db.CartItem
-                .Include(ci => ci.Cart)
-                .FirstOrDefaultAsync( ci =>
-                    ci.cart_item_id == cartItemID
-                    &&
-                    ci.Cart.users_id == userID
-                );
+            var cart = await _db.Cart
+                 .Include(c => c.CartItems)
+                 .FirstOrDefaultAsync(c => c.users_id == userID);
 
-            if (item == null) { return null; }
-
-            // Reduce quantity
-            item.quantity -= quantityToRemove;
-
-            // Check if the item is 0 and if it is then we remove it to the cart.
-            if (item.quantity <= 0)
+            if (cart == null)
             {
-                _db.CartItem.Remove(item);
+                return null;
             }
 
-            // Save it to the database
+            var cartItem = cart.CartItems
+                .FirstOrDefault(ci => ci.cart_item_id == cartItemID);
+
+            if (cartItem == null)
+            {
+                return null;
+            }
+
+            // Decrease Quantity
+            cartItem.quantity -= quantityToRemove;
+
+            if (cartItem.quantity <= 0)
+            {
+                _db.CartItem.Remove(cartItem);
+            } else
+            {
+                cartItem.computed_subtotal = cartItem.quantity * cartItem.variant_price;
+            }
+
+            // Recalculate cart subtotal
+            cart.subtotal = cart.CartItems
+                .Where(ci => ci.cart_item_id != cartItemID || cartItem.quantity > 0)
+                .Sum(ci => ci.quantity * ci.variant_price);
+
+            cart.updated_at = DateTime.UtcNow;
+
             await _db.SaveChangesAsync();
 
-            // Reload the cart based on the updated items above.
+            return cart;
+        }
+
+
+        public async Task<Cart?> IncreaseItem(int userID, int cartItemID, int count)
+        {
             var cart = await _db.Cart
                 .Include(c => c.CartItems)
-                .FirstAsync(c => c.cart_id == item.cart_id);
+                .FirstOrDefaultAsync(c => c.users_id == userID);
 
-            // Recalculate the cart subtotal
-            cart.subtotal = cart.CartItems.Sum(i => i.variant_price * i.quantity);
+            if (cart == null)
+            {
+                return null;
+            }
 
-            // Save changes to the database again.
+            var cartItem = cart.CartItems
+                .FirstOrDefault(ci => ci.cart_item_id == cartItemID);
+
+            if (cartItem == null)
+            {
+                return null;
+            }
+
+            cartItem.quantity += count;
+
+            cartItem.computed_subtotal = cartItem.quantity * cartItem.variant_price;
+
+            cart.subtotal = cart.CartItems
+                .Sum(ci => ci.quantity * ci.variant_price);
+
+            cart.updated_at = DateTime.UtcNow;
+
             await _db.SaveChangesAsync();
 
             return cart;
