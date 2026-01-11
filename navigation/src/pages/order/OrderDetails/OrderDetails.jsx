@@ -79,27 +79,33 @@ const OrderDetails = () => {
   return (
     <div className="order-details-container">
 
-      {/* HEADER */}
-      <div className="header-section">
-        <h1 className="page-title">Order Details</h1>
-
-        <Navbar expand="lg" className="navbar">
-          <Container>
-            <Navbar.Toggle aria-controls="center-nav" />
-            <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
-              <Nav className="ms-auto gap-4 align-items-center">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#menu">Menu</Nav.Link>
-                <Nav.Link href="#my-orders">My Orders</Nav.Link>
-                <Nav.Link href="#my-profile">My Profile</Nav.Link>
-                <Nav.Link href="#cart">
-                  <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
-                </Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      </div>
+      {/* Navbar */}
+      <Navbar expand="lg" className="navbar" fixed="top">
+  <Container>
+    <Navbar.Brand as={Link} to="/">
+      <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" />
+    </Navbar.Brand>
+    <Navbar.Toggle aria-controls="center-nav" />
+    <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
+      <Nav className="ms-auto gap-4 align-items-center">
+        <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
+        <Nav.Link as={Link} to="/order/order">Menu</Nav.Link>
+        <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
+        <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
+        <Nav.Link
+          as={Link} 
+          to="#cart"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsCartOpen(!isCartOpen);
+          }}
+        >
+          <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
+        </Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
 
       {/* MAIN CONTENT */}
       <div className="main-content">
