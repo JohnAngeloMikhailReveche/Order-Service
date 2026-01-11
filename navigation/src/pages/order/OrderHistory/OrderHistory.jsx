@@ -14,43 +14,57 @@ function App() {
 
 const navigate = useNavigate();
 
-  const [orders, setOrders] = useState([]);
-  const [activeTab, setActiveTab] = useState("All");
-  const [sortBy, setSortBy] = useState("recent");
+    const [orders, setOrders] = useState([]);
+    const [activeTab, setActiveTab] = useState("All");
+    const [sortBy, setSortBy] = useState("recent");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchedOrders = [
-      {
-        id: 1,
-        name: "Classic Matchabara Cold Brew",
-        status: "Ongoing",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 120,
-        image: classic_matchabara_cold_brew_Pic
-      },
-      {
-        id: 2,
-        name: "Classic Macchiabara Cold Brew",
-        status: "Ongoing",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 130,
-        image: classic_macchiabara_cold_brew_Pic
-      },
-      {
-        id: 3,
-        name: "Classic Coffeebara Cold Brew",
-        status: "Ongoing",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 100,
-        image: classic_coffeebara_cold_brew_Pic
-      },
-    ];
+    const userId = 101;
 
-    setOrders(fetchedOrders);
-  }, []);
+    const mapStatusForTab = (statusName) => {
+        const s = statusName?.toLowerCase();
+        if (!s) return "Ongoing";
+        const ongoing = ["placed", "preparing", "readyforpickup", "intransit"];
+        if (ongoing.includes(s)) return "Ongoing";
+        if (s === "delivered") return "Completed";
+        if (s === "cancelled" || s === "failed") return "Canceled";
+        return "Ongoing";
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`https://localhost:7237/api/Orders/history/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) return [];
+                    throw new Error("fetch failed");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const rawData = Array.isArray(data) ? data : [];
+                const mappedOrders = rawData.map(order => ({
+                    id: order.orders_id,
+                    name: `Order #${order.orders_id}`,
+                    status: mapStatusForTab(order.statusName),
+                    displayStatus: order.statusName,
+                    date: new Date(order.placed_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    price: order.total_cost,
+                    image: classic_macchiabara_cold_brew_Pic,
+                    // YASSS QUEEN! fetching the real count from the backend now 📈
+                    items: order.item_count || 0
+                }));
+
+                setOrders(mappedOrders);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("errorrrr:", err);
+                setError("Error fetching orders");
+                setLoading(false);
+            });
+    }, [userId]);
 
   const tabs = ["All", "Ongoing", "Completed", "Canceled"];
 
