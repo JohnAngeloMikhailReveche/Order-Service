@@ -107,9 +107,9 @@ const OrderStatus = () => {
                     <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
                         <Nav className="ms-auto gap-4 align-items-center">
                             <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/menu">Menu</Nav.Link>
+                            <Nav.Link as={Link} to="/order/order">Menu</Nav.Link>
                             <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/my-profile">My Profile</Nav.Link>
+                            <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
                             <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); setIsCartOpen(!isCartOpen); }}>
                                 <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
                             </Nav.Link>
