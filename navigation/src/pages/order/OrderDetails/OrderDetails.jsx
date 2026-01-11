@@ -1,18 +1,10 @@
 // App.jsx
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
-import classic_macchiabara_cold_brew_Pic from "./classic macchiabara cold brew.png";
-import classic_coffeebara_cold_brew_Pic from "./classic coffeebara cold brew.png";
-import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
-import kapebara_cart_Pic from "./kapebara cart.jpg";
-import userIcon from "./user-icon.png";
-import locationIcon from "./location-icon.png";
-import contactIcon from "./contact-icon.png";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './OrderDetails.css';
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import './App.css';
+
+const kapebara_cart_Pic = "/assets/kapebara cart.jpg";
 
 
 const ORDER_STATUS = {
