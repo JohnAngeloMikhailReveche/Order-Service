@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using Microsoft.OpenApi.Models;
 using OrderService.Data;
 using OrderService.Models;
+using OrderService.Models.DTO;
 
 namespace OrderService.Services
 {
@@ -80,6 +81,22 @@ namespace OrderService.Services
             return await _db.Cart
                 .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.users_id == userId);
+        }
+
+        public async Task<List<CartItemDTO>> ViewCartItems(int userId)
+        {
+            return await _db.Cart
+                .Where(c => c.users_id == userId)
+                .SelectMany(c => c.CartItems)
+                .Select(item => new CartItemDTO
+                {
+                    cart_item_id = item.cart_item_id,
+                    item_name = item.item_name,
+                    variant_name = item.variant_name,
+                    quantity = item.quantity,
+                    img_url = item.img_url
+                })
+                .ToListAsync();
         }
 
         public async Task<Cart> RemoveItem(int userID, int cartItemID, int quantityToRemove)
