@@ -54,6 +54,20 @@ namespace OrderService.Controllers
             return Ok(cart);
         }
 
+        // View the Cart Items
+        [HttpGet("item/user/cart/items/{userId}")]
+        public async Task<IActionResult> ViewCartItems(int userId)
+        {
+            var cartItems = await _cartService.ViewCartItems(userId);
+
+            if(cartItems == null || !cartItems.Any())
+            {
+                return NotFound(new { message = "Cart is empty." });
+            }
+
+            return Ok(cartItems);
+        }
+
         // Remove Cart Item
         [HttpDelete("item/{cartItemID}")]
         public async Task<IActionResult> RemoveItemFromCart(
