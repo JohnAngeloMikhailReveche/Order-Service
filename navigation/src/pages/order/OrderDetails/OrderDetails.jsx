@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './OrderDetails.css';
 
 const kapebara_cart_Pic = "/assets/kapebara cart.jpg";
 
