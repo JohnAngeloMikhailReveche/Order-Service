@@ -4,6 +4,7 @@ import OrderStatus from "./pages/order/OrderStatus/OrderStatus";
 import OrderHistory from "./pages/order/OrderHistory/OrderHistory";
 import OrderDetails from "./pages/order/OrderDetails/OrderDetails";
 import AdminDashboard from "./pages/admin/AdminDashboard/AdminDashboard";
+import AdminCancellations from "./pages/admin/AdminCancellations/AdminCancellations";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/order/orderhistory" element={<OrderHistory />} />
         <Route path="/order/orderdetails" element={<OrderDetails />} />
         <Route path="/admin/admindashboard" element={<AdminDashboard />} />
+        <Route path="/admin/admincancellations" element={<AdminCancellations />} />
       </Routes>
     </BrowserRouter>
   );
