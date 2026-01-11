@@ -3,8 +3,33 @@ import "./App.css";
 
 export default function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
   
   const userID = 1; // Example user ID - This is based on our Database, the Order Service DB one where the userID also lives.
+
+  const API_BASE = "https://localhost:7237/api/Cart";
+
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/user/cart/${userID}`);
+      const cart = await response.json();
+
+      setCartItems(
+        cart.cartItems.map(item => ({
+          id: item.cart_item_id,
+          name: item.item_name,
+          size: item.variant_name,
+          price: item.variant_price,
+          quantity: item.quantity,
+          image: item.img_url
+        }))
+      );
+
+      setCartTotal(cart.subtotal);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // This part is a bit confusing since in the fetch part.
   /*
@@ -13,34 +38,57 @@ export default function App() {
     Third you must use `` back ticks instead of '' single quotes for the fetch URL to work with the ${userID} variable.
   */
   useEffect(() => {
-    fetch(`https://localhost:7237/api/Cart/user/cart/items/${userID}`)
-      .then(response => response.json())
-      .then(items => {
-        setCartItems(
-          items.map(item => ({
-            id: item.cart_item_id,
-            name: item.item_name,
-            size: item.variant_name,
-            price: item.variant_price,
-            quantity: item.quantity,
-            image: item.img_url
-          }))
-        );
-      })
-      .catch(err => console.error(err));
-    }, [userID]);
+    fetchCart();
+  }, [userID]);
 
-  const updateQuantity = (id, change) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
-      )
-    );
+
+  const updateQuantity = async (cartItemID, change) => {
+    if (change < 0) {
+      // Decrease the quantity
+      try {
+        await fetch(
+          `${API_BASE}/item/${cartItemID}?userID=${userID}&quantityToRemove=1`,
+          { method: "DELETE" }
+        );
+
+        fetchCart(); // Refresh cart items after update
+      } catch (err) {
+        console.error(err);
+      }
+
+    } else {
+      // Increase Quantity
+      if (change > 0) {
+        try {
+          await fetch(
+            `${API_BASE}/item/${cartItemID}/increase?userID=${userID}&count=1`,
+            { method: "PATCH" }
+          );
+
+          fetchCart(); // Refresh cart items after update
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+    }
+
+  }
+
+  const removeItem = async (cartItemID) => {
+    try {
+      await fetch(
+        `${API_BASE}/item/${cartItemID}?userID=${userID}&quantityToRemove=999`,
+        { method: "DELETE" }
+      );
+
+      fetchCart(); // Refresh cart items after deletion
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const removeItem = (id) => setCartItems((prev) => prev.filter((item) => item.id !== id));
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <div className="container-fluid p-4" style={{ paddingBottom: "220px" }}>
@@ -129,7 +177,7 @@ export default function App() {
             </div>
             <div className="d-flex justify-content-between">
               <strong>Estimated Total:</strong>
-              <strong>₱{total.toFixed(2)}</strong>
+              <strong>₱{cartTotal.toFixed(2)}</strong>
             </div>
           </div>
         </div>
