@@ -20,7 +20,7 @@ namespace OrderService.Controllers
             _context = context;
         }
 
-        // CUSTOMER METHODS
+        // --- CUSTOMER METHODS ---
 
         [HttpPost("request-cancellation")]
         public async Task<IActionResult> RequestCancellation([FromBody] CancellationRequestDto request)
@@ -37,7 +37,7 @@ namespace OrderService.Controllers
         [HttpPatch("status")]
         public async Task<IActionResult> UpdateStatus([FromBody] OrderStatusDto request)
         {
-            if (request == null) return BadRequest(new { message = "body is empty, sis!" });
+            if (request == null) return BadRequest(new { message = "Body is empty" });
 
             string role = request.UserRole?.ToLower() ?? "customer";
             if (role == "string") role = "customer";
@@ -48,22 +48,27 @@ namespace OrderService.Controllers
             return BadRequest(new { message = result });
         }
 
-        // SORTING & FILTERING 
-
         [HttpGet("history/{userId}")]
         public async Task<IActionResult> GetOrderHistory(
             int userId,
-            [FromQuery] string filter = "all",
-            [FromQuery] string sortOrder = "newest")
+            [FromQuery] string filter = "all", // options: all, ongoing, completed, cancelled
+            [FromQuery] string sortOrder = "newest") // options: newest, oldest
         {
-            var query = _context.Orders
-                .Where(o => o.users_id == userId)
-                .AsQueryable();
-
+            var query = _context.Orders.Where(o => o.users_id == userId).AsQueryable();
             return await ApplyFiltersAndReturn(query, filter, sortOrder);
         }
 
-        // ADMIN METHODS
+        // --- ADMIN METHODS ---
+
+        [HttpGet("admin/history")]
+        public async Task<IActionResult> GetAdminOrderHistory(
+            [FromQuery] string filter = "all",
+            [FromQuery] string sortOrder = "newest")
+        {
+            // Admin version: start with all orders across all users
+            var query = _context.Orders.AsQueryable();
+            return await ApplyFiltersAndReturn(query, filter, sortOrder);
+        }
 
         [HttpGet("admin/pending-cancellations")]
         public async Task<IActionResult> GetPendingCancellations()
@@ -74,13 +79,13 @@ namespace OrderService.Controllers
                     o.orders_id,
                     o.users_id,
                     o.cancellation_reason,
+                    o.item_count,
                     Status = ((OrderStatus)o.status).ToString(),
                     o.total_cost,
-                    o.item_count, // added for admin visibility!
                     o.placed_at
                 }).ToListAsync();
 
-            if (!pending.Any()) return Ok(new { message = "no pending drama! the vibes are immaculate. ✨" });
+            if (!pending.Any()) return Ok(new { message = "No pending drama! The vibes are immaculate. ✨" });
             return Ok(pending);
         }
 
@@ -88,7 +93,7 @@ namespace OrderService.Controllers
         public async Task<IActionResult> ReviewCancellation([FromBody] AdminCancellationReviewDto review)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == review.OrderId);
-            if (order == null) return NotFound(new { message = "order not found" });
+            if (order == null) return NotFound(new { message = "Order not found" });
 
             if (review.Approve)
             {
@@ -99,18 +104,19 @@ namespace OrderService.Controllers
                     UserRole = "admin"
                 };
                 await _statusService.UpdateStatusAsync(dto);
-                return Ok(new { message = "cancellation approved! refund in progress." });
+                return Ok(new { message = "Cancellation approved! Refund in progress." });
             }
 
             order.cancellation_requested = false;
             await _context.SaveChangesAsync();
-            return Ok(new { message = "request declined! the kitchen is still cooking." });
+            return Ok(new { message = "Request declined! The kitchen is still cooking." });
         }
 
-        // --- 💎 SHARED HELPER LOGIC ---
+        // --- SHARED HELPER LOGIC ---
 
         private async Task<IActionResult> ApplyFiltersAndReturn(IQueryable<Orders> query, string filter, string sortOrder)
         {
+            // 1. Apply Status Filters
             switch (filter.ToLower())
             {
                 case "ongoing":
@@ -124,6 +130,7 @@ namespace OrderService.Controllers
                     break;
             }
 
+            // 2. Handle Date Sorting
             if (sortOrder.ToLower() == "oldest")
                 query = query.OrderBy(o => o.placed_at);
             else
@@ -131,13 +138,14 @@ namespace OrderService.Controllers
 
             var ordersList = await query.ToListAsync();
 
+            // 3. Map to Result
             var resultList = ordersList.Select(o => new {
                 o.orders_id,
-                o.users_id,
+                o.users_id, // Useful for admin to see who placed the order
                 o.total_cost,
-                o.item_count, // passing the count from the cart service! 
                 o.placed_at,
                 o.fulfilled_at,
+                o.item_count,
                 StatusValue = o.status,
                 StatusName = ((OrderStatus)o.status).ToString(),
                 o.payment_method,
@@ -146,7 +154,7 @@ namespace OrderService.Controllers
             });
 
             if (!resultList.Any())
-                return Ok(new { message = $"no {filter} orders found here! time to shop? 🛍️" });
+                return Ok(new { message = $"No {filter} orders found here! " });
 
             return Ok(resultList);
         }

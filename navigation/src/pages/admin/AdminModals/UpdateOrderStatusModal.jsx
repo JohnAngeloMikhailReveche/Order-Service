@@ -7,11 +7,10 @@ function UpdateOrderStatusModal({
   onUpdateStatus, // Callback when status is updated
   initialStatus // Initial status from orderData
 }) {
-  // Default mock data for testing (remove in production)
+  // Minimal fallback for safety
   const defaultOrderData = {
-    orderId: "123-456-789",
-    orderDate: "2025-10-13",
-    customerName: "Bruno Decano"
+    orderId: "unknown",
+    orderDate: "unknown"
   };
 
   const data = orderData || defaultOrderData;
@@ -101,8 +100,7 @@ function UpdateOrderStatusModal({
             onChange={(e) => setStatus(e.target.value)}
           >
             <option>Preparing</option>
-            <option>Out for Delivery</option>
-            <option>Delivered</option>
+            <option>Ready for Pickup</option>
             <option>Cancelled</option>
           </select>
         </div>
