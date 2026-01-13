@@ -79,7 +79,7 @@ const OrderDetails = () => {
   return (
     <div className="order-details-container">
 
-      {/*NavBar*/}
+      {/* Navbar */}
       <Navbar expand="lg" className="navbar" fixed="top">
   <Container>
     <Navbar.Brand as={Link} to="/">
@@ -107,7 +107,7 @@ const OrderDetails = () => {
   </Container>
 </Navbar>
 
-      {/* MAIN CONTENT */}
+{/* MAIN CONTENT */}
       <div className="main-content">
 
         {/* LEFT COLUMN */}
@@ -139,7 +139,7 @@ const OrderDetails = () => {
             ))}
           </div>
 
-          {/* FOOTER */}
+{/* FOOTER */}
           <div className="order-footer">
             <div className="left-footer">
               <span className={`status-badge ${statusClass}`}>
@@ -184,7 +184,7 @@ const OrderDetails = () => {
               </div>
             </div>
 
-            <div className="timeline">
+              <div className="timeline">
               {Object.entries(orderData.timeline).map(([label, value]) => (
                 <div className="timeline-item" key={label}>
                   <span className="timeline-label">
@@ -224,6 +224,7 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
