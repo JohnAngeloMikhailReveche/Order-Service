@@ -79,7 +79,7 @@ const OrderDetails = () => {
   return (
     <div className="order-details-container">
 
-      {/* Navbar */}
+      {/*NavBar*/}
       <Navbar expand="lg" className="navbar" fixed="top">
   <Container>
     <Navbar.Brand as={Link} to="/">
@@ -224,7 +224,6 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
