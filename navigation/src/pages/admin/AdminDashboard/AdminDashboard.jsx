@@ -22,6 +22,7 @@ function App() {
     const [newStatus, setNewStatus] = useState("");
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false); // added to avoid undefined reference
+    const [isOrderReadOnly, setIsOrderReadOnly] = useState(false); // whether update should be disabled for the selected order
 
     // --- HELPER FUNCTIONS ---
     const fetchWithRetry = async (url, options = {}, retries = 5, backoff = 1000) => {
@@ -57,6 +58,39 @@ function App() {
         }
     };
 
+    // Format status strings for UI (insert spaces for ReadyForPickup / InTransit, normalize casing)
+    const formatStatusLabel = (raw) => {
+        if (!raw && raw !== 0) return "";
+        let s = String(raw).trim();
+
+        // Remove surrounding quotes if any
+        s = s.replace(/^["']|["']$/g, "");
+
+        // Convert snake/kebab to spaces
+        s = s.replace(/[_\-]/g, " ");
+
+        // Insert spaces between camel/pascal case boundaries: ReadyForPickup -> Ready For Pickup
+        s = s.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+        // Normalize multiple spaces
+        s = s.replace(/\s+/g, " ").trim();
+
+        const lower = s.toLowerCase();
+
+        // Specific friendly mappings
+        if (lower === "readyforpickup" || (lower.includes("ready") && lower.includes("pickup"))) return "Ready for Pickup";
+        if (lower === "intransit" || (lower.includes("in") && lower.includes("transit"))) return "In Transit";
+        if (lower.includes("cancel")) return "Cancelled";
+        if (lower.includes("deliver")) return "Delivered";
+        if (lower.includes("completed")) return "Completed";
+        if (lower.includes("prepar")) return "Preparing";
+
+        // Fallback: Title-case each word but keep 'for' lowercase
+        const words = s.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+        // preserve small word "for" as lowercase
+        return words.map(w => (w.toLowerCase() === "for" ? "for" : w)).join(" ");
+    };
+
     // --- THE LIVE LOAD FUNCTION ---
     const loadOrders = async () => {
         try {
@@ -79,7 +113,7 @@ function App() {
                         id: o.orders_id,
                         name: `Order ${o.orders_id}`,
                         status: displayStatus,
-                        progress: o.statusName,
+                        progress: o.statusName, // keep raw status here; UI will format
                         items: o.item_count,
                         date: formatOrderDate(o.placed_at),
                         price: o.total_cost,
@@ -96,28 +130,29 @@ function App() {
                 setOrders([]);
             }
         } catch (err) {
-            console.error("The backend is being a hater, sis:", err);
+            console.error("Error:", err);
         }
     };
 
-    // Trigger load on tab/sort change
     useEffect(() => {
         loadOrders();
     }, [activeTab, sortBy]);
 
     const tabs = ["All", "Ongoing", "Completed", "Canceled"];
 
-    // Filtering is now handled by the backend query, but we keep this for consistency
     const filteredOrders = orders;
 
     const openModal = (order) => {
         setSelectedOrder(order);
-        if (order.status === "Canceled" || order.cancellationRequested) {
-            setModalMode("cancel");
-            setModalShow(true);
-        } else {
-            setShowUpdateModal(true);
-        }
+
+        // Always open the modal. If order is cancelled, show modal but make it read-only.
+        const isCancelled = order.status === "Canceled" || order.cancellationRequested;
+        setIsOrderReadOnly(isCancelled);
+
+        // keep modalMode for backward compatibility but we will always show the details modal
+        setModalMode(isCancelled ? "cancel" : "update");
+
+        setShowUpdateModal(true);
         setNewStatus(order.status);
     };
 
@@ -125,6 +160,9 @@ function App() {
         const statusMap = {
             "Preparing": 2,
             "Ready for Pickup": 3,
+            "In Transit": 4,
+            "Delivered": 5,
+            "Completed": 6,
             "Cancel": 7,
             "Cancelled": 7
         };
@@ -143,10 +181,7 @@ function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-
-            // Accept 200/201/204 as success. If body exists, try to parse it.
             if (res.ok) {
-                // If server returns JSON, parse it; ignore if empty
                 const text = await res.text().catch(() => '');
                 if (text) {
                     try { JSON.parse(text); } catch { /* non-json body is fine */ }
@@ -155,17 +190,15 @@ function App() {
                 return;
             }
 
-            // Non-ok status — try to get server message
             const errText = await res.text().catch(() => '');
             throw new Error("Status can't go backwards.");
         } catch (err) {
             console.error("Error updating order status:", err);
-            throw err; // let modal show the error and clear its loader
+            throw err;
         }
     };
 
     const handleApproveCancel = () => {
-        // In a real app, you'd call a PATCH/POST here too!
         setModalShow(false);
         loadOrders();
     };
@@ -259,14 +292,15 @@ function App() {
                                         <Col>
                                             <div className="fw-semibold">Order #{order.id}</div>
                                             <div
-                                                className={`fw-semibold ${order.status === "Ongoing"
+                                                className={`fw-semibold ${
+                                                    order.status === "Ongoing"
                                                         ? "text-warning"
                                                         : order.status === "Completed"
                                                             ? "text-success"
                                                             : "text-danger"
-                                                    }`}
+                                                }`}
                                             >
-                                                {order.progress || order.status}
+                                                {formatStatusLabel(order.progress || order.status)}
                                             </div>
 
                                             <div className="text-muted small">
@@ -294,9 +328,14 @@ function App() {
                         orderId: selectedOrder.id,
                         // pass the already-formatted date string from the order list
                         orderDate: selectedOrder.date,
+                        // map customer name (placeholder) from the order object
+                        customerName: selectedOrder.customerName || "Guest User",
+                        cancelReason: selectedOrder.cancelReason,
+                        cancelNotes: selectedOrder.cancelNotes
                     }}
                     initialStatus={selectedOrder.progress}
                     onUpdateStatus={handleUpdateStatusAction}
+                    allowUpdate={!isOrderReadOnly} // disable updates when the selected order is cancelled
                 />
             )}
         </>

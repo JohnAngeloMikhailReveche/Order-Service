@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|c:\\users\\kathl\\source\\repos\\webdev order service\\order-microservice\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -62,6 +66,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "OrderStatus.cs",
+              "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatus.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\OrderStatus.cs",
+              "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderStatus.cs",
+              "RelativeToolTip": "OrderService\\Models\\OrderStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T18:57:30.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "OrderController.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Controllers\\OrderController.cs",
               "RelativeDocumentMoniker": "OrderService\\Controllers\\OrderController.cs",
@@ -69,12 +86,11 @@
               "RelativeToolTip": "OrderService\\Controllers\\OrderController.cs",
               "ViewState": "AgIAAD8AAAAAAAAAAAA2wI0AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:07:45.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-09T17:07:45.977Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Microsoft.PackageDependencyResolution.targets",
               "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\10.0.101\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.PackageDependencyResolution.targets",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\10.0.101\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.PackageDependencyResolution.targets",
@@ -86,7 +102,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\OrderItem.cs",
@@ -98,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "OrderFeedback.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderFeedback.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\OrderFeedback.cs",
@@ -110,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Orders.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\Orders.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\Orders.cs",
@@ -122,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Program.cs",
               "RelativeDocumentMoniker": "OrderService\\Program.cs",
@@ -134,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "CartController.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "OrderService\\Controllers\\CartController.cs",
@@ -146,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "OrderDbContext.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
               "RelativeDocumentMoniker": "OrderService\\Data\\OrderDbContext.cs",
@@ -158,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "20251231085914_AddRefundStatusMapping.cs",
               "DocumentMoniker": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Migrations\\20251231085914_AddRefundStatusMapping.cs",
               "RelativeDocumentMoniker": "OrderService\\Migrations\\20251231085914_AddRefundStatusMapping.cs",
