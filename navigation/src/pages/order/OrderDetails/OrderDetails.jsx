@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './OrderDetails.css';
+import './App.css';
 
 
 const kapebara_cart_Pic = "/assets/kapebara cart.jpg";
@@ -94,7 +94,7 @@ const OrderDetails = () => {
       <div className="header-section">
         <h1 className="page-title">Order Details</h1>
 
-        {/* NAVBAR */}
+
         <Navbar expand="lg" className="navbar">
           <Container>
             <Navbar.Toggle aria-controls="center-nav" />
@@ -258,3 +258,6 @@ const OrderDetails = () => {
 
 
 export default OrderDetails;
+
+
+
