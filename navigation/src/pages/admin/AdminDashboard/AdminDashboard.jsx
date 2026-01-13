@@ -21,7 +21,7 @@ function App() {
     const [modalMode, setModalMode] = useState("update");
     const [newStatus, setNewStatus] = useState("");
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [isCartOpen, setIsCartOpen] = useState(false); // added to avoid undefined reference
+    const [isCartOpen, setIsCartOpen] = useState(false); 
     const [isOrderReadOnly, setIsOrderReadOnly] = useState(false); // whether update should be disabled for the selected order
 
     // --- HELPER FUNCTIONS ---
@@ -40,21 +40,26 @@ function App() {
     };
 
     const formatOrderDate = (dateString) => {
-        if (!dateString) return "no date, rip";
+        // New format: "Jan 12, 2026 - 5:14 PM"
+        if (!dateString) return "No date";
         try {
             const d = new Date(dateString);
-            if (isNaN(d.getTime())) return "invalid date";
-            const pad = (n) => n.toString().padStart(2, '0');
-            const month = pad(d.getMonth() + 1);
-            const day = pad(d.getDate());
-            const year = d.getFullYear().toString().slice(-2);
-            const hours = pad(d.getHours());
-            const minutes = pad(d.getMinutes());
-            const seconds = pad(d.getSeconds());
-            return `${month}/${day}/${year} - ${hours}:${minutes}:${seconds}`;
+            if (isNaN(d.getTime())) return "Invalid date";
+
+            // Date part: "Jan 12, 2026"
+            const datePart = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            // Time part: 12-hour with minutes and AM/PM
+            let hours = d.getHours();
+            const minutes = d.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            if (hours === 0) hours = 12;
+
+            return `${datePart} - ${hours}:${minutes} ${ampm}`;
         } catch (e) {
-            console.error("it's a flop:", e);
-            return "error lol";
+            console.error("Error", e);
+            return "error";
         }
     };
 
@@ -113,7 +118,7 @@ function App() {
                         id: o.orders_id,
                         name: `Order ${o.orders_id}`,
                         status: displayStatus,
-                        progress: o.statusName, // keep raw status here; UI will format
+                        progress: o.statusName, 
                         items: o.item_count,
                         date: formatOrderDate(o.placed_at),
                         price: o.total_cost,
