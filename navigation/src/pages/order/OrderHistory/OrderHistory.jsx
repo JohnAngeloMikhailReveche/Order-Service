@@ -8,8 +8,6 @@ import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-
-
 function App() {
 
 const navigate = useNavigate();
@@ -52,7 +50,6 @@ const navigate = useNavigate();
                     date: new Date(order.placed_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }),
                     price: order.total_cost,
                     image: classic_macchiabara_cold_brew_Pic,
-                    // YASSS QUEEN! fetching the real count from the backend now 📈
                     items: order.item_count || 0
                 }));
 
@@ -146,7 +143,7 @@ const navigate = useNavigate();
             </div>
           ) : (
             filteredOrders.map((order) => (
-              <Card key={order.id} className="mb-3 border-0 shadow-sm" style={{ cursor: "pointer"}} onClick={() => navigate("/order/orderdetails")}>
+              <Card key={order.id} className="mb-3 border-0 shadow-sm" style={{ cursor: "pointer"}} onClick={() => navigate("/order/orderdetails", { state: { orderId: order.id } })}>
                 <Card.Body>
                   <Row className="align-items-center">
                     {/* Image */}

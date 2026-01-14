@@ -423,7 +423,25 @@ h1, h2, h3, h4 {
   min-width: 80px;
 }
 
-.request-for-refund-btn:hover {
+/* Disabled state for request button (matches OrderStatus disabled color) */
+.request-for-refund-btn:disabled,
+.request-for-refund-btn[aria-disabled="true"] {
+  background-color: #ccc;
+  color: #ffffff;
+  cursor: default;
+  opacity: 0.9;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* Prevent hover visual change when disabled */
+.request-for-refund-btn:disabled:hover,
+.request-for-refund-btn[aria-disabled="true"]:hover {
+  background-color: #ccc;
+}
+
+/* Keep original hover for enabled */
+.request-for-refund-btn:hover:not(:disabled) {
   background-color: #333;
 }
 

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrderService.Models
 {
@@ -10,11 +10,12 @@ namespace OrderService.Models
         public int item_variant_id { get; set; }
         public string? item_name { get; set; }
         public string? item_description { get; set; }
+        public string? img_url { get; set; }
         public string? variant_name { get; set; }
         public decimal variant_price { get; set; }
         public int quantity { get; set; }
-        public string? special_instructions { get; set; }
         public decimal line_subtotal { get; set; }
+        public string? special_instructions { get; set; }
         public virtual Orders? Order { get; set; }
     }
 }
