@@ -73,8 +73,7 @@
               "RelativeToolTip": "OrderService\\Models\\OrderStatus.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-12T18:57:30.248Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-12T18:57:30.248Z"
             },
             {
               "$type": "Document",
@@ -86,8 +85,7 @@
               "RelativeToolTip": "OrderService\\Controllers\\OrderController.cs",
               "ViewState": "AgIAAIcAAAAAAAAAAAAawIoAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:07:45.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-09T17:07:45.977Z"
             },
             {
               "$type": "Document",
@@ -109,7 +107,7 @@
               "RelativeDocumentMoniker": "OrderService\\Models\\OrderItem.cs",
               "ToolTip": "C:\\Users\\kathl\\source\\repos\\WebDev Order Service\\Order-Microservice\\OrderService\\Models\\OrderItem.cs",
               "RelativeToolTip": "OrderService\\Models\\OrderItem.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAIwA8AAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAowAsAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-28T08:58:48.674Z",
               "EditorCaption": ""

@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Container, Nav, Card, Row, Col, ButtonGroup, ToggleButton, Button, Modal, Form } from "react-bootstrap";
+import {
+    Navbar,
+    Container,
+    Nav,
+    Card,
+    Row,
+    Col,
+    Button,
+    Spinner,
+    Alert,
+    Modal,
+    Form,
+    Badge
+} from "react-bootstrap";
 import "./AdminCancellations.css";
 import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
 import classic_macchiabara_cold_brew_Pic from "./classic macchiabara cold brew.png";
@@ -12,110 +25,138 @@ import ReviewCancellationModal from "../AdminModals/ReviewCancellationModal";
 
 
 function App() {
-  const [orders, setOrders] = useState([]);
-  const [activeTab, setActiveTab] = useState("All");
-  const [sortBy, setSortBy] = useState("recent");
-  const [modalShow, setModalShow] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [modalMode, setModalMode] = useState("update");
-  const [newStatus, setNewStatus] = useState("");
-  const [showCancelModal, setShowCancelModal] = useState(false);
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState("All");
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [sortBy, setSortBy] = useState("recent");
 
-  useEffect(() => {
-    const fetchedOrders = [
-      {
-        id: 1230001,
-        name: "Classic Matchabara Cold Brew",
-        status: "Canceled",
-        progress: "Canceled",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 120,
-        cancelReason: "Changed my mind",
-        cancelNotes: "hehe",
-        image: classic_matchabara_cold_brew_Pic
-      },
-      {
-        id: 1230002,
-        name: "Classic Macchiabara Cold Brew",
-        status: "Canceled",
-        progress: "Canceled",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 130,
-        cancelReason: "Changed my mind",
-        cancelNotes: "N/A",
-        image: classic_macchiabara_cold_brew_Pic
-      },
-      {
-        id: 1230003,
-        name: "Classic Coffeebara Cold Brew",
-        status: "Canceled",
-        progress: "Canceled",
-        items: 1,
-        date: "2025-12-04T10:00:00",
-        price: 100,
-        cancelReason: "Changed my mind",
-        cancelNotes: "N/A",
-        image: classic_coffeebara_cold_brew_Pic
-      },
-    ];
+    // the date formatter you requested: "Jan 16, 2026 - 10:37 AM"
+    const formatOrderDate = (dateString) => {
+        if (!dateString) return "no date, sis";
 
-    setOrders(fetchedOrders);
-  }, []);
+        try {
+            // we handle the date string like a pro
+            const d = new Date(dateString);
 
-  const tabs = ["All", "Ongoing", "Completed", "Canceled"];
+            // if the date is being a diva (invalid)
+            if (isNaN(d.getTime())) {
+                // sometimes SQL dates need a little nudge (replacing space with T)
+                const retryDate = new Date(String(dateString).replace(' ', 'T'));
+                if (isNaN(retryDate.getTime())) return "invalid date";
+                return formatFinal(retryDate);
+            }
 
-  const filteredOrders = (
-    activeTab === "All"
-      ? orders
-      : orders.filter((o) => o.status === activeTab)
-  ).sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return sortBy === "recent" ? dateB - dateA : dateA - dateB;
-   
-  });
+            return formatFinal(d);
+        } catch (e) {
+            console.error("date error:", e);
+            return "error";
+        }
+    };
 
-  const openCancelModal = (order) => {
-    if (order.status === "Canceled") {
-      setSelectedOrder(order);
-      setShowCancelModal(true);
+    // helper to keep the logic clean like a fresh ariana high note
+    const formatFinal = (d) => {
+        // "Jan 16, 2026"
+        const datePart = d.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+
+        // "10:37 AM"
+        let hours = d.getHours();
+        const minutes = d.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        if (hours === 0) hours = 12;
+
+        return `${datePart} - ${hours}:${minutes} ${ampm}`;
+    };
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`https://localhost:7237/api/General/orders`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        setOrders([]);
+                        return;
+                    }
+                    throw new Error("api is not responding, it's in its silent era.");
+                }
+
+                const data = await response.json();
+                const rawData = Array.isArray(data) ? data : [];
+
+                const mappedOrders = rawData
+                    .filter(order => order.cancellation_requested == 1 || order.cancellation_requested === true)
+                    .map(order => {
+                        let statusLabel = "Unknown";
+                        let colorClass = "text-secondary";
+
+                        if (order.status == 1) {
+                            statusLabel = "Placed";
+                            colorClass = "text-warning bg-light";
+                        } else if (order.status == 2) {
+                            statusLabel = "Preparing";
+                            colorClass = "text-info bg-light";
+                        } else {
+                            statusLabel = order.status || "Pending";
+                        }
+
+                        return {
+                            id: order.orders_id,
+                            name: `Order #${order.orders_id}`,
+                            status: statusLabel,
+                            statusColor: colorClass,
+                            date: order.placed_at,
+                            displayDate: formatOrderDate(order.placed_at),
+                            price: order.total_cost || 0,
+                            image: classic_coffeebara_cold_brew_Pic,
+                            items: order.item_count || 0,
+                            cancelReason: order.cancellation_reason || "No reason provided.",
+                            cancelNotes: order.cancellation_notes || ""
+                        };
+                    });
+
+                setOrders(mappedOrders);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
+    const openCancelModal = (order) => {
+        setSelectedOrder(order);
+        setShowCancelModal(true);
+    };
+
+    const filteredOrders = orders
+        .filter(o => {
+            if (activeTab === "All") return true;
+            return o.status === activeTab;
+        })
+        .sort((a, b) => {
+            if (sortBy === "recent") return new Date(b.date) - new Date(a.date);
+            return new Date(a.date) - new Date(b.date);
+        });
+
+    if (loading) {
+        return (
+            <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "100vh", backgroundColor: "#fdf8f5" }}>
+                <Spinner animation="border" variant="warning" />
+                <p className="mt-3 fw-bold text-secondary text-center">nagtitimpla pa ng data... ✨</p>
+            </div>
+        );
     }
-  };
-
-  const handleUpdateOrderStatus = (orderId, status) => {
-    setOrders(prev =>
-      prev.map(order =>
-        order.id === orderId
-        ? { ...order, progress: status, status: newStatus === "Delivered" ? "Completed" : "Ongoing" }
-        : order
-      )
-    );
-    setShowUpdateModal(false);
-  };
-
-  const handleApproveCancel = () => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === selectedOrder.id
-        ? { ...order, status: "Canceled" }
-        : order
-      )
-    );
-    setModalShow(false);
-  };
-
-  const handleRejectCancel = () => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === selectedOrder.id
-        ? { ...order, status: "Ongoing", cancelReason: null }
-        : order
-      )
-    );
-    setModalShow(false);
-  };
 
   return (
     <>
@@ -199,7 +240,7 @@ function App() {
                       </div>
 
                       <div className="text-muted small">
-                        {order.items} Item(s) · {order.date}
+                        { order.items } Item(s) · {order.displayDate}
                       </div>
                     </Col>
 
@@ -216,30 +257,30 @@ function App() {
       </div>
 
 {/*MODALS*/}
-{showCancelModal && selectedOrder && (
-  <ReviewCancellationModal
-    onClose={() => setShowCancelModal(false)}
-    onApprove={() => {
-      // cancel order logic
-      setOrders(prev => prev.map(o => o.id === selectedOrder.id ? {...o, status:"Canceled"} : o));
-      setShowCancelModal(false);
-    }}
-    onDecline={() => {
-      // keep order logic
-      setOrders(prev => prev.map(o => o.id === selectedOrder.id ? {...o, status:"Ongoing", cancelReason:null} : o));
-      setShowCancelModal(false);
-    }}
-    orderData={{
-      orderId: selectedOrder.id,
-      orderDate: new Date(selectedOrder.date).toLocaleDateString(),
-      customerName: "Customer Name",
-      orderStatus: selectedOrder.progress,
-      cancellationDate: new Date(selectedOrder.date).toLocaleDateString(),
-      reason: selectedOrder.cancelReason,
-      customerNotes: selectedOrder.cancelNotes,
-    }}
-  />
-)}
+    {showCancelModal && selectedOrder && (
+       <ReviewCancellationModal
+          onClose={() => setShowCancelModal(false)}
+          onApprove={() => {
+               // cancel order logic
+                setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, status: "Canceled" } : o));
+                setShowCancelModal(false);
+          }}
+          onDecline={() => {
+                // keep order logic
+                  setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, status: "Ongoing", cancelReason: null } : o));
+                  setShowCancelModal(false);
+                  }}
+          orderData={{
+                orderId: selectedOrder.id,
+                orderDate: selectedOrder.displayDate, // ✨ using your formatted date!
+                customerName: "Customer Name", // ✨ placeholder as requested
+                orderStatus: selectedOrder.status, // ✨ using status not progress
+                cancellationDate: selectedOrder.displayDate, // keeping for now, you'll remove later
+                reason: selectedOrder.cancelReason,
+                customerNotes: selectedOrder.cancelNotes || "No additional notes provided", // ✨ fallback text
+                  }}
+              />
+          )}
     </>
   );
 }
