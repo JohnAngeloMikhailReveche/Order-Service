@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using OrderService.Data;
 using OrderService.Models;
 using OrderService.Models.DTO;
+using OrderService.Models.MenuServiceDTO;
 
 namespace OrderService.Services
 {
@@ -21,13 +22,36 @@ namespace OrderService.Services
 
         public async Task<Cart> AddItem (
                 int menuId,
+                //int variantId,
                 int userId
             )
         {
 
+            // Get the menu item information
             // Get /menu/item/{id}
             var menuItem = await _menuClient.GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
 
+            // ------------------------------
+            // Get the menu item with the variants. (This is to be made when this is switched to the mono repo)
+            /*
+            var item = await _menuClient.GetFromJsonAsync<MenuItemDTO>($"/api/menu-items/{menuId}");
+
+            if (item == null)
+            {
+                throw new Exception("Invalid item");
+            }
+
+            var variant = item.variants
+                .FirstOrDefault(v => v.variantId == variantId);
+
+            if (variant == null)
+            {
+                throw new Exception("Invalid variant");
+            }
+            */
+            // ------------------------------
+
+            // Add it to the cart/cart items
             if (menuItem == null)
                 throw new Exception("Item does not exist.");
 
