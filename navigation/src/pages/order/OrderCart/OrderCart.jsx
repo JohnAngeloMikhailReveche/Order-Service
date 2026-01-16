@@ -309,39 +309,45 @@ const navigate = useNavigate();
                       <Card.Title className="product-price">₱{price}.00</Card.Title>
                     </div>
 
-                    <Row className="control-row">
-                      <Col xs={6} className="text-left mb-1">Quantity</Col>
-                      <Col xs={6} className="text-left mb-1">Size</Col>
-                    </Row>
-
-                    <Row className="control-row">
-                      <Col xs={6} className="d-flex justify-content-start">
-                        <div className="quantity-stepper">
-                          <Button
-                            variant="light"
-                            onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                            className="quantity-btn"
-                          >
-                            -
-                          </Button>
-                          <span className="cart-quantity-display">{quantity}</span>
-                          <Button
-                            variant="light"
-                            onClick={() => setQuantity(q => q + 1)}
-                            className="quantity-btn"
-                          >
-                            +
-                          </Button>
-                        </div>
-                      </Col>
+                                      {/* Labels */}
+                                      <Row style={{ width: '100%', marginBottom: '10px', fontWeight: 500 }}>
+                                        <Col xs={6} className="text-left mb-1">Quantity</Col>
+                                        <Col xs={6} className="text-left mb-1">Size</Col>
+                                      </Row>
+                    
+                                      {/* Stepper + Size Boxes */}
+                                      <Row style={{ width: '100%', marginBottom: '15px' }}>
+                    
+                                        {/* Quantity Stepper */}
+                                        <Col xs={6} className="d-flex justify-content-start">
+                                          <div style={{ display: 'flex', alignItems: 'center', width: '92%', justifyContent: 'space-between', padding: '5px 10px' }}>
+                                            <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }}
+                                              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                                            >-</Button>
+                                            <span style={{ textAlign: 'center', flex: 1 }}>{quantity}</span>
+                                            <Button variant="light" style={{ padding: 0, width: '25px', height: '25px' }}
+                                              onClick={() => setQuantity(q => q + 1)}
+                                            >+</Button>
+                                          </div>
+                                        </Col>
 
                       <Col xs={6} className="d-flex justify-content-start">
                         <div style={{ display: 'flex', gap: '10px', width: '92%' }}>
                           {['M', 'L'].map(s => (
                             <div
-                              key={s}
-                              onClick={() => setSize(s)}
-                              className={`size-option ${size === s ? 'active' : 'inactive'}`}
+                                                     key={s}
+                            onClick={() => setSize(s)}
+                            style={{
+                              flex: 1,
+                              textAlign: 'center',
+                              padding: '8px 0',
+                              borderRadius: '5px',
+                              cursor: 'pointer',
+                              backgroundColor: size === s ? '#AA6E39' : 'white',
+                              color: size === s ? 'white' : '#333',
+                              fontWeight: 500
+                            }}
+
                             >
                               {s}
                             </div>
