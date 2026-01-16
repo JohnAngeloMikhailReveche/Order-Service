@@ -8,6 +8,7 @@ export default function App() {
   const userID = 1; // Example user ID - This is based on our Database, the Order Service DB one where the userID also lives.
 
   const API_BASE = "https://localhost:7237/api/Cart";
+  const ORDER_API_BASE = "https://localhost:7237/api/Orders";
 
   const fetchCart = async () => {
     try {
@@ -83,6 +84,29 @@ export default function App() {
       );
 
       fetchCart(); // Refresh cart items after deletion
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+   const placeOrder = async () => {
+    try {
+      const response = await fetch(
+        `${ORDER_API_BASE}/place/order/${userID}`,
+        { method: "POST" }
+      );
+
+      if (!response.ok)
+      {
+        throw new Error("Failed to place order");
+      }
+
+      const order = await response.json();
+      console.log("Order placed successfully:", order);
+
+      fetchCart(); // Refresh cart after placing order
+
     } catch (err) {
       console.error(err);
     }
@@ -188,7 +212,8 @@ export default function App() {
         className="position-fixed bottom-0 start-0 end-0 p-3 bg-white text-center"
         style={{ zIndex: 1000, borderTop: "1px solid #dee2e6" }}
       >
-        <button className="btn btn-brown w-100 py-3 fs-5 fw-bold">
+        <button className="btn btn-brown w-100 py-3 fs-5 fw-bold"
+          onClick={placeOrder}>
          Place Order
         </button>
       </div>
