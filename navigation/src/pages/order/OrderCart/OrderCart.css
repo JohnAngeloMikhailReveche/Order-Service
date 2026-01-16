@@ -175,7 +175,7 @@ button:focus-visible {
 
 /* === Add to Bag Button === */
 .add-to-bag-btn {
-  width: 100%;
+  width: 100% !important; 
   margin-top: 25px;
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
@@ -386,7 +386,6 @@ button:focus-visible {
   font-family: 'DM Sans', sans-serif;
 }
 
-/* 💰 TOTAL AMOUNT = Plus Jakarta Sans 💰 */
 .cart-total-amount {
   font-weight: 600;
   font-size: 18px;
@@ -394,7 +393,7 @@ button:focus-visible {
 }
 
 .place-order-btn {
-  width: 100%;
+  width: 100% !important;
   background-color: #3B302A !important;
   border-color: #3B302A !important;
   border-radius: 25px;
@@ -403,7 +402,6 @@ button:focus-visible {
   font-family: 'DM Sans', sans-serif;
   color: white !important;
   padding: 8px 0;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
