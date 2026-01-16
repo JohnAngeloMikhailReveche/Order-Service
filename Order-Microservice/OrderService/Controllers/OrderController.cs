@@ -34,6 +34,23 @@ namespace OrderService.Controllers
             return BadRequest(new { message = result });
         }
 
+
+        [HttpPost("place/order/{userId}")]
+        public async Task<IActionResult> PlaceOrder(
+               int userId
+           )
+        {
+            var order = await _statusService.PlaceOrderAsync(userId);
+
+            if (order == null)
+            {
+                return BadRequest(new { message = "Cart is empty or not found." });
+            }
+
+            return Ok(order);
+        }
+
+
         [HttpPatch("status")]
         public async Task<IActionResult> UpdateStatus([FromBody] OrderStatusDto request)
         {
