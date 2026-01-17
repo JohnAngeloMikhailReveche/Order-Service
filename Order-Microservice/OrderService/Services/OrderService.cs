@@ -50,7 +50,7 @@ namespace OrderService.Services
             var order = new Orders
             {
                 users_id = userId,
-                status = 0,
+                status = 1,
                 subtotal = cart.subtotal,
                 total_cost = cart.subtotal,
                 item_count = cart.CartItems.Sum(i => i.quantity),
