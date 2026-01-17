@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
 using OrderService.DTOs;
 using OrderService.Models;
+using OrderService.Models.DTO;
 using OrderService.Services;
 
 namespace OrderService.Controllers
@@ -28,10 +29,18 @@ namespace OrderService.Controllers
             if (request == null || string.IsNullOrWhiteSpace(request.Reason))
                 return BadRequest(new { message = "spill the tea, bestie! we need a reason to cancel. ☕" });
 
-            var result = await _statusService.RequestCancellationAsync(request.OrderId, request.Reason);
+            try
+            {
+                var result = await _statusService.RequestCancellationAsync(request.OrderId, request.Reason);
 
-            if (result.Contains("submitted")) return Ok(new { message = result });
-            return BadRequest(new { message = result });
+                if (result.Contains("submitted"))
+                    return Ok(new { message = result });
+
+                return BadRequest(new { message = result });
+            } catch (Exception ex)
+            {
+                return StatusCode(500, new {message = ex.Message});
+            }
         }
 
 
@@ -49,6 +58,44 @@ namespace OrderService.Controllers
 
             return Ok(order);
         }
+
+
+        [HttpGet("{orderId}/items")]
+        public async Task<IActionResult> GetOrderDetails(int orderId)
+        {
+            
+            // Fetch the Order
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.orders_id == orderId);
+
+            if (order == null)
+                return NotFound(new { message = "Order not found" });
+
+            // Map to DTO
+            var orderDto = new OrderDetailsDTO
+            {
+                orderId = order.orders_id,
+                subtotal = order.total_cost,
+                status = order.status,
+                cancellation_requested = order.cancellation_requested,
+                items = order.OrderItems?.Select(oi => new OrderItemDetailsDTO
+                {
+                    imageUrl = null,
+                    name = oi.item_name,
+                    quantity = oi.quantity,
+                    size = oi.variant_name,
+                    total = oi.line_subtotal,
+                    specialInstructions = oi.special_instructions
+                }).ToList() ?? new List<OrderItemDetailsDTO>()
+            };
+
+            return Ok(order);
+        }
+
+
+
+
 
 
         [HttpPatch("status")]

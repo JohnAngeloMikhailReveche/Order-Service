@@ -5,6 +5,17 @@ import confetti from 'canvas-confetti';
 import { Link, useLocation } from 'react-router-dom';
 import './OrderStatus.css';
 
+
+/*
+    1. Map all of the Order Details from the Database instead of the Mock values.
+    2. Integrate with backend to fetch real-time order status updates.
+    3. Make an interval to update the order status every X seconds to simulate real-time tracking.
+    4. Make the logic for cancelling orders with backend integration.
+    5. Block the cancel button from being clicked if the order is already requested for cancellation or already delivered.
+*/
+
+
+
 // Assets
 import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
 import kapebara_cart_Pic from './kapebara cart.jpg';
@@ -14,12 +25,16 @@ import capybararider from './capybararider.png';
 import capybaradelivered from './capybaradelivered.png';
 import capybarasad from './capybarasad.png';
 
-const OrderStatus = () => {
+const OrderStatus = () => { 
     const location = useLocation();
-    const cartItems = location.state?.cartItems || [];
+    const [cartItems, setCartItems] = useState([]);
+    const [orderId, setOrderId] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const orderIdFromState = location.state?.orderId;
     
     // States
     const [currentStep, setCurrentStep] = useState(1); 
+    const [cancellationRequested, setCancellationRequested] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [orderStatus, setOrderStatus] = useState('active');
     const [selectedReason, setSelectedReason] = useState(""); 
@@ -32,7 +47,10 @@ const OrderStatus = () => {
     const PRIMARY_TEXT = '#1C1C1C';
     const SECONDARY_TEXT = '#757575';
 
-    const isCancelDisabled = currentStep >= 2 || orderStatus === 'cancelled'; 
+    const isCancelDisabled =
+        currentStep >= 4 ||
+        orderStatus == 'cancelled' ||
+        cancellationRequested;
 
     // Calculate Totals based on mapped items
     const subtotal = cartItems.reduce((sum, item) => sum + item.total, 0);
@@ -48,6 +66,55 @@ const OrderStatus = () => {
     };
 
     useEffect(() => {
+        if (!orderIdFromState) return;
+
+        const fetchOrderDetails = async () => {
+            try {
+                
+                //console.log("Fetching order details for Order ID:", orderIdFromState);
+                
+                const reponse = await fetch(
+                    `https://localhost:7237/api/Orders/${orderIdFromState}/items`
+                );
+
+                if (!reponse.ok) {
+                throw new Error('Failed to fetch order items');
+            }
+
+                const data = await reponse.json();
+
+                setCancellationRequested(data.cancellationRequested === true); // Set the cancellationReuqested to true if the backend says so else false.
+
+                setCartItems(data.items);
+                setOrderId(data.orderId);
+
+                switch (data.status) {
+                    case 1:
+                        setCurrentStep(1);
+                        break;
+                    case 2:
+                        setCurrentStep(2);
+                        break;
+                    case 3:
+                        setCurrentStep(3);
+                        break;
+                    case 4:
+                        setCurrentStep(4);
+                        break;
+                    default:
+                        setCurrentStep(1);
+                }
+            } catch (error) {
+            console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrderDetails();
+    }, [orderIdFromState]);
+
+    useEffect(() => {
         if (currentStep === 4 && orderStatus !== 'cancelled') {
             const duration = 3 * 1000;
             const end = Date.now() + duration;
@@ -60,13 +127,38 @@ const OrderStatus = () => {
         }
     }, [currentStep, orderStatus]);
 
-    useEffect(() => {
-        if (orderStatus === 'cancelled') return;
-        const timer = setInterval(() => {
-            setCurrentStep((prev) => (prev < 4 ? prev + 1 : prev));
-        }, 15000); 
-        return () => clearInterval(timer);
-    }, [orderStatus]);
+    const requestCancellation = async () => {
+        try {
+            setCancellationRequested(true); // lock the button
+            
+            const response = await fetch(
+                "https://localhost:7237/api/Orders/request-cancellation",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        orderId: orderIdFromState,
+                        reason: selectedReason
+                    })
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Cancellation failed.");
+            }
+
+            console.log(result.message);
+            setShowCancelModal(false);
+        } catch (error) {
+            console.error("Cancellation error:", error);
+            setCancellationRequested(false); // unlock the button on error
+            alert(error.message);
+        }
+    };
 
     const steps = [
         { label: "RECEIVED", icon: <Check /> },
@@ -183,7 +275,7 @@ const OrderStatus = () => {
                             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                                 <div className="d-flex justify-content-between mb-4 flex-wrap gap-2">
                                     <span style={{ fontWeight: '700', fontSize: '16px', fontFamily: "'DM Sans', sans-serif", color: PRIMARY_TEXT }}>Order Details</span>
-                                    <span style={{ color: SECONDARY_TEXT, fontSize: '13px' }}>Order ID: #KPB-{Math.floor(Math.random() * 1000000)}</span>
+                                    <span style={{ color: SECONDARY_TEXT, fontSize: '13px' }}>Order ID: #KPB-{orderIdFromState}</span>
                                 </div>
                                 
                                 <span style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '11px', display: 'block', marginBottom: '15px', textTransform: 'uppercase' }}>ITEMS ORDERED</span>
@@ -258,7 +350,7 @@ const OrderStatus = () => {
                             
                             <div className="d-flex gap-2 mt-4">
                                 <BootstrapButton variant="light" className="flex-grow-1 fw-bold" style={{ fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => setShowCancelModal(false)}>Keep Order</BootstrapButton>
-                                <BootstrapButton variant="danger" className="flex-grow-1 fw-bold" style={{ backgroundColor: '#e54848', fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => {setOrderStatus('cancelled'); setShowCancelModal(false);}}>Cancel Order</BootstrapButton>
+                                <BootstrapButton variant="danger" className="flex-grow-1 fw-bold" style={{ backgroundColor: '#e54848', fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={requestCancellation}>Cancel Order</BootstrapButton>
                             </div>
                         </div>
                     </div>
