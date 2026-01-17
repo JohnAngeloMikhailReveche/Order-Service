@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import {
     Navbar,
     Container,
@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import ReviewCancellationModal from "../AdminModals/ReviewCancellationModal";
 
+// 1. Create the Context outside the component
+export const UserContext = createContext();
 
 function App() {
     const [orders, setOrders] = useState([]);
@@ -32,6 +34,14 @@ function App() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [sortBy, setSortBy] = useState("recent");
+    const [isCartOpen, setIsCartOpen] = useState(false); // Added missing state for cart toggle based on your nav code
+
+    // 2. Define the User Role (Hardcoded as Admin for this page)
+    const [user] = useState({ 
+        role: 'admin', 
+        name: 'Admin User',
+        isAuthenticated: true 
+    });
 
     // the date formatter you requested: "Jan 16, 2026 - 10:37 AM"
     const formatOrderDate = (dateString) => {
@@ -159,7 +169,8 @@ function App() {
     }
 
   return (
-    <>
+    /* 3. Wrap everything in the Provider and pass the admin user */
+    <UserContext.Provider value={user}>
       {/* Navbar */}
       <Navbar expand="lg" className="navbar" fixed="top">
   <Container>
@@ -261,9 +272,9 @@ function App() {
        <ReviewCancellationModal
           onClose={() => setShowCancelModal(false)}
           onApprove={() => {
-               // cancel order logic
-                setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, status: "Canceled" } : o));
-                setShowCancelModal(false);
+                // cancel order logic
+                 setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, status: "Canceled" } : o));
+                 setShowCancelModal(false);
           }}
           onDecline={() => {
                 // keep order logic
@@ -281,7 +292,7 @@ function App() {
                   }}
               />
           )}
-    </>
+    </UserContext.Provider>
   );
 }
 

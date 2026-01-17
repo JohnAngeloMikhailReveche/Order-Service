@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { Navbar, Container, Nav, Card, Row, Col, ButtonGroup, ToggleButton, Button, Modal, Form } from "react-bootstrap";
 import "./AdminDashboard.css";
 import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
@@ -12,6 +12,9 @@ import UpdateOrderStatusModal from "../AdminModals/UpdateOrderStatusModal";
 
 const API_BASE_URL = "https://localhost:7237/api/Orders";
 
+// 1. Create the Context outside the component
+export const UserContext = createContext();
+
 function App() {
     const [orders, setOrders] = useState([]);
     const [activeTab, setActiveTab] = useState("All");
@@ -23,6 +26,13 @@ function App() {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false); 
     const [isOrderReadOnly, setIsOrderReadOnly] = useState(false); // whether update should be disabled for the selected order
+
+    // 2. Define the User Role (Hardcoded as Admin for this page)
+    const [user] = useState({ 
+        role: 'admin', 
+        name: 'Admin User', 
+        isAuthenticated: true 
+    });
 
     // --- HELPER FUNCTIONS ---
     const fetchWithRetry = async (url, options = {}, retries = 5, backoff = 1000) => {
@@ -215,7 +225,8 @@ function App() {
 
 
     return (
-        <>
+        /* 3. Wrap everything in the Provider and pass the admin user */
+        <UserContext.Provider value={user}>
             {/* Navbar */}
             <Navbar expand="lg" className="navbar" fixed="top">
                 <Container>
@@ -343,7 +354,7 @@ function App() {
                     allowUpdate={!isOrderReadOnly} // disable updates when the selected order is cancelled
                 />
             )}
-        </>
+        </UserContext.Provider>
     );
 }
 

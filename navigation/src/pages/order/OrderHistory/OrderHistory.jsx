@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { Navbar, Container, Nav, Card, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
 import "./OrderHistory.css";
 import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
@@ -8,60 +8,72 @@ import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+
+// 1. Create the Context outside the component
+export const UserContext = createContext();
+
 function App() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [orders, setOrders] = useState([]);
-    const [activeTab, setActiveTab] = useState("All");
-    const [sortBy, setSortBy] = useState("recent");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [activeTab, setActiveTab] = useState("All");
+  const [sortBy, setSortBy] = useState("recent");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isCartOpen, setIsCartOpen] = useState(false); // Added for navbar toggle
 
-    const userId = 101; // Replace with actual user ID logic
+  // 2. Define the User Role (Hardcoded as Customer for this page)
+  const [user] = useState({ 
+      role: 'customer', 
+      name: 'Kape Lover', 
+      isAuthenticated: true 
+  });
 
-    const mapStatusForTab = (statusName) => {
-        const s = statusName?.toLowerCase();
-        if (!s) return "Ongoing";
-        const ongoing = ["placed", "preparing", "readyforpickup", "intransit"];
-        if (ongoing.includes(s)) return "Ongoing";
-        if (s === "delivered") return "Completed";
-        if (s === "cancelled" || s === "failed") return "Canceled";
-        return "Ongoing";
-    };
+  const userId = 101; // Replace with actual user ID logic
 
-    useEffect(() => {
-        setLoading(true);
-        fetch(`https://localhost:7237/api/Orders/history/${userId}`)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 404) return [];
-                    throw new Error("fetch failed");
-                }
-                return response.json();
-            })
-            .then(data => {
-                const rawData = Array.isArray(data) ? data : [];
-                const mappedOrders = rawData.map(order => ({
-                    id: order.orders_id,
-                    name: `Order #${order.orders_id}`,
-                    status: mapStatusForTab(order.statusName),
-                    displayStatus: order.statusName,
-                    date: new Date(order.placed_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }),
-                    price: order.total_cost,
-                    image: classic_macchiabara_cold_brew_Pic,
-                    items: order.item_count || 0
-                }));
+  const mapStatusForTab = (statusName) => {
+    const s = statusName?.toLowerCase();
+    if (!s) return "Ongoing";
+    const ongoing = ["placed", "preparing", "readyforpickup", "intransit"];
+    if (ongoing.includes(s)) return "Ongoing";
+    if (s === "delivered") return "Completed";
+    if (s === "cancelled" || s === "failed") return "Canceled";
+    return "Ongoing";
+  };
 
-                setOrders(mappedOrders);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("errorrrr:", err);
-                setError("Error fetching orders");
-                setLoading(false);
-            });
-    }, [userId]);
+  useEffect(() => {
+    setLoading(true);
+    fetch(`https://localhost:7237/api/Orders/history/${userId}`)
+      .then(response => {
+        if (!response.ok) {
+          if (response.status === 404) return [];
+          throw new Error("fetch failed");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const rawData = Array.isArray(data) ? data : [];
+        const mappedOrders = rawData.map(order => ({
+          id: order.orders_id,
+          name: `Order #${order.orders_id}`,
+          status: mapStatusForTab(order.statusName),
+          displayStatus: order.statusName,
+          date: new Date(order.placed_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }),
+          price: order.total_cost,
+          image: classic_macchiabara_cold_brew_Pic,
+          items: order.item_count || 0
+        }));
+
+        setOrders(mappedOrders);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("errorrrr:", err);
+        setError("Error fetching orders");
+        setLoading(false);
+      });
+  }, [userId]);
 
   const tabs = ["All", "Ongoing", "Completed", "Canceled"];
 
@@ -73,11 +85,12 @@ const navigate = useNavigate();
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return sortBy === "recent" ? dateB - dateA : dateA - dateB;
-   
+    
   });
 
   return (
-    <>
+    /* 3. Wrap everything in the Provider and pass the customer user */
+    <UserContext.Provider value={user}>
       {/* Navbar */}
       <Navbar expand="lg" className="navbar" fixed="top">
   <Container>
@@ -187,7 +200,7 @@ const navigate = useNavigate();
           )}
         </Card>
       </div>
-    </>
+    </UserContext.Provider>
   );
 }
 
