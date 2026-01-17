@@ -390,7 +390,7 @@ const OrderDetails = () => {
     }
 
     // Compute totals for summary
-    const subtotal = order.items.reduce((sum, it) => sum + (it.price || 0) * (it.qty || 1), 0);
+    const subtotal = order.meta?.subtotal ?? order.subtotal ?? 0;
     const grandTotal = subtotal + (order.payment.deliveryFee || 0);
 
     const friendlyStatus = formatStatusLabel(order.status);
@@ -451,7 +451,7 @@ const OrderDetails = () => {
                                         <div className="item-name">{item.name}</div>
                                         <div className="item-size">{item.size}</div>
                                     </div>
-                                    <span className="price">₱{(item.price || 0).toFixed(2)}</span>
+                                    <span className="price">₱{((item.price || 0) * (item.qty || 1)).toFixed(2)}</span>
                                 </div>
 
                                 {/* Render note if present for this item */}
