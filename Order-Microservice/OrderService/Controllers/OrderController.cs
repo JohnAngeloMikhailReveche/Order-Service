@@ -63,32 +63,27 @@ namespace OrderService.Controllers
         [HttpGet("{orderId}/items")]
         public async Task<IActionResult> GetOrderDetails(int orderId)
         {
-            
-            // Fetch the Order
+
             var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.orders_id == orderId);
-
-            if (order == null)
-                return NotFound(new { message = "Order not found" });
-
-            // Map to DTO
-            var orderDto = new OrderDetailsDTO
-            {
-                orderId = order.orders_id,
-                subtotal = order.total_cost,
-                status = order.status,
-                cancellation_requested = order.cancellation_requested,
-                items = order.OrderItems?.Select(oi => new OrderItemDetailsDTO
-                {
-                    imageUrl = null,
-                    name = oi.item_name,
-                    quantity = oi.quantity,
-                    size = oi.variant_name,
-                    total = oi.line_subtotal,
-                    specialInstructions = oi.special_instructions
-                }).ToList() ?? new List<OrderItemDetailsDTO>()
-            };
+              .Include(o => o.OrderItems)
+              .Where(o => o.orders_id == orderId)
+              .Select(o => new OrderDetailsDTO
+              {
+                  orderId = o.orders_id,
+                  subtotal = o.total_cost,
+                  status = o.status,
+                  cancellation_requested = o.cancellation_requested,
+                  items = o.OrderItems.Select(oi => new OrderItemDetailsDTO
+                  {
+                      imageUrl = null,
+                      name = oi.item_name,
+                      quantity = oi.quantity,
+                      size = oi.variant_name,
+                      total = oi.line_subtotal,
+                      specialInstructions = oi.special_instructions
+                  }).ToList()
+              })
+              .FirstOrDefaultAsync();
 
             return Ok(order);
         }
