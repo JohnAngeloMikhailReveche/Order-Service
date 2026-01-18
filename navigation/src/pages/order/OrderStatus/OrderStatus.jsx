@@ -4,6 +4,8 @@ import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop
 import confetti from 'canvas-confetti';
 import { Link, useLocation } from 'react-router-dom';
 import './OrderStatus.css';
+import { useCart } from '../../../contexts/CartContext';
+import Cart from '../../../components/Cart';
 
 /* --- DEVELOPMENT NOTES ---
     1. Mapping real database values to UI.
@@ -42,8 +44,8 @@ const OrderStatus = () => {
     const [cancellationRequested, setCancellationRequested] = useState(false); 
     const [showCancelModal, setShowCancelModal] = useState(false); 
     const [orderStatus, setOrderStatus] = useState('active'); 
-    const [selectedReason, setSelectedReason] = useState(""); 
-    const [isCartOpen, setIsCartOpen] = useState(false); 
+    const [selectedReason, setSelectedReason] = useState("");
+    const { toggleCart } = useCart(); 
 
     // --- USER CONTEXT DATA ---
     // 2. Define the User Role (Hardcoded as Customer for this page view)
@@ -73,7 +75,7 @@ const OrderStatus = () => {
     // Logic to disable the cancel button:
     // Disabled if: Order is delivered (Step 4+), already cancelled, or cancellation is pending.
     const isCancelDisabled =
-        currentStep >= 4 ||
+        currentStep >= 3 ||
         orderStatus == 'cancelled' ||
         cancellationRequested;
 
@@ -153,13 +155,15 @@ const OrderStatus = () => {
     // ACTION: Send cancellation request to the backend
     const requestCancellation = async () => {
         try {
-            setCancellationRequested(true); // Optimistically lock the button
-            
+            setCancellationRequested(true); // lock the button
+
             const response = await fetch(
                 "https://localhost:7237/api/Orders/request-cancellation",
                 {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "PATCH", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         orderId: orderIdFromState,
                         reason: selectedReason
@@ -174,10 +178,10 @@ const OrderStatus = () => {
             }
 
             console.log(result.message);
-            setShowCancelModal(false); // Close modal on success
+            setShowCancelModal(false);
         } catch (error) {
             console.error("Cancellation error:", error);
-            setCancellationRequested(false); // Unlock button if error occurs
+            setCancellationRequested(false); // unlock the button on error
             alert(error.message);
         }
     };
@@ -221,7 +225,7 @@ const OrderStatus = () => {
                             <Nav.Link as={Link} to="admin/admincancellations">Menu</Nav.Link>
                             <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
                             <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
-                            <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); setIsCartOpen(!isCartOpen); }}>
+                            <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
                                 <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
                             </Nav.Link>
                         </Nav>
@@ -377,6 +381,20 @@ const OrderStatus = () => {
                                     <span style={{ fontSize: '13px' }}>{r}</span>
                                 </label>
                             ))}
+
+                            {/* CONDITIONAL TEXT ALERTS - Only shown when conditions are met */}
+                            <div className="mt-3 text-center">
+                                {cancellationRequested && (
+                                    <p style={{ color: '#ef4444', fontSize: '12px', margin: '0' }}>
+                                        Order cancellation already requested. Please wait for an admin to process it.
+                                    </p>
+                                )}
+                                {currentStep >= 3 && !cancellationRequested && (
+                                    <p style={{ color: '#ef4444', fontSize: '12px', margin: '0' }}>
+                                        Order cannot be cancelled.
+                                    </p>
+                                )}
+                            </div>
                             
                             {/* Modal Actions */}
                             <div className="d-flex gap-2 mt-4">
@@ -387,6 +405,7 @@ const OrderStatus = () => {
                     </div>
                 )}
             </div>
+            <Cart />
         </UserContext.Provider>
     );
 };

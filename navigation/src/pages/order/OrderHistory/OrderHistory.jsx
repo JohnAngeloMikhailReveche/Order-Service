@@ -8,6 +8,8 @@ import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { useCart } from '../../../contexts/CartContext';
+import Cart from '../../../components/Cart';
 
 // 1. Create the Context outside the component
 export const UserContext = createContext();
@@ -21,7 +23,7 @@ function App() {
   const [sortBy, setSortBy] = useState("recent");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isCartOpen, setIsCartOpen] = useState(false); // Added for navbar toggle
+  const { toggleCart } = useCart();
 
   // 2. Define the User Role (Hardcoded as Customer for this page)
   const [user] = useState({ 
@@ -109,7 +111,7 @@ function App() {
           to="#cart"
           onClick={(e) => {
             e.preventDefault();
-            setIsCartOpen(!isCartOpen);
+            toggleCart();
           }}
         >
           <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
@@ -200,6 +202,7 @@ function App() {
           )}
         </Card>
       </div>
+      <Cart />
     </UserContext.Provider>
   );
 }
