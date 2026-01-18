@@ -2,7 +2,7 @@
 // Page: Order Details view — shows order items, shipping info and payment summary.
 // Short, focused comments added throughout for clarity.
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,6 +17,9 @@ import kapebara_cart_Pic from "./kapebara cart.jpg";
 
 // API base used by this page
 const API_ROOT = "https://localhost:7237/api";
+
+// 1. Create the Context outside the component
+export const UserContext = createContext();
 
 /* -------------------------
    Utility / formatting helpers
@@ -182,7 +185,15 @@ const OrderDetails = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(Boolean(!stateOrder && (stateOrderId || paramOrderId)));
     const [error, setError] = useState(null);
+    const [isCartOpen, setIsCartOpen] = useState(false); // Added for navbar toggle
     const orderIdToFetch = stateOrder ? stateOrder.orders_id || stateOrder.id : stateOrderId || paramOrderId;
+
+    // 2. Define the User Role (Hardcoded as Customer for this page)
+    const [user] = useState({ 
+        role: 'customer', 
+        name: 'Kape Lover', 
+        isAuthenticated: true 
+    });
 
     /* Duplicate fetchItemsForOrder definition inside component scope to ensure closure safety.
        (This mirrors the top-level helper so both calls work; keep one if you prefer.) */
@@ -400,172 +411,175 @@ const OrderDetails = () => {
     const isCancelled = formatStatusLabel(order.status).toLowerCase() === "cancelled";
 
     return (
-        <div className="order-details-container">
+        /* 3. Wrap everything in the Provider and pass the customer user */
+        <UserContext.Provider value={user}>
+            <div className="order-details-container">
 
-            {/* HEADER: page title + navbar */}
-            <div className="header-section">
-                <h1 className="page-title">Order Details</h1>
+                {/* HEADER: page title + navbar */}
+                <div className="header-section">
+                    <h1 className="page-title">Order Details</h1>
 
-                {/* Navbar: main site navigation and cart icon */}
-                <Navbar expand="lg" className="navbar" fixed="top">
-                    <Container>
-                        <Navbar.Brand as={Link} to="/">
-                            <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" />
-                        </Navbar.Brand>
-                        <Navbar.Toggle aria-controls="center-nav" />
-                        <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
-                            <Nav className="ms-auto gap-4 align-items-center">
-                                <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
-                                <Nav.Link as={Link} to="/order/order">Menu</Nav.Link>
-                                <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
-                                <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
-                                <Nav.Link
-                                    as={Link}
-                                    to="#cart"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        // setIsCartOpen toggler would go here if implemented
-                                    }}
-                                >
-                                    <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
-                                </Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                </Navbar>
-            </div>
+                    {/* Navbar: main site navigation and cart icon */}
+                    <Navbar expand="lg" className="navbar" fixed="top">
+                        <Container>
+                            <Navbar.Brand as={Link} to="/">
+                                <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" />
+                            </Navbar.Brand>
+                            <Navbar.Toggle aria-controls="center-nav" />
+                            <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
+                                <Nav className="ms-auto gap-4 align-items-center">
+                                    <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/order">Menu</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
+                                    <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
+                                    <Nav.Link
+                                        as={Link}
+                                        to="#cart"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setIsCartOpen(!isCartOpen);
+                                        }}
+                                    >
+                                        <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
+                                    </Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Container>
+                    </Navbar>
+                </div>
 
-            {/* MAIN CONTENT: left = items, right = shipping & payment */}
-            <div className="main-content">
-                {/* LEFT COLUMN */}
-                <div className="order-item-card">
-                    <div className="orders-section">
-                        <h4 className="section-header">ORDERS</h4>
+                {/* MAIN CONTENT: left = items, right = shipping & payment */}
+                <div className="main-content">
+                    {/* LEFT COLUMN */}
+                    <div className="order-item-card">
+                        <div className="orders-section">
+                            <h4 className="section-header">ORDERS</h4>
 
-                        {order.items.map((item) => (
-                            <React.Fragment key={item.id}>
-                                <div className="order-item">
-                                    <img src={item.image} alt={item.name} className="product-image" />
-                                    <div className="item-details">
-                                        <span className="quantity">{item.qty}x</span>
-                                        <div className="item-name">{item.name}</div>
-                                        <div className="item-size">{item.size}</div>
+                            {order.items.map((item) => (
+                                <React.Fragment key={item.id}>
+                                    <div className="order-item">
+                                        <img src={item.image} alt={item.name} className="product-image" />
+                                        <div className="item-details">
+                                            <span className="quantity">{item.qty}x</span>
+                                            <div className="item-name">{item.name}</div>
+                                            <div className="item-size">{item.size}</div>
+                                        </div>
+                                        <span className="price">₱{((item.price || 0) * (item.qty || 1)).toFixed(2)}</span>
                                     </div>
-                                    <span className="price">₱{((item.price || 0) * (item.qty || 1)).toFixed(2)}</span>
+
+                                    {/* Render note if present for this item */}
+                                    {(() => {
+                                        const noteText = findNoteForItem(item);
+                                        return noteText && noteText.length > 0 ? (
+                                            <div className="order-note">
+                                                <h4>Order Note:</h4>
+                                                <p>"{noteText}"</p>
+                                            </div>
+                                        ) : null;
+                                    })()}
+                                </React.Fragment>
+                            ))}
+                        </div>
+
+                        {/* FOOTER: status, order id, refund CTA */}
+                        <div className="order-footer">
+                            <div className="left-footer">
+                                <span className={`status-badge ${statusTextClass}`} style={{ fontWeight: 700 }}>
+                                    {friendlyStatus}
+                                </span>
+
+                                <div className="order-id">
+                                    <span>Order ID</span>{" "}
+                                    <span className="id-number">
+                                        {order.id} - {order.dateOnly}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button
+                                className="request-for-refund-btn"
+                                disabled={isCancelled}
+                                aria-disabled={isCancelled}
+                                title={isCancelled ? "Refund unavailable for cancelled orders" : "Request for Refund"}
+                            >
+                                Request for Refund
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* RIGHT COLUMN: shipping info + payment summary */}
+                    <div className="right-column">
+                        <div className="shipping-info-card">
+                            <h4 className="section-header">SHIPPING INFORMATION</h4>
+
+                            <div className="customer-info">
+                                <div className="info-row">
+                                    <img src={userIcon} className="icon-image" alt="user" />
+                                    <span className="customer-name">{order.customer.name}</span>
                                 </div>
 
-                                {/* Render note if present for this item */}
-                                {(() => {
-                                    const noteText = findNoteForItem(item);
-                                    return noteText && noteText.length > 0 ? (
-                                        <div className="order-note">
-                                            <h4>Order Note:</h4>
-                                            <p>"{noteText}"</p>
-                                        </div>
-                                    ) : null;
-                                })()}
-                            </React.Fragment>
-                        ))}
-                    </div>
+                                <div className="info-row">
+                                    <img src={locationIcon} className="icon-image" alt="location" />
+                                    <span style={{ whiteSpace: "pre-wrap" }}>{order.customer.address}</span>
+                                </div>
 
-                    {/* FOOTER: status, order id, refund CTA */}
-                    <div className="order-footer">
-                        <div className="left-footer">
-                            <span className={`status-badge ${statusTextClass}`} style={{ fontWeight: 700 }}>
-                                {friendlyStatus}
-                            </span>
+                                <div className="info-row">
+                                    <img src={contactIcon} className="icon-image" alt="phone" />
+                                    <span>{order.customer.phone}</span>
+                                </div>
+                            </div>
 
-                            <div className="order-id">
-                                <span>Order ID</span>{" "}
-                                <span className="id-number">
-                                    {order.id} - {order.dateOnly}
-                                </span>
+                            <div className="timeline" style={{ marginTop: 12 }}>
+                                <div className="timeline-item">
+                                    <span className="timeline-label">Order Time</span>
+                                    <span className="timeline-value">{order.timeline.orderTime ?? "Unavailable"}</span>
+                                </div>
+                                <div className="timeline-item">
+                                    <span className="timeline-label">Payment Time</span>
+                                    <span className="timeline-value">{order.timeline.paymentTime ?? "Unavailable"}</span>
+                                </div>
+                                <div className="timeline-item">
+                                    <span className="timeline-label">Shipped Time</span>
+                                    <span className="timeline-value">{order.timeline.shippedTime ?? "Unavailable"}</span>
+                                </div>
+                                <div className="timeline-item">
+                                    <span className="timeline-label">Completed Time</span>
+                                    <span className="timeline-value">{order.timeline.completedTime ?? "Unavailable"}</span>
+                                </div>
                             </div>
                         </div>
 
-                        <button
-                            className="request-for-refund-btn"
-                            disabled={isCancelled}
-                            aria-disabled={isCancelled}
-                            title={isCancelled ? "Refund unavailable for cancelled orders" : "Request for Refund"}
-                        >
-                            Request for Refund
-                        </button>
-                    </div>
-                </div>
+                        <div className="payment-summary-card" style={{ marginTop: 16 }}>
+                            <h4 className="section-header">PAYMENT SUMMARY</h4>
 
-                {/* RIGHT COLUMN: shipping info + payment summary */}
-                <div className="right-column">
-                    <div className="shipping-info-card">
-                        <h4 className="section-header">SHIPPING INFORMATION</h4>
-
-                        <div className="customer-info">
-                            <div className="info-row">
-                                <img src={userIcon} className="icon-image" alt="user" />
-                                <span className="customer-name">{order.customer.name}</span>
+                            <div className="payment-summary">
+                                <div className="summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₱{subtotal.toFixed(2)}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Delivery Fee</span>
+                                    <span>₱{order.payment.deliveryFee.toFixed(2)}</span>
+                                </div>
+                                <div className="summary-row total">
+                                    <span>GRAND TOTAL</span>
+                                    <span>₱{grandTotal.toFixed(2)}</span>
+                                </div>
                             </div>
 
-                            <div className="info-row">
-                                <img src={locationIcon} className="icon-image" alt="location" />
-                                <span style={{ whiteSpace: "pre-wrap" }}>{order.customer.address}</span>
-                            </div>
-
-                            <div className="info-row">
-                                <img src={contactIcon} className="icon-image" alt="phone" />
-                                <span>{order.customer.phone}</span>
-                            </div>
-                        </div>
-
-                        <div className="timeline" style={{ marginTop: 12 }}>
-                            <div className="timeline-item">
-                                <span className="timeline-label">Order Time</span>
-                                <span className="timeline-value">{order.timeline.orderTime ?? "Unavailable"}</span>
-                            </div>
-                            <div className="timeline-item">
-                                <span className="timeline-label">Payment Time</span>
-                                <span className="timeline-value">{order.timeline.paymentTime ?? "Unavailable"}</span>
-                            </div>
-                            <div className="timeline-item">
-                                <span className="timeline-label">Shipped Time</span>
-                                <span className="timeline-value">{order.timeline.shippedTime ?? "Unavailable"}</span>
-                            </div>
-                            <div className="timeline-item">
-                                <span className="timeline-label">Completed Time</span>
-                                <span className="timeline-value">{order.timeline.completedTime ?? "Unavailable"}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="payment-summary-card" style={{ marginTop: 16 }}>
-                        <h4 className="section-header">PAYMENT SUMMARY</h4>
-
-                        <div className="payment-summary">
-                            <div className="summary-row">
-                                <span>Subtotal</span>
-                                <span>₱{subtotal.toFixed(2)}</span>
-                            </div>
-                            <div className="summary-row">
-                                <span>Delivery Fee</span>
-                                <span>₱{order.payment.deliveryFee.toFixed(2)}</span>
-                            </div>
-                            <div className="summary-row total">
-                                <span>GRAND TOTAL</span>
-                                <span>₱{grandTotal.toFixed(2)}</span>
-                            </div>
-                        </div>
-
-                        <div className="payment-method">
-                            <h4 className="section-header">PAYMENT METHOD</h4>
-                            <div className="payment-card">
-                                <div className="gcash-badge">{order.payment.method}</div>
-                                <span className="card-number">******* {order.payment.last4}</span>
-                                <span className="check-icon">✓</span>
+                            <div className="payment-method">
+                                <h4 className="section-header">PAYMENT METHOD</h4>
+                                <div className="payment-card">
+                                    <div className="gcash-badge">{order.payment.method}</div>
+                                    <span className="card-number">******* {order.payment.last4}</span>
+                                    <span className="check-icon">✓</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </UserContext.Provider>
     );
 };
 

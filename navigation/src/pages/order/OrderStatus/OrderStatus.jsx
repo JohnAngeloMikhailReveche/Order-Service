@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { Navbar, Nav, Container, Row, Col, Button as BootstrapButton } from 'react-bootstrap';
 import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop } from 'react-bootstrap-icons';
 import confetti from 'canvas-confetti';
 import { Link, useLocation } from 'react-router-dom';
 import './OrderStatus.css';
 
-
-/*
-    1. Map all of the Order Details from the Database instead of the Mock values.
-    2. Integrate with backend to fetch real-time order status updates.
-    3. Make an interval to update the order status every X seconds to simulate real-time tracking.
-    4. Make the logic for cancelling orders with backend integration.
-    5. Block the cancel button from being clicked if the order is already requested for cancellation or already delivered.
+/* --- DEVELOPMENT NOTES ---
+    1. Mapping real database values to UI.
+    2. Real-time status updates via backend API.
+    3. Interval polling for status changes.
+    4. Cancellation logic with backend validation.
+    5. Conditional button disabling (Cancel).
 */
 
-
-
-// Assets
+// --- ASSETS IMPORT ---
 import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
 import kapebara_cart_Pic from './kapebara cart.jpg';
 import capybarabarista from './capybarabarista.png';
@@ -25,20 +22,36 @@ import capybararider from './capybararider.png';
 import capybaradelivered from './capybaradelivered.png';
 import capybarasad from './capybarasad.png';
 
+// --- CONTEXT CREATION ---
+// 1. Create UserContext to manage user data across the component tree.
+export const UserContext = createContext();
+
 const OrderStatus = () => { 
-    const location = useLocation();
-    const [cartItems, setCartItems] = useState([]);
+    // --- HOOKS & ROUTING ---
+    const location = useLocation(); // To access data passed from the previous page (Order ID)
+    const orderIdFromState = location.state?.orderId; 
+    
+    // --- STATE MANAGEMENT ---
+    // Order Data States
+    const [cartItems, setCartItems] = useState([]); 
     const [orderId, setOrderId] = useState(null);
     const [loading, setLoading] = useState(true);
-    const orderIdFromState = location.state?.orderId;
-    
-    // States
+
+    // UI & Status States
     const [currentStep, setCurrentStep] = useState(1); 
-    const [cancellationRequested, setCancellationRequested] = useState(false);
-    const [showCancelModal, setShowCancelModal] = useState(false);
-    const [orderStatus, setOrderStatus] = useState('active');
+    const [cancellationRequested, setCancellationRequested] = useState(false); 
+    const [showCancelModal, setShowCancelModal] = useState(false); 
+    const [orderStatus, setOrderStatus] = useState('active'); 
     const [selectedReason, setSelectedReason] = useState(""); 
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false); 
+
+    // --- USER CONTEXT DATA ---
+    // 2. Define the User Role (Hardcoded as Customer for this page view)
+    const [user] = useState({ 
+        role: 'customer', 
+        name: 'Kape Lover', 
+        isAuthenticated: true 
+    });
 
     // Branding Colors
     const BARA_BROWN = '#3B302A';
@@ -47,16 +60,29 @@ const OrderStatus = () => {
     const PRIMARY_TEXT = '#1C1C1C';
     const SECONDARY_TEXT = '#757575';
 
+    // Steps Definition for Progress Bar
+    const steps = [
+        { label: "RECEIVED", icon: <Check /> },
+        { label: "PREPARING", icon: <CupHotFill /> },
+        { label: "RIDER", icon: <PersonFill /> },
+        { label: "TRANSIT", icon: <Bicycle /> },
+        { label: "DELIVERED", icon: <HouseDoorFill /> },
+    ];
+
+    // --- COMPUTED LOGIC ---
+    // Logic to disable the cancel button:
+    // Disabled if: Order is delivered (Step 4+), already cancelled, or cancellation is pending.
     const isCancelDisabled =
         currentStep >= 4 ||
         orderStatus == 'cancelled' ||
         cancellationRequested;
 
-    // Calculate Totals based on mapped items
+    // Calculate Financial Totals
     const subtotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     const deliveryFee = 0;
     const grandTotal = subtotal + deliveryFee;
 
+    // Helper: Select the correct Capybara image based on the current step
     const getStatusLogo = () => {
         if (currentStep === 1) return capybarabarista;
         if (currentStep === 2) return capybaralooking;
@@ -65,60 +91,55 @@ const OrderStatus = () => {
         return capybarabarista;
     };
 
+    // --- EFFECTS (SIDE EFFECTS) ---
+
+    // 1. FETCH DATA: Get order details from API when the component mounts or OrderID changes.
     useEffect(() => {
         if (!orderIdFromState) return;
 
         const fetchOrderDetails = async () => {
             try {
-                
-                //console.log("Fetching order details for Order ID:", orderIdFromState);
-                
-                const reponse = await fetch(
+                // Fetch order items and status from backend
+                const response = await fetch(
                     `https://localhost:7237/api/Orders/${orderIdFromState}/items`
                 );
 
-                if (!reponse.ok) {
-                throw new Error('Failed to fetch order items');
-            }
+                if (!response.ok) {
+                    throw new Error('Failed to fetch order items');
+                }
 
-                const data = await reponse.json();
+                const data = await response.json();
 
-                setCancellationRequested(data.cancellationRequested === true); // Set the cancellationReuqested to true if the backend says so else false.
-
+                // Update state with fetched data
+                setCancellationRequested(data.cancellationRequested === true); // Check if cancel was already requested
                 setCartItems(data.items);
                 setOrderId(data.orderId);
 
+                // Map backend status ID to UI Steps (1-4)
                 switch (data.status) {
-                    case 1:
-                        setCurrentStep(1);
-                        break;
-                    case 2:
-                        setCurrentStep(2);
-                        break;
-                    case 3:
-                        setCurrentStep(3);
-                        break;
-                    case 4:
-                        setCurrentStep(4);
-                        break;
-                    default:
-                        setCurrentStep(1);
+                    case 1: setCurrentStep(1); break; // Received
+                    case 2: setCurrentStep(2); break; // Preparing
+                    case 3: setCurrentStep(3); break; // Rider
+                    case 4: setCurrentStep(4); break; // Delivered
+                    default: setCurrentStep(1);
                 }
             } catch (error) {
-            console.error(error);
+                console.error(error);
             } finally {
-                setLoading(false);
+                setLoading(false); // Stop loading spinner
             }
         };
 
         fetchOrderDetails();
     }, [orderIdFromState]);
 
+    // 2. ANIMATION: Trigger confetti when order is Delivered (Step 4).
     useEffect(() => {
         if (currentStep === 4 && orderStatus !== 'cancelled') {
-            const duration = 3 * 1000;
+            const duration = 3 * 1000; // 3 seconds
             const end = Date.now() + duration;
             const frame = () => {
+                // Fire confetti from left and right
                 confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: [BARA_BROWN, BARA_GREEN, '#FFC107'] });
                 confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: [BARA_BROWN, BARA_GREEN, '#FFC107'] });
                 if (Date.now() < end) requestAnimationFrame(frame);
@@ -127,17 +148,18 @@ const OrderStatus = () => {
         }
     }, [currentStep, orderStatus]);
 
+    // --- HANDLERS ---
+    
+    // ACTION: Send cancellation request to the backend
     const requestCancellation = async () => {
         try {
-            setCancellationRequested(true); // lock the button
+            setCancellationRequested(true); // Optimistically lock the button
             
             const response = await fetch(
                 "https://localhost:7237/api/Orders/request-cancellation",
                 {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         orderId: orderIdFromState,
                         reason: selectedReason
@@ -152,22 +174,15 @@ const OrderStatus = () => {
             }
 
             console.log(result.message);
-            setShowCancelModal(false);
+            setShowCancelModal(false); // Close modal on success
         } catch (error) {
             console.error("Cancellation error:", error);
-            setCancellationRequested(false); // unlock the button on error
+            setCancellationRequested(false); // Unlock button if error occurs
             alert(error.message);
         }
     };
 
-    const steps = [
-        { label: "RECEIVED", icon: <Check /> },
-        { label: "PREPARING", icon: <CupHotFill /> },
-        { label: "RIDER", icon: <PersonFill /> },
-        { label: "TRANSIT", icon: <Bicycle /> },
-        { label: "DELIVERED", icon: <HouseDoorFill /> },
-    ];
-
+    // Modal Styles Configuration
     const modalStyles = {
         overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1050 },
         modal: { background: '#fff', width: '450px', maxWidth: '95%', borderRadius: '16px', padding: '25px', maxHeight: '90vh', overflowY: 'auto', fontFamily: "'Plus Jakarta Sans', sans-serif" },
@@ -175,6 +190,7 @@ const OrderStatus = () => {
         policy: { background: '#fff3cd', padding: '12px', borderRadius: '8px', marginTop: '15px', fontSize: '13px' }
     };
 
+    // --- RENDER: CANCELLED STATE ---
     if (orderStatus === 'cancelled') {
         return (
             <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: BARA_BG, padding: '20px' }}>
@@ -188,8 +204,11 @@ const OrderStatus = () => {
         );
     }
 
+    // --- RENDER: ACTIVE STATE ---
     return (
-        <>
+        /* 3. Wrap everything in the UserProvider */
+        <UserContext.Provider value={user}>
+            {/* Navbar Section */}
             <Navbar expand="lg" className="navbar" fixed="top">
                 <Container>
                     <Navbar.Brand as={Link} to="/">
@@ -210,14 +229,17 @@ const OrderStatus = () => {
                 </Container>
             </Navbar>
 
+            {/* Main Content Area */}
             <div style={{ padding: '80px 0 20px 0', backgroundColor: BARA_BG, minHeight: '100vh', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <Container style={{ maxWidth: '1100px' }}>
+                    {/* Refresh Button */}
                     <div className="d-flex justify-content-end mb-3">
                         <BootstrapButton variant="link" style={{ color: BARA_GREEN, fontWeight: '700', textDecoration: 'none', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => window.location.reload()}>Refresh Status</BootstrapButton>
                     </div>
 
-                    {/* PROGRESS CARD */}
+                    {/* PROGRESS CARD SECTION */}
                     <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', marginBottom: '20px' }}>
+                        {/* Status Header & Cancel Button */}
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3 text-center text-md-start">
                             <div className="d-flex align-items-center gap-3 flex-column flex-md-row">
                                 <img src={getStatusLogo()} alt="Status" width="60" />
@@ -241,9 +263,13 @@ const OrderStatus = () => {
                             </BootstrapButton>
                         </div>
 
+                        {/* Progress Bar Visualization */}
                         <div style={{ position: 'relative', margin: '30px 0 10px 0' }}>
+                            {/* Gray Background Line */}
                             <div style={{ position: 'absolute', top: '18px', left: '5%', right: '5%', height: '3px', backgroundColor: '#e0e0e0', zIndex: 0 }}></div>
+                            {/* Colored Progress Line */}
                             <div style={{ position: 'absolute', top: '18px', left: '5%', width: `${(currentStep / 4) * 90}%`, height: '3px', backgroundColor: BARA_BROWN, zIndex: 1, transition: '0.5s ease' }}></div>
+                            {/* Steps Icons */}
                             <div className="d-flex justify-content-between position-relative" style={{ zIndex: 2 }}>
                                 {steps.map((step, index) => {
                                     const isActive = index <= currentStep;
@@ -269,8 +295,9 @@ const OrderStatus = () => {
                         </div>
                     </div>
 
-                    {/* DETAILS GRID */}
+                    {/* DETAILS GRID (Left: Items, Right: Payment) */}
                     <Row className="g-3">
+                        {/* LEFT: Order Items List */}
                         <Col lg={7}>
                             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                                 <div className="d-flex justify-content-between mb-4 flex-wrap gap-2">
@@ -295,6 +322,7 @@ const OrderStatus = () => {
                                                 </div>
                                                 <span style={{ fontWeight: '700', fontSize: '14px', color: PRIMARY_TEXT }}>₱{item.total.toFixed(2)}</span>
                                             </div>
+                                            {/* Display Item Notes if available */}
                                             {item.notes && (
                                                 <div style={{ background: 'rgba(59, 48, 42, 0.08)', borderLeft: `3px solid ${BARA_BROWN}`, padding: '6px 12px', borderRadius: '6px', marginLeft: '53px', marginTop: '4px' }}>
                                                     <p style={{ margin: 0, color: BARA_BROWN, fontSize: '12px', lineHeight: '1.4' }}>
@@ -310,6 +338,7 @@ const OrderStatus = () => {
                             </div>
                         </Col>
 
+                        {/* RIGHT: Payment Summary */}
                         <Col lg={5}>
                             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                                 <span style={{ fontWeight: '700', fontSize: '16px', display: 'block', marginBottom: '20px', fontFamily: "'DM Sans', sans-serif", color: PRIMARY_TEXT }}>Payment Summary</span>
@@ -332,7 +361,7 @@ const OrderStatus = () => {
                     </Row>
                 </Container>
 
-                {/* CANCEL MODAL */}
+                {/* MODAL: Cancellation Request */}
                 {showCancelModal && (
                     <div style={modalStyles.overlay}>
                         <div style={modalStyles.modal}>
@@ -340,6 +369,7 @@ const OrderStatus = () => {
                             <p style={{ fontSize: '13px', color: SECONDARY_TEXT }}>Please select a reason to cancel your order instantly.</p>
                             <p style={{ fontSize: '12px', color: '#c43737', marginBottom: '15px' }}><em>Cancellation requests are subject to approval.</em></p>
                             
+                            {/* Reason Selector */}
                             <p className="fw-bold mb-2" style={{ fontSize: '13px' }}>Reason for Cancellation *</p>
                             {[ "Found a better price elsewhere", "Ordered by mistake", "High delivery costs", "Need to change shipping address", "Ordered wrong item/size", "Other reason" ].map((r) => (
                                 <label key={r} style={modalStyles.radioBox(selectedReason === r)}>
@@ -348,6 +378,7 @@ const OrderStatus = () => {
                                 </label>
                             ))}
                             
+                            {/* Modal Actions */}
                             <div className="d-flex gap-2 mt-4">
                                 <BootstrapButton variant="light" className="flex-grow-1 fw-bold" style={{ fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={() => setShowCancelModal(false)}>Keep Order</BootstrapButton>
                                 <BootstrapButton variant="danger" className="flex-grow-1 fw-bold" style={{ backgroundColor: '#e54848', fontSize: '14px', fontFamily: "'DM Sans', sans-serif", boxShadow: 'none' }} onClick={requestCancellation}>Cancel Order</BootstrapButton>
@@ -356,7 +387,7 @@ const OrderStatus = () => {
                     </div>
                 )}
             </div>
-        </>
+        </UserContext.Provider>
     );
 };
 
