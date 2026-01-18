@@ -175,7 +175,7 @@ const navigate = useNavigate();
   };
 
   const handlePlaceOrder = () => {
-    navigate("/order/orderstatus", { state: { orderId: 12 } });
+    navigate("/order/orderstatus", { state: { orderId: 11 } });
   };
 
   //  Confirmation Modal Component

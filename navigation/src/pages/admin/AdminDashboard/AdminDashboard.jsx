@@ -133,7 +133,7 @@ function App() {
                         date: formatOrderDate(o.placed_at),
                         price: o.total_cost,
                         cancelReason: o.cancellation_reason,
-                        cancelNotes: o.cancellation_requested ? "Drama Pending 🚩" : "N/A",
+                        cancelNotes: o.cancellation_reason ? "Drama Pending 🚩" : "N/A",
                         image: classic_coffeebara_cold_brew_Pic,
                         rawStatusValue: o.statusValue,
                         cancellationRequested: o.cancellation_requested,

@@ -44,7 +44,7 @@ function formatDateOnly(dateString) {
     if (!dateString) return "No date";
     const d = new Date(dateString);
     if (isNaN(d.getTime())) return "Invalid date";
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    return d.toLocaleDateString("en-PH", { month: "short", day: "numeric", year: "numeric" });
 }
 
 // Format time only

@@ -73,7 +73,7 @@ const OrderStatus = () => {
     // Logic to disable the cancel button:
     // Disabled if: Order is delivered (Step 4+), already cancelled, or cancellation is pending.
     const isCancelDisabled =
-        currentStep >= 4 ||
+        currentStep >= 3 ||
         orderStatus == 'cancelled' ||
         cancellationRequested;
 
@@ -153,13 +153,15 @@ const OrderStatus = () => {
     // ACTION: Send cancellation request to the backend
     const requestCancellation = async () => {
         try {
-            setCancellationRequested(true); // Optimistically lock the button
-            
+            setCancellationRequested(true); // lock the button
+
             const response = await fetch(
                 "https://localhost:7237/api/Orders/request-cancellation",
                 {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "PATCH", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         orderId: orderIdFromState,
                         reason: selectedReason
@@ -174,10 +176,10 @@ const OrderStatus = () => {
             }
 
             console.log(result.message);
-            setShowCancelModal(false); // Close modal on success
+            setShowCancelModal(false);
         } catch (error) {
             console.error("Cancellation error:", error);
-            setCancellationRequested(false); // Unlock button if error occurs
+            setCancellationRequested(false); // unlock the button on error
             alert(error.message);
         }
     };
@@ -377,6 +379,20 @@ const OrderStatus = () => {
                                     <span style={{ fontSize: '13px' }}>{r}</span>
                                 </label>
                             ))}
+
+                            {/* CONDITIONAL TEXT ALERTS - Only shown when conditions are met */}
+                            <div className="mt-3 text-center">
+                                {cancellationRequested && (
+                                    <p style={{ color: '#ef4444', fontSize: '12px', margin: '0' }}>
+                                        Order cancellation already requested. Please wait for an admin to process it.
+                                    </p>
+                                )}
+                                {currentStep >= 3 && !cancellationRequested && (
+                                    <p style={{ color: '#ef4444', fontSize: '12px', margin: '0' }}>
+                                        Order cannot be cancelled.
+                                    </p>
+                                )}
+                            </div>
                             
                             {/* Modal Actions */}
                             <div className="d-flex gap-2 mt-4">

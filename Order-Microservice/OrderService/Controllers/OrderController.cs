@@ -23,7 +23,7 @@ namespace OrderService.Controllers
 
         // --- CUSTOMER METHODS ---
 
-        [HttpPost("request-cancellation")]
+        [HttpPatch("request-cancellation")]
         public async Task<IActionResult> RequestCancellation([FromBody] CancellationRequestDto request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Reason))
@@ -87,10 +87,6 @@ namespace OrderService.Controllers
 
             return Ok(order);
         }
-
-
-
-
 
 
         [HttpPatch("status")]
