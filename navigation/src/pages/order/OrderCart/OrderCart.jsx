@@ -9,6 +9,7 @@ import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
 function App() {
+
   const { addToCart, toggleCart } = useCart();
 
   const product = {
@@ -18,11 +19,13 @@ function App() {
     prices: { M: 120, L: 140 }
   };
 
-  const [quantity, setQuantity] = React.useState(1);
+  
   const [size, setSize] = React.useState("M");
+  const [quantity, setQuantity] = React.useState(1);
   const [notes, setNotes] = React.useState("");
 
   const price = product.prices[size] || 0;
+  
 
   const handleAddToBag = () => {
     const cartItem = {
@@ -42,6 +45,8 @@ function App() {
     setSize("M");
     setNotes("");
   };
+  
+  
 
   return (
     <>
