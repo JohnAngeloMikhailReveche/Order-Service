@@ -7,6 +7,8 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderDetails.css";
+import { useCart } from '../../../contexts/CartContext';
+import Cart from '../../../components/Cart';
 
 // Assets used in the page
 import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
@@ -185,7 +187,7 @@ const OrderDetails = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(Boolean(!stateOrder && (stateOrderId || paramOrderId)));
     const [error, setError] = useState(null);
-    const [isCartOpen, setIsCartOpen] = useState(false); // Added for navbar toggle
+    const { toggleCart } = useCart();
     const orderIdToFetch = stateOrder ? stateOrder.orders_id || stateOrder.id : stateOrderId || paramOrderId;
 
     // 2. Define the User Role (Hardcoded as Customer for this page)
@@ -437,7 +439,7 @@ const OrderDetails = () => {
                                         to="#cart"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            setIsCartOpen(!isCartOpen);
+                                            toggleCart();
                                         }}
                                     >
                                         <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
@@ -579,6 +581,7 @@ const OrderDetails = () => {
                     </div>
                 </div>
             </div>
+            <Cart />
         </UserContext.Provider>
     );
 };

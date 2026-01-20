@@ -4,6 +4,8 @@ import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop
 import confetti from 'canvas-confetti';
 import { Link, useLocation } from 'react-router-dom';
 import './OrderStatus.css';
+import { useCart } from '../../../contexts/CartContext';
+import Cart from '../../../components/Cart';
 
 /* --- DEVELOPMENT NOTES ---
     1. Mapping real database values to UI.
@@ -42,8 +44,8 @@ const OrderStatus = () => {
     const [cancellationRequested, setCancellationRequested] = useState(false); 
     const [showCancelModal, setShowCancelModal] = useState(false); 
     const [orderStatus, setOrderStatus] = useState('active'); 
-    const [selectedReason, setSelectedReason] = useState(""); 
-    const [isCartOpen, setIsCartOpen] = useState(false); 
+    const [selectedReason, setSelectedReason] = useState("");
+    const { toggleCart } = useCart(); 
 
     // --- USER CONTEXT DATA ---
     // 2. Define the User Role (Hardcoded as Customer for this page view)
@@ -223,7 +225,7 @@ const OrderStatus = () => {
                             <Nav.Link as={Link} to="admin/admincancellations">Menu</Nav.Link>
                             <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
                             <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
-                            <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); setIsCartOpen(!isCartOpen); }}>
+                            <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
                                 <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
                             </Nav.Link>
                         </Nav>
@@ -403,6 +405,7 @@ const OrderStatus = () => {
                     </div>
                 )}
             </div>
+            <Cart />
         </UserContext.Provider>
     );
 };

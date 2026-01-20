@@ -9,6 +9,8 @@ import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import UpdateOrderStatusModal from "../AdminModals/UpdateOrderStatusModal";
+import { useCart } from '../../../contexts/CartContext';
+import Cart from '../../../components/Cart';
 
 const API_BASE_URL = "https://localhost:7237/api/Orders";
 
@@ -24,7 +26,7 @@ function App() {
     const [modalMode, setModalMode] = useState("update");
     const [newStatus, setNewStatus] = useState("");
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [isCartOpen, setIsCartOpen] = useState(false); 
+    const { toggleCart } = useCart();
     const [isOrderReadOnly, setIsOrderReadOnly] = useState(false); // whether update should be disabled for the selected order
 
     // 2. Define the User Role (Hardcoded as Admin for this page)
@@ -245,7 +247,7 @@ function App() {
                                 to="#cart"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setIsCartOpen(!isCartOpen);
+                                    toggleCart();
                                 }}
                             >
                                 <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
@@ -354,6 +356,7 @@ function App() {
                     allowUpdate={!isOrderReadOnly} // disable updates when the selected order is cancelled
                 />
             )}
+            <Cart />
         </UserContext.Provider>
     );
 }
