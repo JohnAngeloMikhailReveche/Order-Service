@@ -38,7 +38,24 @@ namespace OrderService.Controllers
         [HttpGet("orders")]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await _db.Orders.ToListAsync();
+            var orders = await _db.Orders
+                .Select(o => new {
+                    o.orders_id,
+                    o.users_id,
+                    o.status,
+                    o.subtotal,
+                    o.total_cost,
+                    o.item_count,
+                    o.placed_at,
+                    o.fulfilled_at,
+                    o.payment_method,
+                    o.cancellation_requested,
+                    o.cancellation_reason,
+                    o.payment_id,
+                    o.refund_status
+                })
+                .ToListAsync();
+
             return Ok(orders);
         }
 

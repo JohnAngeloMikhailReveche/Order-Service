@@ -17,7 +17,7 @@ namespace OrderService.Models
         public bool cancellation_requested { get; set; } = false;
         public string? cancellation_reason { get; set; }
         public int? payment_id { get; set; }
-        public int? refund_status { get; set; }
+        public byte? refund_status { get; set; }
         public virtual ICollection<OrderItem>? OrderItems { get; set; }
         public virtual ICollection<OrderFeedback>? OrderFeedbacks { get; set; }
     }

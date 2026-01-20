@@ -15,7 +15,7 @@ namespace OrderService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Mapping for Cart & Items 🛒
+            // Mapping for Cart & Items 
             modelBuilder.Entity<Cart>().HasKey(c => c.cart_id);
             modelBuilder.Entity<CartItem>().HasKey(c => c.cart_item_id);
 
@@ -25,7 +25,7 @@ namespace OrderService.Data
                 .HasForeignKey(ci => ci.cart_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Mapping for Order Items 🥐
+            // Mapping for Order Items 
             modelBuilder.Entity<OrderItem>().HasKey(oi => oi.order_item_id);
 
             modelBuilder.Entity<OrderItem>()
@@ -34,7 +34,7 @@ namespace OrderService.Data
                 .HasForeignKey(oi => oi.orders_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Mapping for Order Feedback ⭐️
+            // Mapping for Order Feedback 
             modelBuilder.Entity<OrderFeedback>().HasKey(of => of.order_feedback_id);
 
             modelBuilder.Entity<OrderFeedback>()
@@ -43,12 +43,12 @@ namespace OrderService.Data
                 .HasForeignKey(of => of.orders_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // The Main Event: Orders Table 👑
+            // Orders Table 
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.orders_id);
 
-                // Mapping the cancellation vibes 🚩
+                // Mapping the cancellation 
                 entity.Property(e => e.cancellation_requested)
                       .HasDefaultValue(false);
 
@@ -59,11 +59,9 @@ namespace OrderService.Data
                 entity.Property(e => e.status)
                       .IsRequired();
 
-                // Mapping refund_status as an int for that SSMS sync! 💸🔢
-                // 0 = None, 1 = Pending, 2 = Complete
                 entity.Property(o => o.refund_status)
                       .HasColumnName("refund_status")
-                      .HasColumnType("int")
+                      .HasColumnType("tinyint")
                       .IsRequired(false);
             });
 
