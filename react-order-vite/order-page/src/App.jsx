@@ -1,11 +1,13 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Navbar, Container, Nav, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import './App.css';
+import OrderPage from './OrderPage';
 import classic_matchabara_cold_brew_Pic from './classic matchabara cold brew.png';
 import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
 import kapebara_cart_Pic from './kapebara cart.jpg';
 
-function App() {
+function HomePage() {
   {/* Mock Data */}
     const product = {
     id: 1,
@@ -159,6 +161,15 @@ function App() {
         </Card>
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/order/:menuItemId" element={<OrderPage />} />
+    </Routes>
   );
 }
 
