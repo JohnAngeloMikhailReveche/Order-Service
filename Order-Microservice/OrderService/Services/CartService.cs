@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.OpenApi.Models;
 using OrderService.Data;
 using OrderService.Models;
 using OrderService.Models.DTO;
 using OrderService.Models.MenuServiceDTO;
+using System.Data;
 
 namespace OrderService.Services
 {
@@ -20,206 +22,168 @@ namespace OrderService.Services
         }
         
 
-        public async Task<Cart> AddItem (
+        public async Task<CartDTO?> AddItem (
                 int menuId,
                 //int variantId,
                 int userId
             )
         {
+            /* Get Menu Item from MenuService */
+            var menuItem = await _menuClient
+                .GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
 
-            // Get the menu item information
-            // Get /menu/item/{id}
-            var menuItem = await _menuClient.GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
-
-            // ------------------------------
-            // Get the menu item with the variants. (This is to be made when this is switched to the mono repo)
-            /*
-            var item = await _menuClient.GetFromJsonAsync<MenuItemDTO>($"/api/menu-items/{menuId}");
-
-            if (item == null)
+            if (menuItem == null )
             {
-                throw new Exception("Invalid item");
-            }
-
-            var variant = item.variants
-                .FirstOrDefault(v => v.variantId == variantId);
-
-            if (variant == null)
-            {
-                throw new Exception("Invalid variant");
-            }
-            */
-            // ------------------------------
-
-            // Add it to the cart/cart items
-            if (menuItem == null)
                 throw new Exception("Item does not exist.");
-
-            // Get user's cart or create user's cart
-            var cart = await _db.Cart
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.users_id == userId);
-
-            if (cart == null)
-            {
-                cart = new Cart { users_id = userId, subtotal = 0, CartItems = new List<CartItem>() };
-                _db.Cart.Add(cart);
             }
 
-            // If item exists in cart then increment quantity
-            var existingItem = cart.CartItems.FirstOrDefault(i =>
-                i.menu_item_id == menuId
-                && i.variant_id == menuItem.variantId
-            );
+            await _db.Database.ExecuteSqlRawAsync(
+                @"EXEC SP_AddItemToCart
+                    @UserId,
+                    @MenuItemId,
+                    @VariantId,
+                    @ItemName,
+                    @ItemDescription,
+                    @ImgUrl,
+                    @VariantName,
+                    @VariantPrice,
+                    @Quantity,
+                    @SpecialInstructions",
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@MenuItemId", menuId),
+                new SqlParameter("@VariantId", menuItem.variantId),
+                new SqlParameter("@ItemName", menuItem.item_name),
+                new SqlParameter("@ItemDescription", menuItem.item_description),
+                new SqlParameter("@ImgUrl", menuItem.img_url),
+                new SqlParameter("@VariantName", menuItem.variant_name),
+                new SqlParameter("@VariantPrice", menuItem.variant_price),
+                new SqlParameter("@Quantity", menuItem.quantity),
+                new SqlParameter("@SpecialInstructions", menuItem.specialInstructions)
+                );
 
-            if (existingItem != null)
-            {
-                existingItem.quantity += menuItem.quantity;
-            } else
-            {
-                cart.CartItems.Add(new CartItem
-                {
-                    menu_item_id = menuId,
-                    variant_id = menuItem.variantId,
-                    item_name = menuItem.item_name,
-                    item_description = menuItem.item_description,
-                    img_url = menuItem.img_url,
-                    variant_name = menuItem.variant_name,
-                    variant_price = menuItem.variant_price,
-                    quantity = menuItem.quantity,
-                    computed_subtotal = menuItem.variant_price * menuItem.quantity,
-                    special_instructions = menuItem.specialInstructions,
-                    added_at = DateTime.Now
-                });
-            }
-
-            // Recompute cart subtotal
-            cart.subtotal = cart.CartItems.Sum(i => i.variant_price * i.quantity);
-
-            await _db.SaveChangesAsync();
-            return cart;
+            return await ViewCart(userId);
         }
 
         public async Task<CartDTO?> ViewCart(int userId)
         {
-            var cart = await _db.Cart
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.users_id == userId);
+            CartDTO? cart = null;
 
-            if (cart == null)
+            // Get and Open Database Connection
+            using var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
+
+            // Create a command which is like an SQL command (EXEC SP_ViewCart) and tell it that it is a Stored Procedure to work.
+            using var command = connection.CreateCommand();
+            command.CommandText = "SP_ViewCart";
+            command.CommandType = CommandType.StoredProcedure;
+
+            // Add the parameter that is needed to run the Stored Procedure, once added it will be ready for execution.
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "@UserId";
+            userIdParam.Value = userId;
+            command.Parameters.Add(userIdParam);
+
+            using var reader = await command.ExecuteReaderAsync(); // Execute the stored procedure in read mode.
+
+            // Loop through the rows returned by the stored procedure, it will move to the next rows and return false if there are no rows left.
+            while (await reader.ReadAsync()) // If ever there is no existing userID, the SQL will return none which will make this ReadAsync return false--meaning the loop will never happen.
             {
-                return null;
+                // This will run once since we only need to get the existing cart, because if there is an existing cart then reuse it.
+                if (cart == null)
+                {
+                    cart = new CartDTO
+                    {
+                        cart_id = reader.GetInt32(reader.GetOrdinal("cart_id")),
+                        users_id = reader.GetInt32(reader.GetOrdinal("users_id")),
+                        subtotal = reader.GetDecimal(reader.GetOrdinal("subtotal")),
+                        updated_at = reader.GetDateTime(reader.GetOrdinal("updated_at")),
+                        cartItems = new List<CartItemDTO>()
+                    };
+                }
+
+                // Checks if the column cart_item_id is not null.
+                if(!reader.IsDBNull(reader.GetOrdinal("cart_item_id")))
+                {
+                    cart.cartItems.Add(new CartItemDTO
+                    {
+                        cart_item_id = reader.GetInt32(reader.GetOrdinal("cart_item_id")),
+                        item_name = reader.GetString(reader.GetOrdinal("item_name")),
+                        variant_name = reader.GetString(reader.GetOrdinal("variant_name")),
+                        variant_price = reader.GetDecimal(reader.GetOrdinal("variant_price")),
+                        quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                        img_url = reader.GetString(reader.GetOrdinal("img_url"))
+                    });
+                }
             }
 
-            return new CartDTO
-            {
-                cart_id = cart.cart_id,
-                users_id = cart.users_id,
-                subtotal = cart.subtotal,
-                updated_at = cart.updated_at,
-                cartItems = cart.CartItems.Select(item => new CartItemDTO
-                {
-                    cart_item_id = item.cart_item_id,
-                    item_name = item.item_name,
-                    variant_name = item.variant_name,
-                    variant_price = item.variant_price,
-                    quantity = item.quantity,
-                    img_url = item.img_url
-                }).ToList()
-            };
+            return cart;
         }
 
         public async Task<List<CartItemDTO>> ViewCartItems(int userId)
         {
-            return await _db.Cart
-                .Where(c => c.users_id == userId)
-                .SelectMany(c => c.CartItems)
-                .Select(item => new CartItemDTO
+            var cartItems = new List<CartItemDTO>();
+
+            /* Connection DB Process, Filling the Param, and Using a Reader/Cursor for reading each row. */
+            using var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "SP_ViewCartItemsByUser";
+            command.CommandType = CommandType.StoredProcedure;
+
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "@UserId";
+            userIdParam.Value = userId;
+            command.Parameters.Add(userIdParam);
+
+            using var reader = await command.ExecuteReaderAsync();
+            /* Connection DB Process, Filling the Param, and Using a Reader/Cursor for reading each row. */
+
+            while (await reader.ReadAsync())
+            {
+                cartItems.Add(new CartItemDTO
                 {
-                    cart_item_id = item.cart_item_id,
-                    item_name = item.item_name,
-                    variant_name = item.variant_name,
-                    variant_price = item.variant_price,
-                    quantity = item.quantity,
-                    img_url = item.img_url
-                })
-                .ToListAsync();
+                    cart_item_id = reader.GetInt32(reader.GetOrdinal("cart_item_id")),
+                    item_name = reader.GetString(reader.GetOrdinal("item_name")),
+                    variant_name = reader.GetString(reader.GetOrdinal("variant_name")),
+                    variant_price = reader.GetDecimal(reader.GetOrdinal("variant_price")),
+                    quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                    img_url = reader.GetString(reader.GetOrdinal("img_url"))
+                });
+            }
+
+            return cartItems;
         }
 
-        public async Task<Cart?> RemoveItem(int userID, int cartItemID, int quantityToRemove)
+        public async Task<CartDTO?> RemoveItem(int userID, int cartItemID, int quantityToRemove)
         {
-            var cart = await _db.Cart
-                 .Include(c => c.CartItems)
-                 .FirstOrDefaultAsync(c => c.users_id == userID);
+            await _db.Database.ExecuteSqlRawAsync(
+                @"EXEC SP_RemoveItemFromCart
+                    @UserId
+                    , @CartItemId
+                    , @QuantityToRemove",
+                new SqlParameter("@UserId", userID),
+                new SqlParameter("@CartItemId", cartItemID),
+                new SqlParameter("QuantityToRemove", quantityToRemove)
+                );
 
-            if (cart == null)
-            {
-                return null;
-            }
-
-            var cartItem = cart.CartItems
-                .FirstOrDefault(ci => ci.cart_item_id == cartItemID);
-
-            if (cartItem == null)
-            {
-                return null;
-            }
-
-            // Decrease Quantity
-            cartItem.quantity -= quantityToRemove;
-
-            if (cartItem.quantity <= 0)
-            {
-                _db.CartItem.Remove(cartItem);
-            } else
-            {
-                cartItem.computed_subtotal = cartItem.quantity * cartItem.variant_price;
-            }
-
-            // Recalculate cart subtotal
-            cart.subtotal = cart.CartItems
-                .Where(ci => ci.cart_item_id != cartItemID || cartItem.quantity > 0)
-                .Sum(ci => ci.quantity * ci.variant_price);
-
-            cart.updated_at = DateTime.UtcNow;
-
-            await _db.SaveChangesAsync();
-
-            return cart;
+            return await ViewCart(userID);
         }
 
 
-        public async Task<Cart?> IncreaseItem(int userID, int cartItemID, int count)
+        public async Task<CartDTO?> IncreaseItem(int userID, int cartItemID, int count)
         {
-            var cart = await _db.Cart
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.users_id == userID);
+            await _db.Database.ExecuteSqlRawAsync(
+                @"EXEC SP_IncreaseItemInCart
+                    @UserId,
+                    @CartItemId,
+                    @Count",
+                new SqlParameter("@UserId", userID),
+                new SqlParameter("@CartItemId", cartItemID),
+                new SqlParameter("@Count", count)
+            );
 
-            if (cart == null)
-            {
-                return null;
-            }
-
-            var cartItem = cart.CartItems
-                .FirstOrDefault(ci => ci.cart_item_id == cartItemID);
-
-            if (cartItem == null)
-            {
-                return null;
-            }
-
-            cartItem.quantity += count;
-
-            cartItem.computed_subtotal = cartItem.quantity * cartItem.variant_price;
-
-            cart.subtotal = cart.CartItems
-                .Sum(ci => ci.quantity * ci.variant_price);
-
-            cart.updated_at = DateTime.UtcNow;
-
-            await _db.SaveChangesAsync();
-
-            return cart;
+            return await ViewCart(userID);
         }
 
     }
