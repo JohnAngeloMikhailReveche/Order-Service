@@ -25,6 +25,8 @@ function App() {
   const price = product.prices[size] || 0;
 
   const handleAddToBag = () => {
+    
+    /*
     const cartItem = {
       productId: product.id,
       name: product.name,
@@ -35,12 +37,18 @@ function App() {
       total: price * quantity,
       notes
     };
-
+     */
+    
+    const cartItem = 11; // This will depend on the menudb id where the menuitemid is stored in our mock.
     addToCart(cartItem);
 
-    setQuantity(1);
+    /**
+     * 
+     * setQuantity(1);
     setSize("M");
     setNotes("");
+     */
+    
   };
 
   return (

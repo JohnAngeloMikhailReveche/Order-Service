@@ -8,7 +8,7 @@ import '../pages/order/OrderCart/OrderCart.css';
 const ConfirmRemoveModal = ({ show, itemToRemove, onConfirm, onCancel }) => {
   if (!show) return null;
 
-  const { productId, size, notes } = itemToRemove || {};
+  const { productId } = itemToRemove || {};
 
   return (
     <div style={{
@@ -60,7 +60,7 @@ const ConfirmRemoveModal = ({ show, itemToRemove, onConfirm, onCancel }) => {
           <Button
             variant="danger"
             onClick={() => {
-              onConfirm(productId, size, notes);
+              onConfirm(productId);
               onCancel();
             }}
             style={{
@@ -84,7 +84,7 @@ const ConfirmRemoveModal = ({ show, itemToRemove, onConfirm, onCancel }) => {
 // Cart Component
 const Cart = () => {
   const navigate = useNavigate();
-  const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, placeOrder, orderID } = useCart();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
 
@@ -92,33 +92,43 @@ const Cart = () => {
 
   const total = cartItems.reduce((sum, item) => sum + item.total, 0);
 
-  const handleUpdateQuantity = (productId, itemSize, itemNotes, newQuantity) => {
-    if (newQuantity <= 0) {
-      setItemToRemove({ productId, size: itemSize, notes: itemNotes });
-      setShowConfirmModal(true);
-      return;
+  const handleUpdateQuantity = (productId, newQuantity, quantity) => {
+    
+    if(newQuantity === -1 && quantity === 1)
+    {
+      quantity -= 1;
     }
 
-    updateQuantity(productId, itemSize, itemNotes, newQuantity);
+    if (quantity <= 0) {
+      setItemToRemove({ productId });
+      setShowConfirmModal(true);
+      return;
+    } else {
+      console.log("Updating quantity for productId:", productId, "to", quantity + newQuantity);
+      updateQuantity(productId, newQuantity);
+    }
+
+    
   };
 
-  const handleRemove = (productId, itemSize, itemNotes) => {
-    setItemToRemove({ productId, size: itemSize, notes: itemNotes });
+  const handleRemove = (productId) => {
+    setItemToRemove({ productId });
     setShowConfirmModal(true);
   };
 
-  const handleConfirmRemove = (productId, size, notes) => {
-    removeFromCart(productId, size, notes);
+  const handleConfirmRemove = (productId) => {
+    removeFromCart(productId);
   };
 
-  const handlePlaceOrder = () => {
-    if (cartItems.length === 0) return;
-    
-    // Clear cart and navigate to order status
-    clearCart();
-    navigate("/order/orderstatus", { state: { orderId: 11 } });
-    setIsCartOpen(false);
-  };
+  const handlePlaceOrder = async () => {
+  if (cartItems.length === 0) return;
+
+  const createdOrderID = await placeOrder(); // call API and get orderID
+  if (!createdOrderID) return; // failed to place order
+
+  setIsCartOpen(false);
+  navigate("/order/orderstatus", { state: { orderId: createdOrderID } }); // pass orderID to next page
+};
 
   return (
     <>
@@ -140,7 +150,7 @@ const Cart = () => {
             <p className="cart-empty">Your cart is empty.</p>
           ) : (
             cartItems.map((item, index) => (
-              <div key={`${item.productId}-${item.size}-${item.notes}-${index}`} className="cart-item">
+              <div key={`${item.cartItemID}-${item.size}-${item.notes}-${index}`} className="cart-item">
                 <img src={item.image} alt={item.name} className="cart-item-image" />
                 <div className="cart-item-details">
                   <div className="cart-item-name">{item.name}</div>
@@ -155,7 +165,7 @@ const Cart = () => {
                     <Button
                       variant="light"
                       size="sm"
-                      onClick={() => handleUpdateQuantity(item.productId, item.size, item.notes, item.quantity - 1)}
+                      onClick={() => handleUpdateQuantity(item.cartItemID, -1, item.quantity)}
                       className="cart-quantity-btn"
                     >
                       -
@@ -164,14 +174,14 @@ const Cart = () => {
                     <Button
                       variant="light"
                       size="sm"
-                      onClick={() => handleUpdateQuantity(item.productId, item.size, item.notes, item.quantity + 1)}
+                      onClick={() => handleUpdateQuantity(item.cartItemID, 1, item.quantity)}
                       className="cart-quantity-btn"
                     >
                       +
                     </Button>
                   </div>
                   <button
-                    onClick={() => handleRemove(item.productId, item.size, item.notes)}
+                    onClick={() => handleRemove(item.cartItemID)}
                     className="cart-remove-btn"
                   >
                     Remove
