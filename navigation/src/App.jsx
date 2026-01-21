@@ -6,6 +6,7 @@ import OrderHistory from "./pages/order/OrderHistory/OrderHistory";
 import OrderDetails from "./pages/order/OrderDetails/OrderDetails";
 import AdminDashboard from "./pages/admin/AdminDashboard/AdminDashboard";
 import AdminCancellations from "./pages/admin/AdminCancellations/AdminCancellations";
+// import OrderCart from "./pages/order/OrderCart/OrderCart"; 
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/order/orderdetails" element={<OrderDetails />} />
           <Route path="/admin/admindashboard" element={<AdminDashboard />} />
           <Route path="/admin/admincancellations" element={<AdminCancellations />} />
+          {/* <Route path="/order/:menuItemId" element={<OrderCart />} /> */}
         </Routes>
       </BrowserRouter>
     </CartProvider>
