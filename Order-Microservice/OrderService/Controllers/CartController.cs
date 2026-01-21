@@ -6,6 +6,7 @@ using OrderService.Data;
 using System.Threading.Tasks;
 using System.Net.Http.Json;
 using OrderService.Services;
+using OrderService.Models.DTO;
 
 namespace OrderService.Controllers
 {
@@ -31,10 +32,13 @@ namespace OrderService.Controllers
         {
             try
             {
-                var cart = await _cartService.AddItem(
+                CartDTO? cart = await _cartService.AddItem(
                     menuItemID,
                     userID
                     );
+
+                if (cart == null)
+                    return BadRequest(new { message = "Cart not found." });
 
                 return Ok(cart);
                 
