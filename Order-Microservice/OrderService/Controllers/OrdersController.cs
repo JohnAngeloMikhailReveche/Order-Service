@@ -46,7 +46,7 @@ namespace OrderService.Controllers
         /// <summary>
         /// Place a new order from cart
         /// </summary>
-        [HttpPost("place/order/{userId}")]
+        [HttpPost("place-order/{userId}")]
         public async Task<IActionResult> PlaceOrder(string userId)
         {
             try
