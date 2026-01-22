@@ -430,10 +430,10 @@ const OrderDetails = () => {
                             <Navbar.Toggle aria-controls="center-nav" />
                             <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
                                 <Nav className="ms-auto gap-4 align-items-center">
-                                    <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
-                                    <Nav.Link as={Link} to="/order/order">Menu</Nav.Link>
-                                    <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
-                                    <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/order">Order</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/admincancellations">Cancellations</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/orderhistory">History</Nav.Link>
+                                    <Nav.Link as={Link} to="/admin/admindashboard">Admin</Nav.Link>
                                     <Nav.Link
                                         as={Link}
                                         to="#cart"
