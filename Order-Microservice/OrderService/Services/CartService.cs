@@ -1,11 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using Microsoft.OpenApi.Models;
 using OrderService.Data;
-using OrderService.Models;
 using OrderService.Models.DTO;
-using OrderService.Models.MenuServiceDTO;
 using System.Data;
 
 namespace OrderService.Services
@@ -20,21 +16,37 @@ namespace OrderService.Services
             _db = db;
             _menuClient = httpFactory.CreateClient("MenuService");
         }
-        
 
-        public async Task<CartDTO?> AddItem (
+
+        public async Task<CartDTO?> AddItem(
                 int menuId,
-                //int variantId,
-                int userId
+                int variantId,
+                int userId,
+                string specialInstructions
             )
         {
+
             /* Get Menu Item from MenuService */
             var menuItem = await _menuClient
-                .GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
+                .GetFromJsonAsync<MenuDTO>($"/api/menu-items/{menuId}");
 
-            if (menuItem == null )
+            if (menuItem == null)
             {
                 throw new Exception("Item does not exist.");
+            }
+
+            // Check if Available
+            if (menuItem.isAvailable == false)
+            {
+                throw new Exception("Item is not available. Please refer to the Menu.");
+            }
+            // Get the Variant request from the frontend and check if the menuClient has it then map it towards the variant name, variant price and variant id.
+            var chosenVariant = menuItem.variants
+                .FirstOrDefault(v => v.Id == variantId);
+
+            if (chosenVariant == null)
+            {
+                throw new Exception("Selected variant does not exist for this menu item.");
             }
 
             await _db.Database.ExecuteSqlRawAsync(
@@ -51,14 +63,14 @@ namespace OrderService.Services
                     @SpecialInstructions",
                 new SqlParameter("@UserId", userId),
                 new SqlParameter("@MenuItemId", menuId),
-                new SqlParameter("@VariantId", menuItem.variantId),
-                new SqlParameter("@ItemName", menuItem.item_name),
-                new SqlParameter("@ItemDescription", menuItem.item_description),
-                new SqlParameter("@ImgUrl", menuItem.img_url),
-                new SqlParameter("@VariantName", menuItem.variant_name),
-                new SqlParameter("@VariantPrice", menuItem.variant_price),
-                new SqlParameter("@Quantity", menuItem.quantity),
-                new SqlParameter("@SpecialInstructions", menuItem.specialInstructions)
+                new SqlParameter("@VariantId", chosenVariant.Id),
+                new SqlParameter("@ItemName", menuItem.name),
+                new SqlParameter("@ItemDescription", menuItem.description),
+                new SqlParameter("@ImgUrl", menuItem.imageUrl),
+                new SqlParameter("@VariantName", chosenVariant.name),
+                new SqlParameter("@VariantPrice", chosenVariant.price),
+                new SqlParameter("@Quantity", 1),
+                new SqlParameter("@SpecialInstructions", specialInstructions)
                 );
 
             return await ViewCart(userId);
@@ -102,57 +114,23 @@ namespace OrderService.Services
                 }
 
                 // Checks if the column cart_item_id is not null.
-                if(!reader.IsDBNull(reader.GetOrdinal("cart_item_id")))
+                if (!reader.IsDBNull(reader.GetOrdinal("cart_item_id")))
                 {
                     cart.cartItems.Add(new CartItemDTO
                     {
                         cart_item_id = reader.GetInt32(reader.GetOrdinal("cart_item_id")),
                         item_name = reader.GetString(reader.GetOrdinal("item_name")),
+                        item_description = reader.GetString(reader.GetOrdinal("item_description")),
                         variant_name = reader.GetString(reader.GetOrdinal("variant_name")),
                         variant_price = reader.GetDecimal(reader.GetOrdinal("variant_price")),
                         quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
-                        img_url = reader.GetString(reader.GetOrdinal("img_url"))
+                        img_url = reader.GetString(reader.GetOrdinal("imgUrl")),
+                        specialInstructions = reader.GetString(reader.GetOrdinal("special_instructions"))
                     });
                 }
             }
 
             return cart;
-        }
-
-        public async Task<List<CartItemDTO>> ViewCartItems(int userId)
-        {
-            var cartItems = new List<CartItemDTO>();
-
-            /* Connection DB Process, Filling the Param, and Using a Reader/Cursor for reading each row. */
-            using var connection = _db.Database.GetDbConnection();
-            await connection.OpenAsync();
-
-            using var command = connection.CreateCommand();
-            command.CommandText = "SP_ViewCartItemsByUser";
-            command.CommandType = CommandType.StoredProcedure;
-
-            var userIdParam = command.CreateParameter();
-            userIdParam.ParameterName = "@UserId";
-            userIdParam.Value = userId;
-            command.Parameters.Add(userIdParam);
-
-            using var reader = await command.ExecuteReaderAsync();
-            /* Connection DB Process, Filling the Param, and Using a Reader/Cursor for reading each row. */
-
-            while (await reader.ReadAsync())
-            {
-                cartItems.Add(new CartItemDTO
-                {
-                    cart_item_id = reader.GetInt32(reader.GetOrdinal("cart_item_id")),
-                    item_name = reader.GetString(reader.GetOrdinal("item_name")),
-                    variant_name = reader.GetString(reader.GetOrdinal("variant_name")),
-                    variant_price = reader.GetDecimal(reader.GetOrdinal("variant_price")),
-                    quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
-                    img_url = reader.GetString(reader.GetOrdinal("img_url"))
-                });
-            }
-
-            return cartItems;
         }
 
         public async Task<CartDTO?> RemoveItem(int userID, int cartItemID, int quantityToRemove)
@@ -164,7 +142,7 @@ namespace OrderService.Services
                     , @QuantityToRemove",
                 new SqlParameter("@UserId", userID),
                 new SqlParameter("@CartItemId", cartItemID),
-                new SqlParameter("QuantityToRemove", quantityToRemove)
+                new SqlParameter("@QuantityToRemove", quantityToRemove)
                 );
 
             return await ViewCart(userID);
@@ -185,6 +163,6 @@ namespace OrderService.Services
 
             return await ViewCart(userID);
         }
-
     }
 }
+

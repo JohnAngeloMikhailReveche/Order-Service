@@ -1,141 +1,261 @@
-﻿using OrderService.Models;
-using OrderService.Data;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OrderService.Data;
+using OrderService.Models.DTO;
+using System.Data;
 
 namespace OrderService.Services
 {
-    public class OrderStatusService
+    public class OrderService
     {
-        private readonly OrderDbContext _context;
+        private readonly OrderDbContext _db;
 
-        public OrderStatusService(OrderDbContext context)
+        public OrderService(OrderDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
-        // CUSTOMER SIDE
+        // ============================================
+        // 1. REQUEST CANCELLATION
+        // ============================================
         public async Task<string> RequestCancellationAsync(int orderId, string reason)
         {
-            if (string.IsNullOrWhiteSpace(reason))
-                return "A reason is required to request a cancellation.";
-
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == orderId);
-            if (order == null) return "order not found ";
-
-            if (order.cancellation_requested)
-                return "Order cancellation already requested. Please wait for the admin to review.";
-
-            if (order.status > (byte)OrderStatus.Preparing)
-                return $"Cannot cancel order. Order is already {(OrderStatus)order.status}.";
-
-            order.cancellation_requested = true;
-            order.cancellation_reason = reason;
-
-            await _context.SaveChangesAsync();
-            return "Cancellation request submitted. Wait for the admin to review.";
-        }
-
-
-        public async Task<Orders?> PlaceOrderAsync(int userId)
-        {
-            var cart = await _context.Cart
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.users_id == userId);
-
-            if (cart == null || cart.CartItems == null || !cart.CartItems.Any())
+            var resultMessage = new SqlParameter
             {
-                return null;
-            }
-
-            var order = new Orders
-            {
-                users_id = userId,
-                status = 1,
-                subtotal = cart.subtotal,
-                total_cost = cart.subtotal,
-                item_count = cart.CartItems.Sum(i => i.quantity),
-                placed_at = DateTime.UtcNow,
-                fulfilled_at = null,
-                payment_method = "Unpaid",
-                cancellation_requested = false,
-                cancellation_reason = "None",
-                payment_id = null,
-                refund_status = (byte)0 
+                ParameterName = "@ResultMessage",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 500,
+                Direction = ParameterDirection.Output
             };
 
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+            await _db.Database.ExecuteSqlRawAsync(
+                "EXEC sp_RequestCancellation @OrderId, @Reason, @ResultMessage OUTPUT",
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@Reason", reason),
+                resultMessage
+            );
 
-            var orderItems = cart.CartItems.Select(ci => new OrderItem
-            {
-                orders_id = order.orders_id,
-                menu_item_id = ci.menu_item_id,
-                item_variant_id = ci.variant_id,
-                item_name = ci.item_name,
-                item_description = ci.item_description,
-                variant_name = ci.variant_name,
-                variant_price = ci.variant_price,
-                quantity = ci.quantity,
-                line_subtotal = ci.variant_price * ci.quantity
-            }).ToList();
-
-            _context.OrderItem.AddRange(orderItems);
-
-            _context.CartItem.RemoveRange(cart.CartItems);
-            cart.subtotal = 0;
-            cart.updated_at = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return order;
+            return resultMessage.Value?.ToString() ?? "Unknown error";
         }
 
-        // ADMIN/RIDER SIDE
-        public async Task<string> UpdateStatusAsync(OrderStatusDto dto)
+        // ============================================
+        // 2. PLACE ORDER
+        // ============================================
+        public async Task<(int orderId, string message)> PlaceOrderAsync(string userId)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.orders_id == dto.OrderId);
-            if (order == null) return $"order {dto.OrderId} not found.";
-
-            string role = dto.UserRole?.ToLower() ?? "customer";
-            if (role == "string") role = "customer";
-
-            switch (dto.NewStatus)
+            var newOrderId = new SqlParameter
             {
-                case OrderStatus.Preparing:
-                case OrderStatus.ReadyForPickup:
-                    if (role != "admin") return "Only admins can prepare order.";
-                    break;
-                case OrderStatus.InTransit:
-                case OrderStatus.Delivered:
-                case OrderStatus.Failed:
-                    if (role != "rider") return "Only riders can deliver.";
-                    break;
-                case OrderStatus.Cancelled:
-                    if (role != "admin") return "Only admins can officially confirm a cancellation.";
+                ParameterName = "@NewOrderId",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
 
-                    // logic update: check if the customer actually requested this 
-                    if (!order.cancellation_requested)
-                    {
-                        // if requested = 0, it means the kitchen is ending it
-                        order.cancellation_reason = "The kitchen cancelled your order.";
-                    }
-                    // if it was already requested, we keep the reason the customer gave us
+            var resultMessage = new SqlParameter
+            {
+                ParameterName = "@ResultMessage",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 500,
+                Direction = ParameterDirection.Output
+            };
 
-                    order.cancellation_requested = false;
-                    order.refund_status = (byte)1; // Pending 
-                    break;
+            await _db.Database.ExecuteSqlRawAsync(
+                "EXEC sp_PlaceOrder @UserId, @NewOrderId OUTPUT, @ResultMessage OUTPUT",
+                new SqlParameter("@UserId", userId),
+                newOrderId,
+                resultMessage
+            );
+
+            int orderIdValue = newOrderId.Value != DBNull.Value ? (int)newOrderId.Value : 0;
+            string message = resultMessage.Value?.ToString() ?? "Unknown error";
+
+            return (orderIdValue, message);
+        }
+
+        // ============================================
+        // 3. UPDATE ORDER STATUS
+        // ============================================
+        public async Task<string> UpdateStatusAsync(int orderId, byte newStatus, string userRole)
+        {
+            var resultMessage = new SqlParameter
+            {
+                ParameterName = "@ResultMessage",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 500,
+                Direction = ParameterDirection.Output
+            };
+
+            await _db.Database.ExecuteSqlRawAsync(
+                "EXEC sp_UpdateOrderStatus @OrderId, @NewStatus, @UserRole, @ResultMessage OUTPUT",
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@NewStatus", newStatus),
+                new SqlParameter("@UserRole", userRole),
+                resultMessage
+            );
+
+            return resultMessage.Value?.ToString() ?? "Unknown error";
+        }
+
+        // ============================================
+        // 4. GET ORDER DETAILS WITH ITEMS
+        // ============================================
+        public async Task<OrderDetailsDTO?> GetOrderDetailsAsync(int orderId)
+        {
+            OrderDetailsDTO? orderDetails = null;
+
+            using var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "sp_GetOrderDetails";
+            command.CommandType = CommandType.StoredProcedure;
+
+            var orderIdParam = command.CreateParameter();
+            orderIdParam.ParameterName = "@OrderId";
+            orderIdParam.Value = orderId;
+            command.Parameters.Add(orderIdParam);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            // First result set: Order info
+            if (await reader.ReadAsync())
+            {
+                orderDetails = new OrderDetailsDTO
+                {
+                    orderId = reader.GetInt32(reader.GetOrdinal("orderId")),
+                    subtotal = reader.GetDecimal(reader.GetOrdinal("subtotal")),
+                    status = reader.GetByte(reader.GetOrdinal("status")),
+                    cancellation_requested = reader.GetBoolean(reader.GetOrdinal("cancellation_requested")),
+                    items = new List<OrderItemDetailsDTO>()
+                };
             }
 
-            if ((int)dto.NewStatus < (int)order.status)
-                return $"Backward update not allowed. Already at {(OrderStatus)order.status}.";
+            // Second result set: Order items
+            if (await reader.NextResultAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    orderDetails?.items.Add(new OrderItemDetailsDTO
+                    {
+                        imageUrl = reader.IsDBNull(reader.GetOrdinal("imageUrl")) ? null : reader.GetString(reader.GetOrdinal("imageUrl")),
+                        name = reader.GetString(reader.GetOrdinal("name")),
+                        quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                        size = reader.GetString(reader.GetOrdinal("size")),
+                        total = reader.GetDecimal(reader.GetOrdinal("total")),
+                        specialInstructions = reader.IsDBNull(reader.GetOrdinal("specialInstructions")) ? null : reader.GetString(reader.GetOrdinal("specialInstructions"))
+                    });
+                }
+            }
 
-            order.status = (byte)dto.NewStatus;
+            return orderDetails;
+        }
 
-            if (dto.NewStatus == OrderStatus.Delivered || dto.NewStatus == OrderStatus.Cancelled || dto.NewStatus == OrderStatus.Failed)
-                order.fulfilled_at = DateTime.UtcNow;
+        // ============================================
+        // 5. GET ORDER HISTORY
+        // ============================================
+        public async Task<List<OrderHistoryDTO>> GetOrderHistoryAsync(string userId, string filter, string sortOrder)
+        {
+            var orders = new List<OrderHistoryDTO>();
 
-            await _context.SaveChangesAsync();
-            return $"Success. Order {dto.OrderId} moved to {dto.NewStatus} ";
+            using var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "sp_GetOrderHistory";
+            command.CommandType = CommandType.StoredProcedure;
+
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "@UserId";
+            userIdParam.Value = !string.IsNullOrEmpty(userId) ? (object)userId : DBNull.Value;
+            command.Parameters.Add(userIdParam);
+
+            var filterParam = command.CreateParameter();
+            filterParam.ParameterName = "@Filter";
+            filterParam.Value = filter;
+            command.Parameters.Add(filterParam);
+
+            var sortOrderParam = command.CreateParameter();
+            sortOrderParam.ParameterName = "@SortOrder";
+            sortOrderParam.Value = sortOrder;
+            command.Parameters.Add(sortOrderParam);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                orders.Add(new OrderHistoryDTO
+                {
+                    orders_id = reader.GetInt32(reader.GetOrdinal("orders_id")),
+                    users_id = reader.GetString(reader.GetOrdinal("users_id")),
+                    total_cost = reader.GetDecimal(reader.GetOrdinal("total_cost")),
+                    placed_at = reader.GetDateTime(reader.GetOrdinal("placed_at")),
+                    fulfilled_at = reader.IsDBNull(reader.GetOrdinal("fulfilled_at")) ? null : reader.GetDateTime(reader.GetOrdinal("fulfilled_at")),
+                    item_count = reader.GetInt32(reader.GetOrdinal("item_count")),
+                    StatusValue = reader.GetByte(reader.GetOrdinal("StatusValue")),
+                    StatusName = reader.GetString(reader.GetOrdinal("StatusName")),
+                    payment_method = reader.IsDBNull(reader.GetOrdinal("payment_method")) ? null : reader.GetString(reader.GetOrdinal("payment_method")),
+                    cancellation_requested = reader.GetBoolean(reader.GetOrdinal("cancellation_requested")),
+                    cancellation_reason = reader.IsDBNull(reader.GetOrdinal("cancellation_reason")) ? null : reader.GetString(reader.GetOrdinal("cancellation_reason"))
+                });
+            }
+
+            return orders;
+        }
+
+        // ============================================
+        // 6. GET PENDING CANCELLATIONS
+        // ============================================
+        public async Task<List<PendingCancellationDTO>> GetPendingCancellationsAsync()
+        {
+            var cancellations = new List<PendingCancellationDTO>();
+
+            using var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "sp_GetPendingCancellations";
+            command.CommandType = CommandType.StoredProcedure;
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                cancellations.Add(new PendingCancellationDTO
+                {
+                    orders_id = reader.GetInt32(reader.GetOrdinal("orders_id")),
+                    users_id = reader.GetString(reader.GetOrdinal("users_id")),
+                    cancellation_reason = reader.IsDBNull(reader.GetOrdinal("cancellation_reason")) ? null : reader.GetString(reader.GetOrdinal("cancellation_reason")),
+                    item_count = reader.GetInt32(reader.GetOrdinal("item_count")),
+                    Status = reader.GetString(reader.GetOrdinal("Status")),
+                    total_cost = reader.GetDecimal(reader.GetOrdinal("total_cost")),
+                    placed_at = reader.GetDateTime(reader.GetOrdinal("placed_at"))
+                });
+            }
+
+            return cancellations;
+        }
+
+        // ============================================
+        // 7. REVIEW CANCELLATION
+        // ============================================
+        public async Task<string> ReviewCancellationAsync(int orderId, bool approve)
+        {
+            var resultMessage = new SqlParameter
+            {
+                ParameterName = "@ResultMessage",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 500,
+                Direction = ParameterDirection.Output
+            };
+
+            await _db.Database.ExecuteSqlRawAsync(
+                "EXEC sp_ReviewCancellation @OrderId, @Approve, @UserRole, @ResultMessage OUTPUT",
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@Approve", approve),
+                new SqlParameter("@UserRole", "admin"),
+                resultMessage
+            );
+
+            return resultMessage.Value?.ToString() ?? "Unknown error";
         }
     }
 }

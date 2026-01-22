@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OrderService.Models;
 using OrderService.Data;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
-using OrderService.Services;
 using OrderService.Models.DTO;
+using OrderService.Services;
 
 namespace OrderService.Controllers
 {
@@ -17,7 +13,7 @@ namespace OrderService.Controllers
         private readonly OrderDbContext _db;
         private readonly IHttpClientFactory _httpFactory;
         private readonly CartService _cartService;
-        
+
 
         public CartController(OrderDbContext db, IHttpClientFactory httpFactory)
         {
@@ -28,28 +24,31 @@ namespace OrderService.Controllers
 
         // Add Item to Cart Endpoint
         [HttpPost("item/add")]
-        public async Task<IActionResult> AddToCart(int menuItemID, int userID)
+        public async Task<IActionResult> AddToCart(int menuItemID, int variantId, int userID, string specialInstructions)
         {
             try
             {
                 CartDTO? cart = await _cartService.AddItem(
                     menuItemID,
-                    userID
+                    variantId,
+                    userID,
+                    specialInstructions
                     );
 
                 if (cart == null)
                     return BadRequest(new { message = "Cart not found." });
 
                 return Ok(cart);
-                
-            } catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
-                return BadRequest(new {message = ex.Message});
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         // View the Cart
-        [HttpGet("user/cart/{userId}")]
+        [HttpGet("get-cart/{userId}")]
         public async Task<IActionResult> ViewCart(int userId)
         {
             var cart = await _cartService.ViewCart(userId);
@@ -62,25 +61,11 @@ namespace OrderService.Controllers
             return Ok(cart);
         }
 
-        // View the Cart Items
-        [HttpGet("user/cart/items/{userId}")]
-        public async Task<IActionResult> ViewCartItems(int userId)
-        {
-            var cartItems = await _cartService.ViewCartItems(userId);
-
-            if(cartItems == null || !cartItems.Any())
-            {
-                return NotFound(new { message = "Cart is empty." });
-            }
-
-            return Ok(cartItems);
-        }
-
         // Remove Cart Item
-        [HttpDelete("item/{cartItemID}")]
+        [HttpDelete("remove-item/{cartItemID}")]
         public async Task<IActionResult> RemoveItemFromCart(
             [FromRoute] int cartItemID,
-            [FromQuery] int userID, 
+            [FromQuery] int userID,
             [FromQuery] int quantityToRemove
             )
         {
@@ -94,7 +79,7 @@ namespace OrderService.Controllers
 
 
         // Increase Cart Item Quantity
-        [HttpPatch("item/{cartItemID}/increase")]
+        [HttpPatch("update/{cartItemID}/increase")]
         public async Task<IActionResult> IncreaseItemQuantity(
                 [FromRoute] int cartItemID,
                 [FromQuery] int userID,

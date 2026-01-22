@@ -2,11 +2,11 @@
 {
     public class OrderItemDetailsDTO
     {
-        public string? imageUrl { get; set; }      // From Menu Service
-        public string? name { get; set; }       // item_name
-        public int quantity { get; set; }       // quantity
-        public string? size { get; set; }       // variant_name
-        public decimal total { get; set; }      // line_subtotal
-        public string? specialInstructions { get; set; }      // special_instructions
+        public string? imageUrl { get; set; }
+        public string name { get; set; }
+        public int quantity { get; set; }
+        public string size { get; set; }
+        public decimal total { get; set; }
+        public string? specialInstructions { get; set; }
     }
 }
