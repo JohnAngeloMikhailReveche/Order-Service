@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import { Navbar, Container, Nav, Card, Row, Col, Button, Form } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Card, Row, Col, Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { GeoAltFill } from 'react-bootstrap-icons';
 import './Checkout.css';
 import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
-
-// Assets
-import kapebara_logo_transparent_Pic from '../OrderCart/kapebara logo transparent.png';
-import kapebara_cart_Pic from '../OrderCart/kapebara cart.jpg';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -57,27 +53,6 @@ const Checkout = () => {
 
   return (
     <>
-      {/* Navbar Section */}
-      <Navbar expand="lg" className="navbar" fixed="top">
-        <Container>
-          <Navbar.Brand as={Link} to="/">
-            <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" alt="Logo" />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="center-nav" />
-          <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
-            <Nav className="ms-auto gap-4 align-items-center">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/admin/admincancellations">Menu</Nav.Link>
-              <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
-              <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
-              <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
-                <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
       {/* Main Content */}
       <div className="checkout-container">
         <Container>
