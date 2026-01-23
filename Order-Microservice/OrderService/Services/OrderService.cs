@@ -136,7 +136,7 @@ namespace OrderService.Services
                 {
                     orderDetails?.items.Add(new OrderItemDetailsDTO
                     {
-                        imageUrl = reader.IsDBNull(reader.GetOrdinal("imageUrl")) ? null : reader.GetString(reader.GetOrdinal("imageUrl")),
+                        imageUrl = reader.IsDBNull(reader.GetOrdinal("img_url")) ? null : reader.GetString(reader.GetOrdinal("img_url")),
                         name = reader.GetString(reader.GetOrdinal("name")),
                         quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
                         size = reader.GetString(reader.GetOrdinal("size")),
