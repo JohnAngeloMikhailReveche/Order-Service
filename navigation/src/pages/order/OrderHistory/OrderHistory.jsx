@@ -158,7 +158,7 @@ function App() {
             </div>
           ) : (
             filteredOrders.map((order) => (
-              <Card key={order.id} className="mb-3 border-0 shadow-sm" style={{ cursor: "pointer"}} onClick={() => navigate("/order/orderdetails", { state: { orderId: order.id } })}>
+              <Card key={order.id} className="mb-3 border-0 shadow-sm" style={{ cursor: "pointer"}} onClick={() => navigate("/order/orderstatus", { state: { orderId: order.id } })}>
                 <Card.Body>
                   <Row className="align-items-center">
                     {/* Image */}
