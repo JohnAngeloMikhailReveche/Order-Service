@@ -141,11 +141,11 @@ export const CartProvider = ({ children }) => {
     console.log("Order placed successfully:", order);
 
     // store the created order ID
-    setOrderID(order.orders_id);
+    setOrderID(order.orderId);
 
     await fetchCart(); // refresh cart after placing order
 
-    return order.orders_id; // optional return for immediate usage
+    return order.orderId; // optional return for immediate usage
   } catch (err) {
     console.error("Place order error:", err);
     return null;

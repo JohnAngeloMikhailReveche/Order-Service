@@ -66,8 +66,7 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\OrderHistoryDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T01:36:54.939Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T01:36:54.939Z"
             },
             {
               "$type": "Document",
@@ -79,8 +78,7 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\PendingCancellationDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T01:36:38.942Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T01:36:38.942Z"
             },
             {
               "$type": "Document",
@@ -105,8 +103,7 @@
               "RelativeToolTip": "OrderService\\Controllers\\OrdersController.cs",
               "ViewState": "AgIAAI4AAAAAAAAAAAAiwJ4AAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:28:01.976Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:28:01.976Z"
             },
             {
               "$type": "Document",
@@ -118,8 +115,7 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\MenuDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T00:25:20.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T00:25:20.533Z"
             },
             {
               "$type": "Document",
@@ -131,8 +127,7 @@
               "RelativeToolTip": "OrderService\\Controllers\\CartController.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAowCcAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:35:19.462Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:35:19.462Z"
             },
             {
               "$type": "Document",
@@ -144,8 +139,7 @@
               "RelativeToolTip": "OrderService\\Services\\CartService.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAxwB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:35:21.615Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:35:21.615Z"
             },
             {
               "$type": "Document",
@@ -157,8 +151,7 @@
               "RelativeToolTip": "OrderService\\Program.cs",
               "ViewState": "AgIAACMAAAAAAAAAAAAowDMAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:24:23.356Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:24:23.356Z"
             }
           ]
         }

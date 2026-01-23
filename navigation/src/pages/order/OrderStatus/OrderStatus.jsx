@@ -117,6 +117,8 @@ const OrderStatus = () => {
                 setCartItems(data.items);
                 setOrderId(data.orderId);
 
+                console.log("Fetched Order Data:", data);
+
                 // Map backend status ID to UI Steps (1-4)
                 switch (data.status) {
                     case 1: setCurrentStep(1); break; // Received
@@ -316,7 +318,7 @@ const OrderStatus = () => {
                                         <div key={index} className="mb-4">
                                             <div className="d-flex justify-content-between align-items-center mb-2">
                                                 <div className="d-flex align-items-center gap-3">
-                                                    <img src={item.image} width="40" height="40" style={{ borderRadius: '8px', objectFit: 'cover' }} alt={item.name} />
+                                                    <img src={item.imageUrl} width="40" height="40" style={{ borderRadius: '8px', objectFit: 'cover' }} alt={item.name} />
                                                     <div>
                                                         <h6 style={{ margin: 0, fontSize: '14px', color: PRIMARY_TEXT }}>
                                                             <span style={{ color: BARA_GREEN, fontWeight: '800' }}>{item.quantity}x</span> {item.name}
