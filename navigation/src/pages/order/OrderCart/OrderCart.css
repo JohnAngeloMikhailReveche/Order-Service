@@ -34,7 +34,6 @@ body {
 .main-card {
   background: linear-gradient(145deg, rgba(252, 253, 251, 0.95), rgba(252, 253, 251, 0.85));
   border: none !important;
-  box-shadow: none !important;
   max-width: 800px;
   width: 100%;
   padding: 24px;
