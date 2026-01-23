@@ -39,9 +39,12 @@ export const CartProvider = ({ children }) => {
           quantity: item.quantity,
           image: item.img_url,
           total: item.variant_price * item.quantity,
-          notes: item.specialInstructions ?? ""
+          notes: item.specialInstructions ?? "",
+          order_number: item.order_number
         }))
       );
+      
+      console.log("Fetched Cart Items:", cart.order_number);
 
       setCartTotal(cart.subtotal);
     } catch (err) {

@@ -6,6 +6,7 @@
         public decimal subtotal { get; set; }
         public byte status { get; set; }
         public bool cancellation_requested { get; set; }
+        public string order_number { get; set; }
         public List<OrderItemDetailsDTO> items { get; set; } = new List<OrderItemDetailsDTO>();
     }
 }

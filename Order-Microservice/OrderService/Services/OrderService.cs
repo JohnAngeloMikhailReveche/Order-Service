@@ -59,8 +59,9 @@ namespace OrderService.Services
             };
 
             await _db.Database.ExecuteSqlRawAsync(
-                "EXEC sp_PlaceOrder @UserId, @NewOrderId OUTPUT, @ResultMessage OUTPUT",
+                "EXEC sp_PlaceOrder @UserId, @NewOrderId OUTPUT, @SeededNumber, @ResultMessage OUTPUT",
                 new SqlParameter("@UserId", userId),
+                new SqlParameter("@SeededNumber", new Random().Next(10000000, 99999999)),
                 newOrderId,
                 resultMessage
             );
@@ -125,6 +126,7 @@ namespace OrderService.Services
                     subtotal = reader.GetDecimal(reader.GetOrdinal("subtotal")),
                     status = reader.GetByte(reader.GetOrdinal("status")),
                     cancellation_requested = reader.GetBoolean(reader.GetOrdinal("cancellation_requested")),
+                    order_number = reader.GetString(reader.GetOrdinal("order_number")),
                     items = new List<OrderItemDetailsDTO>()
                 };
             }
