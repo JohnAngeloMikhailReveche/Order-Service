@@ -326,6 +326,8 @@ const OrderStatus = () => {
                                                             <span style={{ color: BARA_GREEN, fontWeight: '800' }}>{item.quantity}x</span> {item.name}
                                                         </h6>
                                                         <small style={{ color: SECONDARY_TEXT, fontSize: '12px' }}>Size: {item.size}</small>
+                                                        <br></br>
+                                                        <small style={{ color: SECONDARY_TEXT, fontSize: '12px' }}>Notes: {item.specialInstructions}</small>
                                                     </div>
                                                 </div>
                                                 <span style={{ fontWeight: '700', fontSize: '14px', color: PRIMARY_TEXT }}>₱{item.total.toFixed(2)}</span>

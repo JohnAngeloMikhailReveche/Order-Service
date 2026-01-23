@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CaUDmSfMDO8=",
+  "dgSpecHash": "wHW9JTCCH+E=",
   "success": true,
-  "projectFilePath": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+  "projectFilePath": "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Khayl\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Khayl\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

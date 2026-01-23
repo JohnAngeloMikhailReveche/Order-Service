@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {}
+    "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {}
   },
   "projects": {
-    "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {
+    "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "projectUniqueName": "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
         "projectName": "OrderService",
-        "projectPath": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
+        "projectPath": "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\OrderService.csproj",
         "packagesPath": "C:\\Users\\Khayl\\.nuget\\packages\\",
-        "outputPath": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
+        "outputPath": "F:\\WebDevProject\\FOR BACKEDN 2\\Order-Service\\Order-Microservice\\OrderService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
