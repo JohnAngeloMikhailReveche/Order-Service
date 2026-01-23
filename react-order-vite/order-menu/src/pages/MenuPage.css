@@ -1,0 +1,36 @@
+.menu-page-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #FCFDFB;
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.menu-page {
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 60px;
+  background: #FCFDFB;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1200px) {
+  .menu-page {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-page-wrapper {
+    padding: 20px 0;
+  }
+  
+  .menu-page {
+    padding: 0 20px;
+  }
+}

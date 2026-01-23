@@ -6,8 +6,18 @@ import { useParams } from 'react-router-dom';
 import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
+// 1. Create the Context outside the component
+export const UserContext = createContext();
+
 function App() {
     const { addToCart, toggleCart } = useCart();
+
+    // 2. Define the User State (Hardcoded gaya ng iyong example)
+    const [user] = useState({ 
+        role: 'customer', 
+        name: 'Kape Lover', 
+        isAuthenticated: true 
+    });
 
     const product = {
     name: "Classic Matchabara Cold Brew",
@@ -31,7 +41,7 @@ function App() {
     const [size, setSize] = React.useState(sizeOptions[0] || null);
 
     // React.useEffect(() => {
-        // setSize(sizeOptions[0] || null);
+    //     setSize(sizeOptions[0] || null);
     // }, [sizeOptions]);
 
   const [quantity, setQuantity] = React.useState(1);
@@ -163,7 +173,7 @@ function App() {
 
       {/* Cart */}
       <Cart />
-    </>
+    </UserContext.Provider>
   );
 }
 
