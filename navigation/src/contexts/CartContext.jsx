@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
   ========================= */
   const fetchCart = async () => {
     try {
-      const response = await fetch(`${API_BASE}/user/cart/${userID}`);
+      const response = await fetch(`${API_BASE}/get-cart/${userID}`);
       if (!response.ok) throw new Error("Failed to fetch cart");
 
       const cart = await response.json();
@@ -39,7 +39,7 @@ export const CartProvider = ({ children }) => {
           quantity: item.quantity,
           image: item.img_url,
           total: item.variant_price * item.quantity,
-          notes: item.notes ?? ""
+          notes: item.special_instructions ?? ""
         }))
       );
 
@@ -56,10 +56,10 @@ export const CartProvider = ({ children }) => {
   /* =========================
      ADD TO CART
   ========================= */
-  const addToCart = async (menuItemID) => {
+  const addToCart = async (menuItemID, variantID, userID, specialInstructions) => {
   try {
     const response = await fetch(
-      `${API_BASE}/item/add?menuItemID=${menuItemID}&userID=${userID}`,
+      `${API_BASE}/item/add?menuItemID=${menuItemID}&variantId=${variantID}&userID=${userID}&specialInstructions=${specialInstructions}`,
       {
         method: "POST"
       }
@@ -83,12 +83,12 @@ export const CartProvider = ({ children }) => {
     try {
       if (change < 0) {
         await fetch(
-          `${API_BASE}/item/${cartItemID}?userID=${userID}&quantityToRemove=1`,
+          `${API_BASE}/remove-item/${cartItemID}?userID=${userID}&quantityToRemove=1`,
           { method: "DELETE" }
         );
       } else if (change > 0) {
         await fetch(
-          `${API_BASE}/item/${cartItemID}/increase?userID=${userID}&count=1`,
+          `${API_BASE}/update/${cartItemID}/increase?userID=${userID}&count=1`,
           { method: "PATCH" }
         );
       }
@@ -105,7 +105,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (cartItemID) => {
     try {
       await fetch(
-        `${API_BASE}/item/${cartItemID}?userID=${userID}&quantityToRemove=999`,
+        `${API_BASE}/remove-item/${cartItemID}?userID=${userID}&quantityToRemove=999`,
         { method: "DELETE" }
       );
 
@@ -115,9 +115,8 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  /* =========================
-     CLEAR CART
-  ========================= */
+  /*
+
   const clearCart = async () => {
     try {
       await fetch(`${API_BASE}/clear/${userID}`, { method: "DELETE" });
@@ -126,13 +125,16 @@ export const CartProvider = ({ children }) => {
       console.error("Clear cart error:", err);
     }
   };
+    
+   */
+  
 
   /* =========================
      PLACE ORDER
   ========================= */
   const placeOrder = async () => {
   try {
-    const response = await fetch(`${ORDER_API_BASE}/place/order/${userID}`, { method: "POST" });
+    const response = await fetch(`${ORDER_API_BASE}/place-order/${userID}`, { method: "POST" });
     if (!response.ok) throw new Error("Failed to place order");
 
     const order = await response.json();
@@ -159,7 +161,6 @@ export const CartProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     updateQuantity,
-    clearCart,
     placeOrder,
     toggleCart,
     setIsCartOpen,

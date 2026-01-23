@@ -24,7 +24,11 @@ namespace OrderService.Controllers
 
         // Add Item to Cart Endpoint
         [HttpPost("item/add")]
-        public async Task<IActionResult> AddToCart(int menuItemID, int variantId, int userID, string specialInstructions)
+        public async Task<IActionResult> AddToCart(
+            int menuItemID
+            , int variantId
+            , int userID
+            , string specialInstructions = "")
         {
             try
             {

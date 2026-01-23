@@ -9,11 +9,9 @@ import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
 function App() {
-    const { menuItemId } = useParams();
     const { addToCart, toggleCart } = useCart();
 
     const product = {
-    id: Number(menuItemId),
     name: "Classic Matchabara Cold Brew",
     image: classic_matchabara_cold_brew_Pic,
     type: "drink",
@@ -44,9 +42,10 @@ function App() {
   const price = product.prices[size] || 0;
 
   const handleAddToBag = () => {
-    if (!menuItemId) return;
 
-    addToCart(Number(menuItemId)); // This will depend on the menudb id where the menuitemid is stored in our mock.
+    const menuItemId = 11;
+    const variantId = 1;
+    addToCart(menuItemId, variantId, 1, notes || "None"); // This will depend on the menudb id where the menuitemid is stored in our mock.
     
     /*
     const cartItem = {

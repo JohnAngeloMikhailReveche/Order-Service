@@ -28,25 +28,11 @@ namespace OrderService.Services
 
             /* Get Menu Item from MenuService */
             var menuItem = await _menuClient
-                .GetFromJsonAsync<MenuDTO>($"/api/menu-items/{menuId}");
+                .GetFromJsonAsync<MenuDTO>($"/api/Menu/{menuId}");
 
             if (menuItem == null)
             {
                 throw new Exception("Item does not exist.");
-            }
-
-            // Check if Available
-            if (menuItem.isAvailable == false)
-            {
-                throw new Exception("Item is not available. Please refer to the Menu.");
-            }
-            // Get the Variant request from the frontend and check if the menuClient has it then map it towards the variant name, variant price and variant id.
-            var chosenVariant = menuItem.variants
-                .FirstOrDefault(v => v.Id == variantId);
-
-            if (chosenVariant == null)
-            {
-                throw new Exception("Selected variant does not exist for this menu item.");
             }
 
             await _db.Database.ExecuteSqlRawAsync(
@@ -63,15 +49,16 @@ namespace OrderService.Services
                     @SpecialInstructions",
                 new SqlParameter("@UserId", userId),
                 new SqlParameter("@MenuItemId", menuId),
-                new SqlParameter("@VariantId", chosenVariant.Id),
-                new SqlParameter("@ItemName", menuItem.name),
-                new SqlParameter("@ItemDescription", menuItem.description),
-                new SqlParameter("@ImgUrl", menuItem.imageUrl),
-                new SqlParameter("@VariantName", chosenVariant.name),
-                new SqlParameter("@VariantPrice", chosenVariant.price),
+                new SqlParameter("@VariantId", variantId),
+                new SqlParameter("@ItemName", menuItem.item_name),
+                new SqlParameter("@ItemDescription", menuItem.item_description),
+                new SqlParameter("@ImgUrl", menuItem.img_url),
+                new SqlParameter("@VariantName", menuItem.variant_name),
+                new SqlParameter("@VariantPrice", menuItem.variant_price),
                 new SqlParameter("@Quantity", 1),
                 new SqlParameter("@SpecialInstructions", specialInstructions)
                 );
+
 
             return await ViewCart(userId);
         }
@@ -124,7 +111,7 @@ namespace OrderService.Services
                         variant_name = reader.GetString(reader.GetOrdinal("variant_name")),
                         variant_price = reader.GetDecimal(reader.GetOrdinal("variant_price")),
                         quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
-                        img_url = reader.GetString(reader.GetOrdinal("imgUrl")),
+                        img_url = reader.GetString(reader.GetOrdinal("img_url")),
                         specialInstructions = reader.GetString(reader.GetOrdinal("special_instructions"))
                     });
                 }
