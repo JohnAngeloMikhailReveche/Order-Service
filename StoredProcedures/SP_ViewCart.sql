@@ -12,6 +12,8 @@ BEGIN
 		, ci.cart_item_id
 		, ci.item_name
 		, ci.variant_name
+		, ci.item_description
+		, ci.special_instructions
 		, ci.variant_price
 		, ci.quantity
 		, ci.img_url
