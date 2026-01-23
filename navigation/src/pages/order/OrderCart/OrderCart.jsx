@@ -79,7 +79,7 @@ function App() {
       <Nav className="ms-auto gap-4 align-items-center">
         <Nav.Link as={Link} to="/">Home</Nav.Link>
         <Nav.Link as={Link} to="/admin/admincancellations">Menu</Nav.Link>
-        <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
+        <Nav.Link as={Link} to="/rider/riderdashboard">My Orders</Nav.Link>
         <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
         <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
           <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />

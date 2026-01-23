@@ -6,6 +6,7 @@ import OrderHistory from "./pages/order/OrderHistory/OrderHistory";
 import OrderDetails from "./pages/order/OrderDetails/OrderDetails";
 import AdminDashboard from "./pages/admin/AdminDashboard/AdminDashboard";
 import AdminCancellations from "./pages/admin/AdminCancellations/AdminCancellations";
+import RiderDashboard from "./pages/rider/RiderDashboard";
 // import OrderCart from "./pages/order/OrderCart/OrderCart"; 
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
           <Route path="/admin/admindashboard" element={<AdminDashboard />} />
           <Route path="/admin/admincancellations" element={<AdminCancellations />} />
           {/* <Route path="/order/:menuItemId" element={<OrderCart />} /> */}
+          <Route path="/rider/riderdashboard" element={<RiderDashboard />} />
+
         </Routes>
       </BrowserRouter>
     </CartProvider>
