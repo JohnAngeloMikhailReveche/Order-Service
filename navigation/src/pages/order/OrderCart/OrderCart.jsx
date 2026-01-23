@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext } from 'react';
 import { Navbar, Container, Nav, Card, Row, Col, Button, Form } from 'react-bootstrap';
 import './OrderCart.css';
 import classic_matchabara_cold_brew_Pic from './classic matchabara cold brew.png';
@@ -8,8 +8,18 @@ import { Link, useParams } from 'react-router-dom';
 import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
+// 1. Create the Context outside the component
+export const UserContext = createContext();
+
 function App() {
     const { addToCart, toggleCart } = useCart();
+
+    // 2. Define the User State (Hardcoded gaya ng iyong example)
+    const [user] = useState({ 
+        role: 'customer', 
+        name: 'Kape Lover', 
+        isAuthenticated: true 
+    });
 
     const product = {
     name: "Classic Matchabara Cold Brew",
@@ -33,7 +43,7 @@ function App() {
     const [size, setSize] = React.useState(sizeOptions[0] || null);
 
     // React.useEffect(() => {
-        // setSize(sizeOptions[0] || null);
+    //     setSize(sizeOptions[0] || null);
     // }, [sizeOptions]);
 
   const [quantity, setQuantity] = React.useState(1);
@@ -67,7 +77,8 @@ function App() {
   };
 
   return (
-    <>
+    /* 3. Wrap everything in the Provider and pass the user value */
+    <UserContext.Provider value={user}>
     {/* Navbar Section */}
       <Navbar expand="lg" className="navbar" fixed="top">
         <Container>
@@ -80,7 +91,12 @@ function App() {
         <Nav.Link as={Link} to="/">Home</Nav.Link>
         <Nav.Link as={Link} to="/admin/admincancellations">Menu</Nav.Link>
         <Nav.Link as={Link} to="/rider/riderdashboard">My Orders</Nav.Link>
-        <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
+        
+        {/* Paggamit ng user context para sa dynamic profile name */}
+        <Nav.Link as={Link} to="/admin/admindashboard">
+            {user.isAuthenticated ? `Profile (${user.name})` : 'My Profile'}
+        </Nav.Link>
+
         <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
           <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
         </Nav.Link>
@@ -186,7 +202,7 @@ function App() {
 
       {/* Cart */}
       <Cart />
-    </>
+    </UserContext.Provider>
   );
 }
 
