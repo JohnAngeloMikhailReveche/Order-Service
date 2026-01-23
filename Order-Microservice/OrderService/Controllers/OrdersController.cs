@@ -47,7 +47,7 @@ namespace OrderService.Controllers
         /// Place a new order from cart
         /// </summary>
         [HttpPost("place-order/{userId}")]
-        public async Task<IActionResult> PlaceOrder(string userId)
+        public async Task<IActionResult> PlaceOrder(int userId)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace OrderService.Controllers
         /// </summary>
         [HttpGet("history/{userId}")]
         public async Task<IActionResult> GetOrderHistory(
-            string userId,
+            int userId,
             [FromQuery] string filter = "all",
             [FromQuery] string sortOrder = "newest")
         {
@@ -147,13 +147,14 @@ namespace OrderService.Controllers
         /// </summary>
         [HttpGet("admin/history")]
         public async Task<IActionResult> GetAdminOrderHistory(
+            int userId,
             [FromQuery] string filter = "all",
             [FromQuery] string sortOrder = "newest")
         {
             try
             {
                 // Pass null for userId to get all orders
-                var orders = await _orderService.GetOrderHistoryAsync(null, filter, sortOrder);
+                var orders = await _orderService.GetOrderHistoryAsync(userId, filter, sortOrder);
 
                 if (!orders.Any())
                     return Ok(new { message = $"No {filter} orders found." });
