@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\models\\dto\\pendingcancellationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\dto\\pendingcancellationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\models\\dto\\orderdetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\dto\\orderdetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,14 +39,6 @@
       "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\dto\\orderhistorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\models\\dto\\pendingcancellationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\dto\\pendingcancellationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|f:\\webdevproject\\fordatabaseadministration\\order-service\\order-microservice\\orderservice\\models\\dto\\menudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{539E9833-E4C7-4DF7-B20B-922CA17AE561}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\models\\dto\\menudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -42,8 +50,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OrderDbContext.cs",
+              "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeDocumentMoniker": "OrderService\\Data\\OrderDbContext.cs",
+              "ToolTip": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeToolTip": "OrderService\\Data\\OrderDbContext.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAuwAkAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-23T04:13:42.027Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -58,7 +79,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
+              "Title": "OrderDetailsDTO.cs",
+              "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Models\\DTO\\OrderDetailsDTO.cs",
+              "RelativeDocumentMoniker": "OrderService\\Models\\DTO\\OrderDetailsDTO.cs",
+              "ToolTip": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Models\\DTO\\OrderDetailsDTO.cs",
+              "RelativeToolTip": "OrderService\\Models\\DTO\\OrderDetailsDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-23T04:00:42.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "OrderHistoryDTO.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Models\\DTO\\OrderHistoryDTO.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\DTO\\OrderHistoryDTO.cs",
@@ -66,12 +99,11 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\OrderHistoryDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T01:36:54.939Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T01:36:54.939Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "PendingCancellationDTO.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Models\\DTO\\PendingCancellationDTO.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\DTO\\PendingCancellationDTO.cs",
@@ -79,38 +111,36 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\PendingCancellationDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T01:36:38.942Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T01:36:38.942Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "OrderService.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Services\\OrderService.cs",
               "RelativeDocumentMoniker": "OrderService\\Services\\OrderService.cs",
               "ToolTip": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Services\\OrderService.cs",
               "RelativeToolTip": "OrderService\\Services\\OrderService.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAowCsAAABUAAAAAAAAAA==",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAcwIAAAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-23T01:18:18.297Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "OrderService\\Controllers\\OrdersController.cs",
               "ToolTip": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\OrdersController.cs",
               "RelativeToolTip": "OrderService\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAI4AAAAAAAAAAAAiwJ4AAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAUwH8AAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:28:01.976Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:28:01.976Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "MenuDTO.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Models\\DTO\\MenuDTO.cs",
               "RelativeDocumentMoniker": "OrderService\\Models\\DTO\\MenuDTO.cs",
@@ -118,12 +148,11 @@
               "RelativeToolTip": "OrderService\\Models\\DTO\\MenuDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T00:25:20.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T00:25:20.533Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "CartController.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "OrderService\\Controllers\\CartController.cs",
@@ -131,12 +160,11 @@
               "RelativeToolTip": "OrderService\\Controllers\\CartController.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAowCcAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:35:19.462Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:35:19.462Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "CartService.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Services\\CartService.cs",
               "RelativeDocumentMoniker": "OrderService\\Services\\CartService.cs",
@@ -149,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\WebDevProject\\ForDatabaseAdministration\\Order-Service\\Order-Microservice\\OrderService\\Program.cs",
               "RelativeDocumentMoniker": "OrderService\\Program.cs",
@@ -157,8 +185,7 @@
               "RelativeToolTip": "OrderService\\Program.cs",
               "ViewState": "AgIAACMAAAAAAAAAAAAowDMAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-22T23:24:23.356Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T23:24:23.356Z"
             }
           ]
         }

@@ -39,6 +39,7 @@ const OrderStatus = () => {
     // --- STATE MANAGEMENT ---
     // Order Data States
     const [cartItems, setCartItems] = useState([]); 
+    const [seededNumber, setSeededNumber] = useState([]); 
     const [orderId, setOrderId] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -129,6 +130,7 @@ const OrderStatus = () => {
                 setCancellationRequested(data.cancellationRequested === true); // Check if cancel was already requested
                 setCartItems(data.items);
                 setOrderId(data.orderId);
+                setSeededNumber(data.order_number);
 
                 // Map backend status ID to UI Steps (1-4)
                 switch (data.status) {
@@ -319,7 +321,7 @@ const OrderStatus = () => {
                             <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '1px solid #eee', height: '100%' }}>
                                 <div className="d-flex justify-content-between mb-4 flex-wrap gap-2">
                                     <span style={{ fontWeight: '700', fontSize: '16px', fontFamily: "'DM Sans', sans-serif", color: PRIMARY_TEXT }}>Order Details</span>
-                                    <span style={{ color: SECONDARY_TEXT, fontSize: '13px' }}>Order ID: #KPB-{orderIdFromState}</span>
+                                    <span style={{ color: SECONDARY_TEXT, fontSize: '13px' }}>Order ID: #KPB-{seededNumber}</span>
                                 </div>
                                 
                                 <span style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '11px', display: 'block', marginBottom: '15px', textTransform: 'uppercase' }}>ITEMS ORDERED</span>

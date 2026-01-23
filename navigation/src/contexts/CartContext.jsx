@@ -13,7 +13,43 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [orderID, setOrderID] = useState(null);
+  const [orderID, setOrderID] = useState(null); // add this to CartProvider state
+
+  const userID = 1; // TODO: replace with auth-based user ID
+  const API_BASE = "https://localhost:7237/api/Cart";
+  const ORDER_API_BASE = "https://localhost:7237/api/Orders";
+
+  /* =========================
+     FETCH CART
+  ========================= */
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/get-cart/${userID}`);
+      if (!response.ok) throw new Error("Failed to fetch cart");
+
+      const cart = await response.json();
+
+      setCartItems(
+        cart.cartItems.map(item => ({
+          cartItemID: item.cart_item_id,
+          name: item.item_name,
+          size: item.variant_name,
+          price: item.variant_price,
+          quantity: item.quantity,
+          image: item.img_url,
+          total: item.variant_price * item.quantity,
+          notes: item.specialInstructions ?? "",
+          order_number: item.order_number
+        }))
+      );
+      
+      console.log("Fetched Cart Items:", cart.order_number);
+
+      setCartTotal(cart.subtotal);
+    } catch (err) {
+      console.error("Fetch cart error:", err);
+    }
+  };
 
   // Load cart from localStorage on mount
   useEffect(() => {
