@@ -1,10 +1,8 @@
-import React, { useState, createContext } from 'react';
-import { Navbar, Container, Nav, Card, Row, Col, Button, Form } from 'react-bootstrap';
+import React from 'react';
+import { Card, Row, Col, Button, Form } from 'react-bootstrap';
 import './OrderCart.css';
 import classic_matchabara_cold_brew_Pic from './classic matchabara cold brew.png';
-import kapebara_logo_transparent_Pic from './kapebara logo transparent.png'; 
-import kapebara_cart_Pic from './kapebara cart.jpg';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
@@ -77,34 +75,7 @@ function App() {
   };
 
   return (
-    /* 3. Wrap everything in the Provider and pass the user value */
-    <UserContext.Provider value={user}>
-    {/* Navbar Section */}
-      <Navbar expand="lg" className="navbar" fixed="top">
-        <Container>
-      <Navbar.Brand as={Link} to="/">
-        <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" alt="Logo" />
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="center-nav" />
-        <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
-      <Nav className="ms-auto gap-4 align-items-center">
-        <Nav.Link as={Link} to="/">Home</Nav.Link>
-        <Nav.Link as={Link} to="/admin/admincancellations">Menu</Nav.Link>
-        <Nav.Link as={Link} to="/rider/riderdashboard">My Orders</Nav.Link>
-        
-        {/* Paggamit ng user context para sa dynamic profile name */}
-        <Nav.Link as={Link} to="/admin/admindashboard">
-            {user.isAuthenticated ? `Profile (${user.name})` : 'My Profile'}
-        </Nav.Link>
-
-        <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
-          <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
-        </Nav.Link>
-      </Nav>
-        </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
+    <>
       {/* Main Content */}
       <div style={{ display: "flex", justifyContent: "center", padding: "40px 20px" }}>
         <Card className="main-card">

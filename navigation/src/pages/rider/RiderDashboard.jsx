@@ -1,9 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
-import { Navbar, Container, Card, Row, Col, ButtonGroup, ToggleButton, Button } from "react-bootstrap";
+import { Card, Row, Col, ButtonGroup, ToggleButton, Button } from "react-bootstrap";
 import "./RiderDashboard.css";
 import classic_coffeebara_cold_brew_Pic from "./classic coffeebara cold brew.png";
-import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
-import { Link } from "react-router-dom";
 import UpdateOrderStatusModal from "./UpdateDeliveryStatusModal";
 
 export const UserContext = createContext();
@@ -93,14 +91,6 @@ function RiderDashboard() {
 
   return (
     <UserContext.Provider value={user}>
-      <Navbar fixed="top" className="navbar">
-        <Container>
-          <Navbar.Brand as={Link} to="/">
-            <img src={kapebara_logo_transparent_Pic} height="30" />
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
-
       <div style={{ padding: "50px 20px", display: "flex", justifyContent: "center" }}>
         <Card className="dashboard-card" style={{ width: "800px", padding: "24px" }}>
           <h1 className="fw-bold">Rider Dashboard</h1>
