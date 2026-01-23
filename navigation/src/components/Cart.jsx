@@ -124,6 +124,9 @@ const Cart = () => {
   if (cartItems.length === 0) return;
 
   const createdOrderID = await placeOrder(); // call API and get orderID
+
+    console.log("Created Order ID:", createdOrderID);
+
   if (!createdOrderID) return; // failed to place order
 
   setIsCartOpen(false);

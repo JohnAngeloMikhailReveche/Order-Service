@@ -43,118 +43,7 @@ END
 GO
 
 -- ============================================
--- 2. PLACE ORDER (Convert Cart to Order)
--- ============================================
-CREATE PROCEDURE sp_PlaceOrder
-    @UserId NVARCHAR(450), -- CHANGED to NVARCHAR for string userId
-    @NewOrderId INT OUTPUT,
-    @ResultMessage NVARCHAR(500) OUTPUT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    BEGIN TRANSACTION;
-    
-    BEGIN TRY
-        DECLARE @CartId INT;
-        DECLARE @CartSubtotal DECIMAL(10,2);
-        DECLARE @ItemCount INT;
-        
-        SELECT @CartId = cart_id, 
-               @CartSubtotal = subtotal
-        FROM Cart 
-        WHERE users_id = @UserId;
-        
-        IF @CartId IS NULL
-        BEGIN
-            SET @ResultMessage = 'Cart not found.';
-            SET @NewOrderId = 0;
-            ROLLBACK TRANSACTION;
-            RETURN;
-        END
-        
-        SELECT @ItemCount = COUNT(*) FROM CartItem WHERE cart_id = @CartId;
-        
-        IF @ItemCount = 0
-        BEGIN
-            SET @ResultMessage = 'Cart is empty.';
-            SET @NewOrderId = 0;
-            ROLLBACK TRANSACTION;
-            RETURN;
-        END
-        
-        INSERT INTO Orders (
-            users_id, 
-            status, 
-            subtotal, 
-            total_cost, 
-            item_count, 
-            placed_at, 
-            payment_method, 
-            cancellation_requested, 
-            cancellation_reason,
-            refund_status
-        )
-        VALUES (
-            @UserId,
-            1,
-            @CartSubtotal,
-            @CartSubtotal,
-            @ItemCount,
-            GETUTCDATE(),
-            'Unpaid',
-            0,
-            'None',
-            0
-        );
-        
-        SET @NewOrderId = SCOPE_IDENTITY();
-        
-        INSERT INTO OrderItem (
-            orders_id,
-            menu_item_id,
-            item_variant_id,
-            item_name,
-            item_description,
-            variant_name,
-            variant_price,
-            quantity,
-            line_subtotal,
-            special_instructions
-        )
-        SELECT 
-            @NewOrderId,
-            ci.menu_item_id,
-            ci.variant_id,
-            ci.item_name,
-            ci.item_description,
-            ci.variant_name,
-            ci.variant_price,
-            ci.quantity,
-            ci.variant_price * ci.quantity,
-            ci.special_instructions
-        FROM CartItem ci
-        WHERE ci.cart_id = @CartId;
-        
-        DELETE FROM CartItem WHERE cart_id = @CartId;
-        
-        UPDATE Cart 
-        SET subtotal = 0,
-            updated_at = GETUTCDATE()
-        WHERE cart_id = @CartId;
-        
-        SET @ResultMessage = 'Order placed successfully.';
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK TRANSACTION;
-        SET @ResultMessage = ERROR_MESSAGE();
-        SET @NewOrderId = 0;
-    END CATCH
-END
-GO
-
--- ============================================
--- 3. UPDATE ORDER STATUS
+-- 2. UPDATE ORDER STATUS
 -- ============================================
 CREATE PROCEDURE sp_UpdateOrderStatus
     @OrderId INT,
@@ -229,7 +118,7 @@ END
 GO
 
 -- ============================================
--- 4. GET ORDER DETAILS WITH ITEMS
+-- 3. GET ORDER DETAILS WITH ITEMS
 -- ============================================
 CREATE PROCEDURE sp_GetOrderDetails
     @OrderId INT
@@ -258,7 +147,7 @@ END
 GO
 
 -- ============================================
--- 5. GET ORDER HISTORY (with filters)
+-- 4. GET ORDER HISTORY (with filters)
 -- ============================================
 CREATE PROCEDURE sp_GetOrderHistory
     @UserId NVARCHAR(450) = NULL, -- CHANGED to NVARCHAR for string userId
@@ -304,7 +193,7 @@ END
 GO
 
 -- ============================================
--- 6. GET PENDING CANCELLATIONS (Admin)
+-- 5. GET PENDING CANCELLATIONS (Admin)
 -- ============================================
 CREATE PROCEDURE sp_GetPendingCancellations
 AS
@@ -330,7 +219,7 @@ END
 GO
 
 -- ============================================
--- 7. REVIEW CANCELLATION (Approve/Decline)
+-- 6. REVIEW CANCELLATION (Approve/Decline)
 -- ============================================
 CREATE PROCEDURE sp_ReviewCancellation
     @OrderId INT,
