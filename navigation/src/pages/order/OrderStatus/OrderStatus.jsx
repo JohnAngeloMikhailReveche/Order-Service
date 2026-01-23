@@ -1,10 +1,9 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { Navbar, Nav, Container, Row, Col, Button as BootstrapButton } from 'react-bootstrap';
+import { Container, Row, Col, Button as BootstrapButton } from 'react-bootstrap';
 import { Check, CupHotFill, PersonFill, Bicycle, HouseDoorFill, GeoAltFill, Shop } from 'react-bootstrap-icons';
 import confetti from 'canvas-confetti';
 import { Link, useLocation } from 'react-router-dom';
 import './OrderStatus.css';
-import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
 /* --- DEVELOPMENT NOTES ---
@@ -14,10 +13,6 @@ import Cart from '../../../components/Cart';
     4. Cancellation logic with backend validation.
     5. Conditional button disabling (Cancel).
 */
-
-// --- ASSETS IMPORT ---
-import kapebara_logo_transparent_Pic from './kapebara logo transparent.png';
-import kapebara_cart_Pic from './kapebara cart.jpg';
 import capybarabarista from './capybarabarista.png';
 import capybaralooking from './capybaralooking.png';
 import capybararider from './capybararider.png';
@@ -45,8 +40,7 @@ const OrderStatus = () => {
     const [cancellationRequested, setCancellationRequested] = useState(false); 
     const [showCancelModal, setShowCancelModal] = useState(false); 
     const [orderStatus, setOrderStatus] = useState('active'); 
-    const [selectedReason, setSelectedReason] = useState("");
-    const { toggleCart } = useCart(); 
+    const [selectedReason, setSelectedReason] = useState(""); 
 
     // --- USER CONTEXT DATA ---
     // 2. Define the User Role (Hardcoded as Customer for this page view)
@@ -216,27 +210,6 @@ const OrderStatus = () => {
     return (
         /* 3. Wrap everything in the UserProvider */
         <UserContext.Provider value={user}>
-            {/* Navbar Section */}
-            <Navbar expand="lg" className="navbar" fixed="top">
-                <Container>
-                    <Navbar.Brand as={Link} to="/">
-                        <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" alt="Logo" />
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="center-nav" />
-                    <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
-                        <Nav className="ms-auto gap-4 align-items-center">
-                            <Nav.Link as={Link} to="/order/order">Order</Nav.Link>
-                            <Nav.Link as={Link} to="admin/admincancellations">Cancellations</Nav.Link>
-                            <Nav.Link as={Link} to="/order/orderhistory">Order History</Nav.Link>
-                            <Nav.Link as={Link} to="/admin/admindashboard">Admin</Nav.Link>
-                            <Nav.Link as={Link} to="#" onClick={(e) => { e.preventDefault(); toggleCart(); }}>
-                                <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} alt="Cart" />
-                            </Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-
             {/* Main Content Area */}
             <div style={{ padding: '80px 0 20px 0', backgroundColor: BARA_BG, minHeight: '100vh', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <Container style={{ maxWidth: '1100px' }}>
