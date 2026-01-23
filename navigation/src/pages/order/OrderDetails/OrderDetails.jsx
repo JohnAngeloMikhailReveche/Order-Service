@@ -3,15 +3,19 @@
 // Short, focused comments added throughout for clarity.
 
 import React, { useEffect, useState, createContext } from "react";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderDetails.css";
+import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
 // Assets used in the page
+import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
 import userIcon from "./user-icon.png";
 import locationIcon from "./location-icon.png";
 import contactIcon from "./contact-icon.png";
+import kapebara_cart_Pic from "./kapebara cart.jpg";
 
 // API base used by this page
 const API_ROOT = "https://localhost:7237/api";
@@ -183,6 +187,7 @@ const OrderDetails = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(Boolean(!stateOrder && (stateOrderId || paramOrderId)));
     const [error, setError] = useState(null);
+    const { toggleCart } = useCart();
     const orderIdToFetch = stateOrder ? stateOrder.orders_id || stateOrder.id : stateOrderId || paramOrderId;
 
     // 2. Define the User Role (Hardcoded as Customer for this page)
@@ -412,9 +417,37 @@ const OrderDetails = () => {
         <UserContext.Provider value={user}>
             <div className="order-details-container">
 
-                {/* HEADER: page title */}
+                {/* HEADER: page title + navbar */}
                 <div className="header-section">
                     <h1 className="page-title">Order Details</h1>
+
+                    {/* Navbar: main site navigation and cart icon */}
+                    <Navbar expand="lg" className="navbar" fixed="top">
+                        <Container>
+                            <Navbar.Brand as={Link} to="/">
+                                <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" />
+                            </Navbar.Brand>
+                            <Navbar.Toggle aria-controls="center-nav" />
+                            <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
+                                <Nav className="ms-auto gap-4 align-items-center">
+                                    <Nav.Link as={Link} to="/order/order">Order</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/admincancellations">Cancellations</Nav.Link>
+                                    <Nav.Link as={Link} to="/order/orderhistory">History</Nav.Link>
+                                    <Nav.Link as={Link} to="/admin/admindashboard">Admin</Nav.Link>
+                                    <Nav.Link
+                                        as={Link}
+                                        to="#cart"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            toggleCart();
+                                        }}
+                                    >
+                                        <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
+                                    </Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Container>
+                    </Navbar>
                 </div>
 
                 {/* MAIN CONTENT: left = items, right = shipping & payment */}

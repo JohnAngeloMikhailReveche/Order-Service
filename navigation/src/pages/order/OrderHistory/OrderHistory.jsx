@@ -1,10 +1,14 @@
 import React, { useState, useEffect, createContext } from "react";
-import { Card, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Navbar, Container, Nav, Card, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
 import "./OrderHistory.css";
 import classic_matchabara_cold_brew_Pic from "./classic matchabara cold brew.png";
 import classic_macchiabara_cold_brew_Pic from "./classic macchiabara cold brew.png";
 import classic_coffeebara_cold_brew_Pic from "./classic coffeebara cold brew.png";
+import kapebara_logo_transparent_Pic from "./kapebara logo transparent.png";
+import kapebara_cart_Pic from "./kapebara cart.jpg";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useCart } from '../../../contexts/CartContext';
 import Cart from '../../../components/Cart';
 
 // 1. Create the Context outside the component
@@ -19,6 +23,7 @@ function App() {
   const [sortBy, setSortBy] = useState("recent");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { toggleCart } = useCart();
 
   // 2. Define the User Role (Hardcoded as Customer for this page)
   const [user] = useState({ 
@@ -88,6 +93,34 @@ function App() {
   return (
     /* 3. Wrap everything in the Provider and pass the customer user */
     <UserContext.Provider value={user}>
+      {/* Navbar */}
+      <Navbar expand="lg" className="navbar" fixed="top">
+  <Container>
+    <Navbar.Brand as={Link} to="/">
+      <img src={kapebara_logo_transparent_Pic} height="30" className="d-inline-block align-text-top" />
+    </Navbar.Brand>
+    <Navbar.Toggle aria-controls="center-nav" />
+    <Navbar.Collapse id="center-nav" className="w-100 justify-content-center">
+      <Nav className="ms-auto gap-4 align-items-center">
+        <Nav.Link as={Link} to="/order/order">Home</Nav.Link>
+        <Nav.Link as={Link} to="/admin/admincancellations">Menu</Nav.Link>
+        <Nav.Link as={Link} to="/order/orderhistory">My Orders</Nav.Link>
+        <Nav.Link as={Link} to="/admin/admindashboard">My Profile</Nav.Link>
+        <Nav.Link
+          as={Link} 
+          to="#cart"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleCart();
+          }}
+        >
+          <img src={kapebara_cart_Pic} height="30" style={{ objectFit: "contain" }} />
+        </Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
+
       {/* Card something */}
       <div style={{ display: "flex", justifyContent: "center", padding: "40px 20px" }}>
         <Card className="card-glossy" style={{ maxWidth: "800px", width: "100%", padding: "24px", height: "600px" }}>
