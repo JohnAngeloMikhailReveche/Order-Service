@@ -42,9 +42,9 @@ function App() {
   const price = product.prices[size] || 0;
 
   const handleAddToBag = () => {
-
-    const menuItemId = 11;
-    const variantId = 1;
+    
+    const variantId = 2;
+    const menuItemId = (30*2)-variantId;
     addToCart(menuItemId, variantId, 1, notes || "None"); // This will depend on the menudb id where the menuitemid is stored in our mock.
     
     /*
