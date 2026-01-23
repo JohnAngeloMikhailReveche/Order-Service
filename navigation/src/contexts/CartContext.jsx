@@ -1,17 +1,18 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [orderID, setOrderID] = useState(null); // add this to CartProvider state
 
@@ -51,94 +52,110 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('kapebag');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error('Failed to load cart from localStorage:', e);
+    fetchCart();
+  }, [userID]);
+
+  /* =========================
+     ADD TO CART
+  ========================= */
+  const addToCart = async (menuItemID, variantID, userID, specialInstructions) => {
+  try {
+    const response = await fetch(
+      `${API_BASE}/item/add?menuItemID=${menuItemID}&variantId=${variantID}&userID=${userID}&specialInstructions=${specialInstructions}`,
+      {
+        method: "POST"
       }
-    }
-  }, []);
-
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    if (cartItems.length === 0) {
-      localStorage.removeItem('kapebag');
-    } else {
-      localStorage.setItem('kapebag', JSON.stringify(cartItems));
-    }
-  }, [cartItems]);
-
-  const addToCart = (item) => {
-    const existingItemIndex = cartItems.findIndex(
-      cartItem =>
-        cartItem.productId === item.productId &&
-        cartItem.size === item.size &&
-        cartItem.notes === item.notes
     );
 
-    if (existingItemIndex !== -1) {
-      const updatedCartItems = [...cartItems];
-      updatedCartItems[existingItemIndex].quantity += item.quantity;
-      updatedCartItems[existingItemIndex].total =
-        updatedCartItems[existingItemIndex].price * updatedCartItems[existingItemIndex].quantity;
-      setCartItems(updatedCartItems);
-    } else {
-      setCartItems([...cartItems, item]);
-    }
-    setIsCartOpen(true);
-  };
-
-  const removeFromCart = (productId, itemSize, itemNotes) => {
-    setCartItems(
-      cartItems.filter(
-        item => !(item.productId === productId && item.size === itemSize && item.notes === itemNotes)
-      )
-    );
-  };
-
-  const updateQuantity = (productId, itemSize, itemNotes, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(productId, itemSize, itemNotes);
-      return;
+    if (!response.ok) {
+      throw new Error("Failed to add item to cart");
     }
 
-    setCartItems(
-      cartItems.map(item =>
-        item.productId === productId && item.size === itemSize && item.notes === itemNotes
-          ? { ...item, quantity: newQuantity, total: item.price * newQuantity }
-          : item
-      )
-    );
+    await fetchCart();      // refresh cart from backend
+    setIsCartOpen(true);    // open cart UI
+  } catch (err) {
+    console.error("Add to cart error:", err);
+  }
+};
+
+  /* =========================
+     UPDATE QUANTITY
+  ========================= */
+  const updateQuantity = async (cartItemID, change) => {
+    try {
+      if (change < 0) {
+        await fetch(
+          `${API_BASE}/remove-item/${cartItemID}?userID=${userID}&quantityToRemove=1`,
+          { method: "DELETE" }
+        );
+      } else if (change > 0) {
+        await fetch(
+          `${API_BASE}/update/${cartItemID}/increase?userID=${userID}&count=1`,
+          { method: "PATCH" }
+        );
+      }
+
+      await fetchCart();
+    } catch (err) {
+      console.error("Update quantity error:", err);
+    }
   };
 
-  const clearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem('kapebag'); // Explicitly remove from localStorage
+  /* =========================
+     REMOVE ITEM
+  ========================= */
+  const removeFromCart = async (cartItemID) => {
+    try {
+      await fetch(
+        `${API_BASE}/remove-item/${cartItemID}?userID=${userID}&quantityToRemove=999`,
+        { method: "DELETE" }
+      );
+
+      await fetchCart();
+    } catch (err) {
+      console.error("Remove item error:", err);
+    }
   };
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
+  /*
 
-  // Place order function - can be extended to call API
+  const clearCart = async () => {
+    try {
+      await fetch(`${API_BASE}/clear/${userID}`, { method: "DELETE" });
+      await fetchCart();
+    } catch (err) {
+      console.error("Clear cart error:", err);
+    }
+  };
+    
+   */
+  
+
+  /* =========================
+     PLACE ORDER
+  ========================= */
   const placeOrder = async () => {
-    // For now, just generate a mock order ID
-    // In production, this would call your API
-    const mockOrderId = Math.floor(Math.random() * 10000) + 1;
-    setOrderID(mockOrderId);
-    
-    // Clear cart after placing order (both state and localStorage)
-    setCartItems([]);
-    localStorage.removeItem('kapebag'); // Explicitly remove from localStorage
-    
-    return mockOrderId;
-  };
+  try {
+    const response = await fetch(`${ORDER_API_BASE}/place-order/${userID}`, { method: "POST" });
+    if (!response.ok) throw new Error("Failed to place order");
 
-  const cartTotal = cartItems.reduce((sum, item) => sum + (item.total || 0), 0);
+    const order = await response.json();
+    console.log("Order placed successfully:", order);
+
+    // store the created order ID
+    setOrderID(order.orderId);
+
+    await fetchCart(); // refresh cart after placing order
+
+    return order.orderId; // optional return for immediate usage
+  } catch (err) {
+    console.error("Place order error:", err);
+    return null;
+  }
+};
+
+  const toggleCart = () => setIsCartOpen(prev => !prev);
 
   const value = {
     cartItems,
@@ -147,12 +164,15 @@ export const CartProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     updateQuantity,
-    clearCart,
+    placeOrder,
     toggleCart,
     setIsCartOpen,
-    placeOrder,
-    orderID
+    fetchCart
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );
 };

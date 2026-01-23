@@ -31,10 +31,7 @@ export const UserContext = createContext();
 const OrderStatus = () => { 
     // --- HOOKS & ROUTING ---
     const location = useLocation(); // To access data passed from the previous page (Order ID)
-    const orderIdFromState = location.state?.orderId;
-    const orderItemsFromState = location.state?.orderItems;
-    const orderTotalFromState = location.state?.orderTotal;
-    const paymentMethodFromState = location.state?.paymentMethod || 'GCash';
+    const orderIdFromState = location.state?.orderId; 
     
     // --- STATE MANAGEMENT ---
     // Order Data States
@@ -84,7 +81,7 @@ const OrderStatus = () => {
         cancellationRequested;
 
     // Calculate Financial Totals
-    const subtotal = orderTotalFromState || cartItems.reduce((sum, item) => sum + (item.total || 0), 0);
+    const subtotal = cartItems.reduce((sum, item) => sum + item.total, 0);
     const deliveryFee = 0;
     const grandTotal = subtotal + deliveryFee;
 
@@ -99,20 +96,10 @@ const OrderStatus = () => {
 
     // --- EFFECTS (SIDE EFFECTS) ---
 
-    // 1. LOAD DATA: Get order details from passed state or API
+    // 1. FETCH DATA: Get order details from API when the component mounts or OrderID changes.
     useEffect(() => {
         if (!orderIdFromState) return;
 
-        // If order items are passed from checkout, use them
-        if (orderItemsFromState && orderItemsFromState.length > 0) {
-            setCartItems(orderItemsFromState);
-            setOrderId(orderIdFromState);
-            setCurrentStep(1); // Start at received
-            setLoading(false);
-            return;
-        }
-
-        // Otherwise, try to fetch from API (for existing orders)
         const fetchOrderDetails = async () => {
             try {
                 // Fetch order items and status from backend
@@ -132,6 +119,8 @@ const OrderStatus = () => {
                 setOrderId(data.orderId);
                 setSeededNumber(data.order_number);
 
+                console.log("Fetched Order Data:", data);
+
                 // Map backend status ID to UI Steps (1-4)
                 switch (data.status) {
                     case 1: setCurrentStep(1); break; // Received
@@ -148,7 +137,7 @@ const OrderStatus = () => {
         };
 
         fetchOrderDetails();
-    }, [orderIdFromState, orderItemsFromState]);
+    }, [orderIdFromState]);
 
     // 2. ANIMATION: Trigger confetti when order is Delivered (Step 4).
     useEffect(() => {
@@ -331,7 +320,7 @@ const OrderStatus = () => {
                                         <div key={index} className="mb-4">
                                             <div className="d-flex justify-content-between align-items-center mb-2">
                                                 <div className="d-flex align-items-center gap-3">
-                                                    <img src={item.image} width="40" height="40" style={{ borderRadius: '8px', objectFit: 'cover' }} alt={item.name} />
+                                                    <img src={item.imageUrl} width="40" height="40" style={{ borderRadius: '8px', objectFit: 'cover' }} alt={item.name} />
                                                     <div>
                                                         <h6 style={{ margin: 0, fontSize: '14px', color: PRIMARY_TEXT }}>
                                                             <span style={{ color: BARA_GREEN, fontWeight: '800' }}>{item.quantity}x</span> {item.name}
@@ -339,7 +328,7 @@ const OrderStatus = () => {
                                                         <small style={{ color: SECONDARY_TEXT, fontSize: '12px' }}>Size: {item.size}</small>
                                                     </div>
                                                 </div>
-                                                <span style={{ fontWeight: '700', fontSize: '14px', color: PRIMARY_TEXT }}>₱{(item.total || (item.price * item.quantity) || 0).toFixed(2)}</span>
+                                                <span style={{ fontWeight: '700', fontSize: '14px', color: PRIMARY_TEXT }}>₱{item.total.toFixed(2)}</span>
                                             </div>
                                             {/* Display Item Notes if available */}
                                             {item.notes && (
@@ -370,32 +359,10 @@ const OrderStatus = () => {
 
                                 <div className="d-flex justify-content-between align-items-center mt-4">
                                     <small style={{ color: SECONDARY_TEXT, fontWeight: '700', fontSize: '11px', textTransform: 'uppercase' }}>Payment Method</small>
-                                    {(() => {
-                                        // Determine colors based on payment method
-                                        const paymentMethod = paymentMethodFromState.toLowerCase();
-                                        let bgColor = '#007BFF'; // Default blue for GCash
-                                        let borderColor = '#D0E3F5';
-                                        let containerBg = '#F1F8FF';
-                                        
-                                        if (paymentMethod.includes('maya')) {
-                                            bgColor = '#00C851'; // Green for Maya
-                                            borderColor = '#C8E6C9';
-                                            containerBg = '#E8F5E9';
-                                        } else if (paymentMethod.includes('cash on delivery') || paymentMethod.includes('cod')) {
-                                            bgColor = '#757575'; // Gray for COD
-                                            borderColor = '#E0E0E0';
-                                            containerBg = '#F5F5F5';
-                                        }
-                                        
-                                        return (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: containerBg, padding: '5px 10px', borderRadius: '8px', border: `1px solid ${borderColor}` }}>
-                                                <div style={{ background: bgColor, color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '9px', textTransform: 'capitalize' }}>
-                                                    {paymentMethodFromState}
-                                                </div>
-                                                <Check size={14} style={{ color: bgColor }} />
-                                            </div>
-                                        );
-                                    })()}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#F1F8FF', padding: '5px 10px', borderRadius: '8px', border: '1px solid #D0E3F5' }}>
+                                        <div style={{ background: '#007BFF', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '9px' }}>GCash</div>
+                                        <Check size={14} className="text-primary" />
+                                    </div>
                                 </div>
                             </div>
                         </Col>
