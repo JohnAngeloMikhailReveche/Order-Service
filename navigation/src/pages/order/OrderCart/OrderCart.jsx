@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import { Card, Row, Col, Button, Form } from 'react-bootstrap';
 import './OrderCart.css';
 import classic_matchabara_cold_brew_Pic from './classic matchabara cold brew.png';
@@ -75,7 +75,7 @@ function App() {
   };
 
   return (
-    <>
+    <UserContext.Provider value={user}>
       {/* Main Content */}
       <div style={{ display: "flex", justifyContent: "center", padding: "40px 20px" }}>
         <Card className="main-card">
