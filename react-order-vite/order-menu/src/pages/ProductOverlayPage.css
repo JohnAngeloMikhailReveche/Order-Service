@@ -1,0 +1,237 @@
+.product-overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.product-overlay-container {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 16px;
+  max-width: 1200px;
+  width: min(1200px, calc(100% - 80px));
+  box-sizing: border-box;
+  margin: 16px auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.product-overlay-close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #3B302A;
+  border: none;
+  border-radius: 20px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 0;
+  transition: background-color 0.2s ease;
+}
+
+.product-overlay-close-btn:hover {
+  background-color: #2a241f;
+}
+
+.product-overlay-close-btn:active {
+  background-color: #1f1a16;
+}
+
+.product-overlay-content {
+  padding: 24px 24px 12px 24px;
+}
+
+.product-overlay-main {
+  margin-bottom: 0;
+}
+
+.product-overlay-image-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.product-overlay-image {
+  width: 150%;
+  max-width: 620px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-left: 130px;
+}
+
+.product-overlay-details-col {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px 24px;
+}
+
+.product-overlay-details {
+  width: 100%;
+  margin-left: 80px;
+}
+
+.product-overlay-name {
+  font-size: 23px;
+  font-weight: 600;
+  color: #1C1C1C;
+  margin-top: 120px;
+  margin-bottom: 4px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.product-overlay-price {
+  font-size: 55px;
+  font-weight: 800;
+  color: #1C1C1C;
+  margin-bottom: 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.product-overlay-description {
+  font-size: 16px;
+  color: #757575;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.product-overlay-size-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.size-btn {
+  background-color: #FFFFFF;
+  border: 2px solid #3B302A;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3B302A;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.size-btn:hover {
+  background-color: #F5F5F5;
+  color: #3B302A;
+  border-color: #3B302A;
+}
+
+.size-btn.active {
+  background-color: #3B302A;
+  color: #FFFFFF;
+  border-color: #3B302A;
+}
+
+.size-btn.active:hover {
+  background-color: #2a241f;
+  color: #FFFFFF;
+}
+
+.product-overlay-add-btn {
+  background-color: #3B302A;
+  border: none;
+  border-radius: 28px;
+  padding: 24px 80px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  width: auto;
+  min-width: 320px;
+  display: block;
+  margin: 18px auto 8px auto;
+  transition: background-color 0.2s ease;
+}
+
+.product-overlay-add-btn:hover {
+  background-color: #2a241f;
+  color: #fff;
+}
+
+.product-overlay-add-btn:active {
+  background-color: #1f1a16;
+}
+
+@media (max-width: 768px) {
+  .product-overlay-backdrop {
+    padding: 20px;
+  }
+
+  .product-overlay-container {
+    max-height: 95vh;
+  }
+
+  .product-overlay-content {
+    padding: 20px;
+  }
+
+  .product-overlay-details-col {
+    padding: 20px 0;
+  }
+
+  .product-overlay-name {
+    font-size: 18px;
+  }
+
+  .product-overlay-price {
+    font-size: 32px;
+  }
+
+  .product-overlay-image {
+    max-width: 100%;
+  }
+}
+
+.related-items {
+  padding: 0;
+}
+.related-items-title {
+  font-size: 20px;
+  color: #1C1C1C;
+}
+.related-items-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.product-overlay-related {
+  padding: 6px 24px 20px 24px;
+  margin-top: 6px;
+}
+
+.product-overlay-related .related-items-arrow {
+  display: none !important;
+}
+
+.product-overlay-related .menu-card {
+  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+}
+.product-overlay-related .menu-card-image {
+  height: 300px;
+}
